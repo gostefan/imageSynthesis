@@ -2,6 +2,8 @@
 #include "ImageTexture.h"
 #include <Img/ImageIO.h>
 
+#include <algorithm>
+
 ImageTexture::ImageTexture(const string& diffuseName, const string& specularName, const string& ambientName) {
 
 	// Load diffuse texture
@@ -110,7 +112,7 @@ Color3f ImageTexture::interpolate1D(float pos, Color3f val0, Color3f val1, Color
 Color3f ImageTexture::interpolate2D(const HitInfo& hit, vector<vector<Color3f> >& texture, int sizeX, int sizeY) {
 	float X = hit.uv.x * (sizeX-1), Y = hit.uv.y * (sizeY-1);
 	int loX = static_cast<int>(floor(X)), hiX = static_cast<int>(ceil(X)), loY = static_cast<int>(floor(Y)), hiY = static_cast<int>(ceil(Y));
-	int minX = max(0, loX-1), maxX = min(sizeX-1, hiX+1), minY = max(0, loY-1), maxY = min(sizeY-1, hiY+1);
+	int minX = std::max(0, loX-1), maxX = std::min(sizeX-1, hiX+1), minY = std::max(0, loY-1), maxY = std::min(sizeY-1, hiY+1);
 
 	Color3f val0 = interpolate1D(X-loX, texture[minY][minX], texture[minY][loX], texture[minY][hiX], texture[minY][maxX]);
 	Color3f val1 = interpolate1D(X-loX,  texture[loY][minX],  texture[loY][loX],  texture[loY][hiX],  texture[loY][maxX]);

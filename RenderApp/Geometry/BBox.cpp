@@ -1,5 +1,6 @@
 
 #include "BBox.h"
+#include <algorithm>
 
 BBox::BBox(Vec3f lower, Vec3f upper) : lower(lower), upper(upper) {};
 BBox::~BBox() {};
@@ -21,10 +22,10 @@ void BBox::project(const Math::Mat44f& m) {
 		cubeCorner.z = (i/4%2 == 0 ? lower.z : upper.z);
 		cubeCorner = m * cubeCorner;
 		cubeCorner /= cubeCorner.z;
-		dividedLower.x = min(dividedLower.x, cubeCorner.x);
-		dividedLower.y = min(dividedLower.y, cubeCorner.y);
-		dividedUpper.x = max(dividedUpper.x, cubeCorner.x);
-		dividedUpper.y = max(dividedUpper.y, cubeCorner.y);
+		dividedLower.x = std::min(dividedLower.x, cubeCorner.x);
+		dividedLower.y = std::min(dividedLower.y, cubeCorner.y);
+		dividedUpper.x = std::max(dividedUpper.x, cubeCorner.x);
+		dividedUpper.y = std::max(dividedUpper.y, cubeCorner.y);
 	}
 	dividedLower.z = 1;
 	dividedUpper.z = 1;

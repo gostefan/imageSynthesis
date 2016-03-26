@@ -2,6 +2,8 @@
 #include "../Scene/Scene.h"
 #include "PhongShader.h"
 
+#include <algorithm>
+
 PhongShader::PhongShader(Texture* surfaceTexture_in, float shininess) :
 	SurfaceShader(surfaceTexture_in), m_shininess(shininess) { }
 
@@ -31,14 +33,14 @@ PhongShader::shade(const HitInfo & hit, const Scene* scene) const
 		Color3f estimate(0);
 
 		for (unsigned int j = 0; j < samples.size(); j++) {
-			float dotProd = max(dot(-samples[j].direction, hit.N), 0.f);
+			float dotProd = std::max(dot(-samples[j].direction, hit.N), 0.f);
 			if (surfaceTexture == 0) {
 				estimate += dotProd * samples[j].radiance * m_kd; // Diffuse term
-				estimate += max(0.0f, pow(dot(-samples[j].direction, mirroredD), m_shininess)) * samples[j].radiance * m_ks; // specular term
+				estimate += std::max(0.0f, pow(dot(-samples[j].direction, mirroredD), m_shininess)) * samples[j].radiance * m_ks; // specular term
 			}
 			else {
 				estimate += dotProd * samples[j].radiance * surfaceTexture->getDiffuse(hit); // Diffuse term
-				estimate += max(0.0f, pow(dot(-samples[j].direction, mirroredD), m_shininess)) * samples[j].radiance * surfaceTexture->getSpecular(hit); // specular term
+				estimate += std::max(0.0f, pow(dot(-samples[j].direction, mirroredD), m_shininess)) * samples[j].radiance * surfaceTexture->getSpecular(hit); // specular term
 			}
 		}
 		color += estimate / static_cast<float>(samples.size());

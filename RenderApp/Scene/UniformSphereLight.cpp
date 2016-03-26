@@ -4,6 +4,8 @@
 #include "../Scene/Scene.h"
 #include "UniformSphereLight.h"
 
+#include <algorithm>
+
 UniformSphereLight::UniformSphereLight(Math::Color3f power, SurfaceShader* surfaceShader, const Math::Vec3f& location, float radius, unsigned int nSamplesSqrt, Displacement* displacement) :
 Sphere(0, location, radius, 0, displacement), SphereLight(power, surfaceShader, location, radius, nSamplesSqrt, displacement) {
 	randomSampler = new RandomSampler();
@@ -50,7 +52,7 @@ void UniformSphereLight::getIrradianceSamples(Vec3f point, const Scene* scene, v
 		//if ray hit something then it does not contribute
 		if (r.hit.shape == 0) {
 			float pdf = sphereWarping->pdf(drawnPoints[i]);
-			float a = max(0.f,dot(lr.direction, warpedPoint));
+			float a = std::max(0.f,dot(lr.direction, warpedPoint));
 			float b = pow(radius+distance, 2);
 			//lr.radiance = radiance * max(0.f,dot(lr.direction, warpedPoint)) /* (pdf/pow(radius, 2))*/ / pow(distance, 2);
 			lr.radiance = radiance * 4 * pow(radius,2) * max(0.f,dot(lr.direction, warpedPoint)) / pow(distance, 2);

@@ -47,6 +47,7 @@
 #include "Progress.h"
 #include "Stopwatch.h"
 
+#include <algorithm>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -72,9 +73,9 @@
 #define NOMINMAX
 #include <windows.h>
 
-#ifndef snprintf
+/*#ifndef snprintf
 #define snprintf _snprintf
-#endif 
+#endif */
 
 #endif
 

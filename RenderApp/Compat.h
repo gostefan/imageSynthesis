@@ -10,9 +10,9 @@
 #define COMPAT_H
 
 #ifdef WIN32
-#ifndef snprintf
+/*#ifndef snprintf
 #define snprintf _snprintf
-#endif 
+#endif*/ 
 #endif
 
 

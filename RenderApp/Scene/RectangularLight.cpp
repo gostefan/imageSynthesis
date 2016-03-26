@@ -5,6 +5,8 @@
 #include "SamplingApp/Sampler/RandomSampler.h"
 #include "SamplingApp/Warping/CosineHemisphereWarping.h"
 
+#include <algorithm>
+
 RectangularLight::RectangularLight(Math::Color3f power_in, SurfaceShader* surfaceShader, const Math::Vec3f& minLoc, const Math::Vec2f& size_in, unsigned int nSamplesSqrt_in, Displacement* displacement) : 
 minPosition(minLoc), size(size_in), nSamplesSqrt(nSamplesSqrt_in), nSamples(nSamplesSqrt_in*nSamplesSqrt_in), power(power_in) {
 	randomSampler = new RandomSampler();
@@ -48,7 +50,7 @@ void RectangularLight::getIrradianceSamples(Vec3f point, const Scene* scene, vec
 		//if ray hit something then it does not contribute
 		if (r.hit.shape == 0) {
 			float pdf = 1/(size.x*size.y);
-			lr.radiance = power * max(0.f,dot(lr.direction, Vec3f(0,-1,0))) / (2*static_cast<float>(M_PI)*pow(distance, 2));
+			lr.radiance = power * std::max(0.f,dot(lr.direction, Vec3f(0,-1,0))) / (2*static_cast<float>(M_PI)*pow(distance, 2));
 		}
 		else {
 			lr.radiance = Color3f(0);

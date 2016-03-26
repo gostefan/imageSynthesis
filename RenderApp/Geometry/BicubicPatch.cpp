@@ -9,6 +9,7 @@
 #include "BicubicPatch.h"
 #include <OGL/Primitive.h>
 #include <Math/MathGL.h>
+#include <algorithm>
 
 using namespace Math;
 
@@ -165,18 +166,18 @@ Vec3f BicubicPatch::evalN(float u, float v) const
 	
 BBox BicubicPatch::getBBox() const {
 	// Calculate the extremal points of each arc
-	Vec3f upper1(max(max(m_CVs[0][0].x, m_CVs[0][1].x), max(m_CVs[0][2].x, m_CVs[0][3].x)),max(max(m_CVs[0][0].y, m_CVs[0][1].y), max(m_CVs[0][2].y, m_CVs[0][3].y)), max(max(m_CVs[0][0].z, m_CVs[0][1].z), max(m_CVs[0][2].z, m_CVs[0][3].z)));
-	Vec3f upper2(max(max(m_CVs[1][0].x, m_CVs[1][1].x), max(m_CVs[1][2].x, m_CVs[1][3].x)),max(max(m_CVs[1][0].y, m_CVs[1][1].y), max(m_CVs[1][2].y, m_CVs[1][3].y)), max(max(m_CVs[1][0].z, m_CVs[1][1].z), max(m_CVs[1][2].z, m_CVs[1][3].z)));
-	Vec3f upper3(max(max(m_CVs[2][0].x, m_CVs[2][1].x), max(m_CVs[2][2].x, m_CVs[2][3].x)),max(max(m_CVs[2][0].y, m_CVs[2][1].y), max(m_CVs[2][2].y, m_CVs[2][3].y)), max(max(m_CVs[2][0].z, m_CVs[2][1].z), max(m_CVs[2][2].z, m_CVs[2][3].z)));
-	Vec3f upper4(max(max(m_CVs[3][0].x, m_CVs[3][1].x), max(m_CVs[3][2].x, m_CVs[3][3].x)),max(max(m_CVs[3][0].y, m_CVs[3][1].y), max(m_CVs[3][2].y, m_CVs[3][3].y)), max(max(m_CVs[3][0].z, m_CVs[3][1].z), max(m_CVs[3][2].z, m_CVs[3][3].z)));
-	Vec3f lower1(min(min(m_CVs[0][0].x, m_CVs[0][1].x), min(m_CVs[0][2].x, m_CVs[0][3].x)),min(min(m_CVs[0][0].y, m_CVs[0][1].y), min(m_CVs[0][2].y, m_CVs[0][3].y)), min(min(m_CVs[0][0].z, m_CVs[0][1].z), min(m_CVs[0][2].z, m_CVs[0][3].z)));
-	Vec3f lower2(min(min(m_CVs[1][0].x, m_CVs[1][1].x), min(m_CVs[1][2].x, m_CVs[1][3].x)),min(min(m_CVs[1][0].y, m_CVs[1][1].y), min(m_CVs[1][2].y, m_CVs[1][3].y)), min(min(m_CVs[1][0].z, m_CVs[1][1].z), min(m_CVs[1][2].z, m_CVs[1][3].z)));
-	Vec3f lower3(min(min(m_CVs[2][0].x, m_CVs[2][1].x), min(m_CVs[2][2].x, m_CVs[2][3].x)),min(min(m_CVs[2][0].y, m_CVs[2][1].y), min(m_CVs[2][2].y, m_CVs[2][3].y)), min(min(m_CVs[2][0].z, m_CVs[2][1].z), min(m_CVs[2][2].z, m_CVs[2][3].z)));
-	Vec3f lower4(min(min(m_CVs[3][0].x, m_CVs[3][1].x), min(m_CVs[3][2].x, m_CVs[3][3].x)),min(min(m_CVs[3][0].y, m_CVs[3][1].y), min(m_CVs[3][2].y, m_CVs[3][3].y)), min(min(m_CVs[3][0].z, m_CVs[3][1].z), min(m_CVs[3][2].z, m_CVs[3][3].z)));
+	Vec3f upper1(std::max(std::max(m_CVs[0][0].x, m_CVs[0][1].x), std::max(m_CVs[0][2].x, m_CVs[0][3].x)),std::max(std::max(m_CVs[0][0].y, m_CVs[0][1].y), std::max(m_CVs[0][2].y, m_CVs[0][3].y)), std::max(std::max(m_CVs[0][0].z, m_CVs[0][1].z), std::max(m_CVs[0][2].z, m_CVs[0][3].z)));
+	Vec3f upper2(std::max(std::max(m_CVs[1][0].x, m_CVs[1][1].x), std::max(m_CVs[1][2].x, m_CVs[1][3].x)),std::max(std::max(m_CVs[1][0].y, m_CVs[1][1].y), std::max(m_CVs[1][2].y, m_CVs[1][3].y)), std::max(std::max(m_CVs[1][0].z, m_CVs[1][1].z), std::max(m_CVs[1][2].z, m_CVs[1][3].z)));
+	Vec3f upper3(std::max(std::max(m_CVs[2][0].x, m_CVs[2][1].x), std::max(m_CVs[2][2].x, m_CVs[2][3].x)),std::max(std::max(m_CVs[2][0].y, m_CVs[2][1].y), std::max(m_CVs[2][2].y, m_CVs[2][3].y)), std::max(std::max(m_CVs[2][0].z, m_CVs[2][1].z), std::max(m_CVs[2][2].z, m_CVs[2][3].z)));
+	Vec3f upper4(std::max(std::max(m_CVs[3][0].x, m_CVs[3][1].x), std::max(m_CVs[3][2].x, m_CVs[3][3].x)),std::max(std::max(m_CVs[3][0].y, m_CVs[3][1].y), std::max(m_CVs[3][2].y, m_CVs[3][3].y)), std::max(std::max(m_CVs[3][0].z, m_CVs[3][1].z), std::max(m_CVs[3][2].z, m_CVs[3][3].z)));
+	Vec3f lower1(std::min(std::min(m_CVs[0][0].x, m_CVs[0][1].x), std::min(m_CVs[0][2].x, m_CVs[0][3].x)),std::min(std::min(m_CVs[0][0].y, m_CVs[0][1].y), std::min(m_CVs[0][2].y, m_CVs[0][3].y)), std::min(std::min(m_CVs[0][0].z, m_CVs[0][1].z), std::min(m_CVs[0][2].z, m_CVs[0][3].z)));
+	Vec3f lower2(std::min(std::min(m_CVs[1][0].x, m_CVs[1][1].x), std::min(m_CVs[1][2].x, m_CVs[1][3].x)),std::min(std::min(m_CVs[1][0].y, m_CVs[1][1].y), std::min(m_CVs[1][2].y, m_CVs[1][3].y)), std::min(std::min(m_CVs[1][0].z, m_CVs[1][1].z), std::min(m_CVs[1][2].z, m_CVs[1][3].z)));
+	Vec3f lower3(std::min(std::min(m_CVs[2][0].x, m_CVs[2][1].x), std::min(m_CVs[2][2].x, m_CVs[2][3].x)),std::min(std::min(m_CVs[2][0].y, m_CVs[2][1].y), std::min(m_CVs[2][2].y, m_CVs[2][3].y)), std::min(std::min(m_CVs[2][0].z, m_CVs[2][1].z), std::min(m_CVs[2][2].z, m_CVs[2][3].z)));
+	Vec3f lower4(std::min(std::min(m_CVs[3][0].x, m_CVs[3][1].x), std::min(m_CVs[3][2].x, m_CVs[3][3].x)),std::min(std::min(m_CVs[3][0].y, m_CVs[3][1].y), std::min(m_CVs[3][2].y, m_CVs[3][3].y)), std::min(std::min(m_CVs[3][0].z, m_CVs[3][1].z), std::min(m_CVs[3][2].z, m_CVs[3][3].z)));
 
 	// Calculate the extremal points of these arcs
-	Vec3f upper(max(max(upper1.x, upper2.x), max(upper3.x, upper4.x)),max(max(upper1.y, upper2.y), max(upper3.y, upper4.y)), max(max(upper1.z, upper2.z), max(upper3.z, upper4.z)));
-	Vec3f lower(min(min(upper1.x, upper2.x), min(upper3.x, upper4.x)),min(min(upper1.y, upper2.y), min(upper3.y, upper4.y)), min(min(upper1.z, upper2.z), min(upper3.z, upper4.z)));
+	Vec3f upper(std::max(std::max(upper1.x, upper2.x), std::max(upper3.x, upper4.x)),std::max(std::max(upper1.y, upper2.y), std::max(upper3.y, upper4.y)), std::max(std::max(upper1.z, upper2.z), std::max(upper3.z, upper4.z)));
+	Vec3f lower(std::min(std::min(upper1.x, upper2.x), std::min(upper3.x, upper4.x)),std::min(std::min(upper1.y, upper2.y), std::min(upper3.y, upper4.y)), std::min(std::min(upper1.z, upper2.z), std::min(upper3.z, upper4.z)));
 	
 	return BBox(lower, upper);
 }
@@ -188,8 +189,8 @@ BBox BicubicPatch::getBBox(float uStart, float uEnd, float vStart, float vEnd) c
 	Vec3f point4 = evalP(uEnd, vEnd);
 	float sumDist1 = (point1 - point2).length2() + (point2 - point3).length2() + (point3 - point4).length2() + (point4 - point1).length2();
 
-	Vec3f upper1(max(max(point1.x, point2.x), max(point3.x, point4.x)), max(max(point1.y, point2.y), max(point3.y, point4.y)), max(max(point1.z, point2.z), max(point3.z, point4.z)));
-	Vec3f lower1(min(min(point1.x, point2.x), min(point3.x, point4.x)), min(min(point1.y, point2.y), min(point3.y, point4.y)), min(min(point1.z, point2.z), min(point3.z, point4.z)));
+	Vec3f upper1(std::max(std::max(point1.x, point2.x), std::max(point3.x, point4.x)), std::max(std::max(point1.y, point2.y), std::max(point3.y, point4.y)), std::max(std::max(point1.z, point2.z), std::max(point3.z, point4.z)));
+	Vec3f lower1(std::min(std::min(point1.x, point2.x), std::min(point3.x, point4.x)), std::min(std::min(point1.y, point2.y), std::min(point3.y, point4.y)), std::min(std::min(point1.z, point2.z), std::min(point3.z, point4.z)));
 
 	// Calculate support point coefficients
     float tts = uStart*uStart;
@@ -233,12 +234,12 @@ BBox BicubicPatch::getBBox(float uStart, float uEnd, float vStart, float vEnd) c
 	}
 	else {
 		// Find max/min of these four points
-		Vec3f upper2(max(max(pss.x, pse.x), max(pes.x, pee.x)), max(max(pss.y, pse.y), max(pes.y, pee.y)), max(max(pss.z, pse.z), max(pes.z, pee.z)));
-		Vec3f lower2(min(min(pss.x, pse.x), min(pes.x, pee.x)), min(min(pss.y, pse.y), min(pes.y, pee.y)), min(min(pss.z, pse.z), min(pes.z, pee.z)));
+		Vec3f upper2(std::max(std::max(pss.x, pse.x), std::max(pes.x, pee.x)), std::max(std::max(pss.y, pse.y), std::max(pes.y, pee.y)), std::max(std::max(pss.z, pse.z), std::max(pes.z, pee.z)));
+		Vec3f lower2(std::min(std::min(pss.x, pse.x), std::min(pes.x, pee.x)), std::min(std::min(pss.y, pse.y), std::min(pes.y, pee.y)), std::min(std::min(pss.z, pse.z), std::min(pes.z, pee.z)));
 
 		// Unite the upper and lower from above
-		upper = Vec3f(max(upper1.x, upper2.x), max(upper1.y, upper2.y), max(upper1.z, upper2.z));
-		lower = Vec3f(min(lower1.x, lower2.x), min(lower1.y, lower2.y), min(lower1.z, lower2.z));
+		upper = Vec3f(std::max(upper1.x, upper2.x), std::max(upper1.y, upper2.y), std::max(upper1.z, upper2.z));
+		lower = Vec3f(std::min(lower1.x, lower2.x), std::min(lower1.y, lower2.y), std::min(lower1.z, lower2.z));
 	}
 
 	// Include Displacement

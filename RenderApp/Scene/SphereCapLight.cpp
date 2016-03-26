@@ -4,6 +4,8 @@
 #include "../Scene/Scene.h"
 #include "SphereCapLight.h"
 
+#include <algorithm>
+
 SphereCapLight::SphereCapLight(Math::Color3f power, SurfaceShader* surfaceShader, const Math::Vec3f& location, float radius, unsigned int nSamplesSqrt, Displacement* displacement) :
 Sphere(0, location, radius, 0, displacement), SphereLight(power, surfaceShader, location, radius, nSamplesSqrt, displacement) {
 	randomSampler = new RandomSampler();
@@ -64,7 +66,7 @@ void SphereCapLight::getIrradianceSamples(Vec3f point, const Scene* scene, vecto
 			float pdf = sphereWarping->pdf(drawnPoints[i]);
 			//lr.radiance = power * dot(lr.direction, warpedPoint) / (sphereWarping->pdf(drawnPoints[i]) * 4*PI * pow(distance+radius, 2));
 			float a = 1/(sphereWarping->pdf(drawnPoints[i]) * 4*PI);
-			lr.radiance = radiance * 4 * pow(radius,2) * max(0.f,dot(lr.direction, warpedPoint)) / (sphereWarping->pdf(drawnPoints[i]) * 4*PI * pow(distance, 2));
+			lr.radiance = radiance * 4 * pow(radius,2) * std::max(0.f,dot(lr.direction, warpedPoint)) / (sphereWarping->pdf(drawnPoints[i]) * 4*PI * pow(distance, 2));
 		}
 		else {
 			lr.radiance = Color3f(0);

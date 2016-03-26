@@ -5,6 +5,8 @@
 #include "SamplingApp/Sampler/RandomSampler.h"
 #include "SamplingApp/Warping/CosineHemisphereWarping.h"
 
+#include <algorithm>
+
 LambertShader::LambertShader(Texture* surfaceTexture_in) :
 	SurfaceShader(surfaceTexture_in) { }
 
@@ -32,7 +34,7 @@ LambertShader::shade(const HitInfo & hit, const Scene* scene, stack<float>& refr
 			lights[i]->getIrradianceSamples(hit.P, scene, samples, hit.time);
 			Color3f estimate(0);
 			for (unsigned int j = 0; j < samples.size(); j++) {
-				float dotProd = max(dot(-samples[j].direction, hit.N), 0.f);
+				float dotProd = std::max(dot(-samples[j].direction, hit.N), 0.f);
 				if (surfaceTexture == 0) {
 					estimate += dotProd * samples[j].radiance * m_kd;
 				}
