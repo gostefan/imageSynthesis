@@ -6,13 +6,18 @@
 
 #include <algorithm>
 
+namespace {
+	const float PI = 3.1415926f;
+	const float TWO_PI = 2 * PI;
+	const float ONE_BY_TWO_PI = 1 / TWO_PI;
+}
+
 SphereCapLight::SphereCapLight(Math::Color3f power, SurfaceShader* surfaceShader, const Math::Vec3f& location, float radius, unsigned int nSamplesSqrt, Displacement* displacement) :
-Sphere(0, location, radius, 0, displacement), SphereLight(power, surfaceShader, location, radius, nSamplesSqrt, displacement) {
-	randomSampler = new RandomSampler();
+		Sphere(0, location, radius, 0, displacement), SphereLight(power, surfaceShader, location, radius, nSamplesSqrt, displacement) {
+	randomSampler.reset(new RandomSampler());
 }
 
 SphereCapLight::~SphereCapLight() {
-	delete randomSampler;
 	SphereLight::~SphereLight();
 };
 
@@ -26,7 +31,7 @@ void SphereCapLight::getIrradianceSamples(Vec3f point, const Scene* scene, vecto
 	float connection = sqrt(connectionSq);
 	float tangentSq = connectionSq - radius*radius;
 	float heightToPoint = tangentSq / connection;
-	sphereWarping = new UniformSphereCapWarping((radius - (connection-heightToPoint))/radius);
+	auto sphereWarping = std::unique_ptr<Warping>(new UniformSphereCapWarping((radius - (connection-heightToPoint)) / radius));
 
 	// Calculate rotation
 	Vec3f dir = (point - location).normalized();
@@ -34,7 +39,7 @@ void SphereCapLight::getIrradianceSamples(Vec3f point, const Scene* scene, vecto
 	rotation.rotateTo(Vec3f(0,0,1), dir);
 
 	// Draw new samples
-	Vec2f* drawnPoints = new Vec2f[nSamples];
+	std::vector<Vec2f> drawnPoints(nSamples);
 	randomSampler->generateSamples(nSamplesSqrt, drawnPoints);
 	
 	Color3f sum = Color3f(0);
@@ -73,7 +78,4 @@ void SphereCapLight::getIrradianceSamples(Vec3f point, const Scene* scene, vecto
 		}
 		result.push_back(lr);
 	}
-	delete drawnPoints;
-	delete sphereWarping;
-	
 }

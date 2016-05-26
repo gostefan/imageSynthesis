@@ -148,7 +148,6 @@
     <ClInclude Include="platform\Stopwatch.h" />
     <ClInclude Include="platform\Timestamp.h" />
     <ClInclude Include="platform\Types.h" />
-    <ClInclude Include="RenderApp\Compat.h" />
     <ClInclude Include="RenderApp\Geometry\BBox.h" />
     <ClInclude Include="RenderApp\Geometry\BicubicPatch.h" />
     <ClInclude Include="RenderApp\Geometry\Displacement\Displacement.h" />

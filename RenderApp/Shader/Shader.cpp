@@ -13,10 +13,6 @@ using namespace Img;
 using namespace Math;
 using namespace std;
 
-SurfaceShader::SurfaceShader(Texture* surfaceTexture_in) :
-surfaceTexture(surfaceTexture_in) { }
+SurfaceShader::SurfaceShader(Texture* surfaceTexture_in) : surfaceTexture(surfaceTexture_in) { }
 
-SurfaceShader::~SurfaceShader()
-{
-	
-}
+SurfaceShader::~SurfaceShader() { }

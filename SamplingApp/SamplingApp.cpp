@@ -33,39 +33,35 @@ using namespace OGL;
 using namespace Math;
 
 
-namespace
-{
+namespace {
 	
 	const char* helpString = 
-    "How to use this demo:\n"
-    "\n"
-    "Keyboard usage is as follows:\n"
-    "    'h'     Toggle this help screen\n"
-    "    'H'     Toggle heads-up-display\n"
-    "    'g'     Toggle grid\n"
-    "    '_/+'   Decrease/Increase points by power of 2\n"
-    "    '-/='   Decrease/Increase points by 1\n"
-    "    '1-3'   Cycle through point sets\n"
-    "    'q-i'   Cycle through warping modes\n"
-    "    ' '     Reset camera\n";
+		"How to use this demo:\n"
+		"\n"
+		"Keyboard usage is as follows:\n"
+		"    'h'     Toggle this help screen\n"
+		"    'H'     Toggle heads-up-display\n"
+		"    'g'     Toggle grid\n"
+		"    '_/+'   Decrease/Increase points by power of 2\n"
+		"    '-/='   Decrease/Increase points by 1\n"
+		"    '1-3'   Cycle through point sets\n"
+		"    'q-i'   Cycle through warping modes\n"
+		"    ' '     Reset camera\n";
 	
-	enum
-	{
+	enum {
 		RANDOM,
 		UNIFORM,
 		JITTERED,
 		NUM_MODES
 	};
 	
-	const char *modes[] =
-	{
+	const char *modes[] = {
 		"Random",
 		"Uniform",
 		"Jittered",
 	};
 	
-	enum
-	{
+	enum {
 		UNIFORM_SQUARE,
 		UNIFORM_DISK,
 		
@@ -81,8 +77,7 @@ namespace
 		NUM_WARP_MODES
 	};
 	
-	const char *warpModes[] =
-	{
+	const char* warpModes[] = {
 		"Uniform Square",
 		"Uniform Disk",
 		
@@ -99,14 +94,12 @@ namespace
 } // namespace 
 
 
-SamplingApp::SamplingApp(GLUTMaster * glutMaster,
-                 int width, int height,
-                 const char * title) :
-	GfxGLUTWindow(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH, width, height),
-	m_mouseMode(MM_NULL),
-	m_pointSet(RANDOM),
-	m_warpMode(UNIFORM_SQUARE),
-	m_drawGrid(true), nPointsSqrt(10), nPoints(100), capValue(100), nValue(50)
+SamplingApp::SamplingApp(GLUTMaster* glutMaster, int width, int height, const char* title) :
+		GfxGLUTWindow(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH, width, height),
+		m_mouseMode(MM_NULL),
+		m_pointSet(RANDOM),
+		m_warpMode(UNIFORM_SQUARE),
+		m_drawGrid(true), nPointsSqrt(10), nPoints(100), capValue(100), nValue(50)
 {
     glutMaster->createWindow(title, this);
 	
@@ -123,10 +116,10 @@ SamplingApp::SamplingApp(GLUTMaster * glutMaster,
 	
     glPixelZoom(1.0f,-1.0f);
 
-	currentWarping = new UniformSquareWarping();
+	currentWarping.reset(new UniformSquareWarping());
 
-	inputPoints = new Math::Vec2f[1];
-	warpedPoints = new Math::Vec3f[1];
+	inputPoints.resize(1);
+	warpedPoints.reset(new Math::Vec3f[1]);
 
 	generateSamples();
     
@@ -134,18 +127,11 @@ SamplingApp::SamplingApp(GLUTMaster * glutMaster,
 }
 
 
-SamplingApp::~SamplingApp()
-{
-	delete inputPoints;
-	delete warpedPoints;
-	delete currentWarping;
-
+SamplingApp::~SamplingApp() {
     glutDestroyWindow(m_windowID);
 }
 
-void
-SamplingApp::resetView()
-{
+void SamplingApp::resetView() {
 	m_camera.incline = 0.0f;
 	m_camera.azimuth = 0.0f;
 	m_camera.distance = 2.0f;
@@ -153,16 +139,12 @@ SamplingApp::resetView()
 }
 
 
-void
-SamplingApp::update()
-{
+void SamplingApp::update() {
     display();
 }
 
 
-void
-SamplingApp::display(void)
-{
+void SamplingApp::display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	// update camera matrix
@@ -189,9 +171,8 @@ SamplingApp::display(void)
 	glBegin(GL_POINTS);
 	
 	Vec3f vertex;
-	for (unsigned int i = 0; i < nPointsSqrt*nPointsSqrt; i++) {
+	for (unsigned int i = 0; i < nPointsSqrt*nPointsSqrt; i++)
 		glVertex(warpedPoints[i]);
-	}
 
 	glEnd();
 	
@@ -218,19 +199,14 @@ SamplingApp::display(void)
 }
 
 
-void
-SamplingApp::reshape(int width, int height)
-{
+void SamplingApp::reshape(int width, int height) {
     GfxGLUTWindow::reshape(width, height);
     display();
 }
 
 
-void
-SamplingApp::keyboard(unsigned char key, int x, int y)
-{
-    switch(key)
-    {
+void SamplingApp::keyboard(unsigned char key, int x, int y) {
+    switch(key) {
         case '1': 
 			m_pointSet = RANDOM; 
 			generateSamples();
@@ -247,71 +223,61 @@ SamplingApp::keyboard(unsigned char key, int x, int y)
 
         case 'q': 
 			m_warpMode = UNIFORM_SQUARE;
-			delete currentWarping;
-			currentWarping = new UniformSquareWarping();
+			currentWarping.reset(new UniformSquareWarping());
 			warpSamples();
 			break;
         case 'w': 
 			m_warpMode = UNIFORM_DISK; 
-			delete currentWarping;
-			currentWarping = new UniformDiskWarping();
+			currentWarping.reset(new UniformDiskWarping());
 			warpSamples();
 			break;
         case 'e': 
 			m_warpMode = UNIFORM_CYLINDER;
-			delete currentWarping;
-			currentWarping = new UniformCylinderWarping();
+			currentWarping.reset(new UniformCylinderWarping());
 			warpSamples();
 			break;
         case 'r': 
 			m_warpMode = UNIFORM_SPHERE;
-			delete currentWarping;
-			currentWarping = new UniformSphereWarping();
+			currentWarping.reset(new UniformSphereWarping());
 			warpSamples();
 			break;
         case 't':
 			m_warpMode = UNIFORM_SPHERE_CAP;
 			if (capValue < 200)
 				capValue++;
-			delete currentWarping;
-			currentWarping = new UniformSphereCapWarping(capValue/100.f);
+			currentWarping.reset(new UniformSphereCapWarping(capValue / 100.f));
 			warpSamples();
 			break;
         case 'g':
 			m_warpMode = UNIFORM_SPHERE_CAP; 
 			if (capValue > 1)
 				capValue--;
-			delete currentWarping;
-			currentWarping = new UniformSphereCapWarping(capValue/100.f);
+			currentWarping.reset(new UniformSphereCapWarping(capValue / 100.f));
 			warpSamples();
 			break;
         case 'y':
 		case 'z':
 			m_warpMode = UNIFORM_HEMISPHERE;
-			delete currentWarping;
-			currentWarping = new UniformHemisphereWarping();
+			currentWarping.reset(new UniformHemisphereWarping());
 			warpSamples();
 			break;
         case 'u': 
 			m_warpMode = COSINE_HEMISPHERE;
-			delete currentWarping;
-			currentWarping = new CosineHemisphereWarping();
+			currentWarping.reset(new CosineHemisphereWarping());
 			warpSamples();
 			break;
         case 'i': 
 			m_warpMode = PHONG_HEMISPHERE; 
 			if (nValue < 100)
 				nValue++;
-			delete currentWarping;
-			currentWarping = new PhongHemisphereWarping(nValue/100.f);
+			currentWarping.reset(new PhongHemisphereWarping(nValue / 100.f));
 			warpSamples();
 			break;
         case 'k': 
 			m_warpMode = PHONG_HEMISPHERE; 
 			if (nValue > 0)
 				nValue--;
-			delete currentWarping;
-			currentWarping = new PhongHemisphereWarping(nValue/100.f);
+			currentWarping.reset(new PhongHemisphereWarping(nValue / 100.f));
 			warpSamples();
 			break;
 			
@@ -353,7 +319,7 @@ SamplingApp::keyboard(unsigned char key, int x, int y)
 		case 'm':
 			double sum;
 			sum = 0;
-			for(unsigned int i = 0; i < nPointsSqrt*nPointsSqrt; i++) {
+			for(size_t i = 0; i < nPointsSqrt*nPointsSqrt; i++) {
 				double nominator = 0;
 				switch (m_warpMode) {
 					case UNIFORM_SQUARE: 
@@ -380,7 +346,7 @@ SamplingApp::keyboard(unsigned char key, int x, int y)
 			break;
 		case 's':
 			sum = 0;
-			for(unsigned int i = 0; i < nPointsSqrt*nPointsSqrt; i++) {
+			for(size_t i = 0; i < nPointsSqrt*nPointsSqrt; i++) {
 				double denominator = currentWarping->pdf(inputPoints[i]);
 				sum += 1/denominator;
 			}
@@ -402,9 +368,7 @@ void SamplingApp::generateSamples() {
 }
 
 void SamplingApp::drawSamples() {
-	delete inputPoints;
-
-	inputPoints = new Vec2f[nPointsSqrt*nPointsSqrt];
+	inputPoints.resize(nPointsSqrt*nPointsSqrt);
 	
 	Sampler* currentSampler;
 	switch (m_pointSet) {
@@ -424,9 +388,7 @@ void SamplingApp::drawSamples() {
 }
 
 void SamplingApp::warpSamples() {
-	delete warpedPoints;
-
-	warpedPoints = new Vec3f[nPointsSqrt*nPointsSqrt];
+	warpedPoints.reset(new Vec3f[nPointsSqrt*nPointsSqrt]);
 
 	for (unsigned int i = 0; i < nPointsSqrt*nPointsSqrt; i++) {
 		Vec2f current = inputPoints[i];
@@ -434,50 +396,38 @@ void SamplingApp::warpSamples() {
 	}
 }
 
-void SamplingApp::mouse(int btn, int state, int x, int y)
-{
+void SamplingApp::mouse(int btn, int state, int x, int y) {
     GfxGLUTWindow::mouse(btn, state, x, y);
 	
-    if (btn == GLUT_LEFT_BUTTON)
-    {
+    if (btn == GLUT_LEFT_BUTTON) {
         if (state == GLUT_DOWN)
-        {
             m_mouseMode = MM_ROTATE;
-        }
         else
             m_mouseMode = MM_NULL;
-    }
-    else if (btn == GLUT_RIGHT_BUTTON)
-    {
+    } else if (btn == GLUT_RIGHT_BUTTON) {
         if (state == GLUT_DOWN)
-        {
             m_mouseMode = MM_ZOOM;
-        }
         else
             m_mouseMode = MM_NULL;
     }
 }
 
 
-void
-SamplingApp::motion(int nx, int ny)
-{
+void SamplingApp::motion(int nx, int ny) {
     int dx = nx - m_mouseX;
     int dy = ny - m_mouseY;
 	
     m_mouseX = nx;
     m_mouseY = ny;
 	
-    switch(m_mouseMode)
-    {
+    switch(m_mouseMode) {
         case MM_ROTATE:
 			m_camera.azimuth += dx;
 			m_camera.incline += dy;
             update();
 			break;
 			
-        case MM_ZOOM:
-		{
+        case MM_ZOOM: {
 			float r = 1.0f - 0.01f*dx;
 			m_camera.distance *= r;
             update();
@@ -490,9 +440,7 @@ SamplingApp::motion(int nx, int ny)
 }
 
 
-void
-SamplingApp::drawGrid(int gridRes)
-{
+void SamplingApp::drawGrid(int gridRes) {
 	if (!m_drawGrid)
 		return;
 
@@ -503,10 +451,8 @@ SamplingApp::drawGrid(int gridRes)
 	{
 		int fineGridRes = 16*gridRes;
 		glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
-		for (int j = 0; j < fineGridRes; j++)
-		{
-			for (int i = 0; i <= gridRes; i++)
-			{
+		for (int j = 0; j < fineGridRes; j++) {
+			for (int i = 0; i <= gridRes; i++) {
 				v1 = Vec2f((j)/(float)fineGridRes, i/(float)gridRes);
 				v2 = warpPoint(v1);
 				glVertex(v2);
@@ -516,10 +462,8 @@ SamplingApp::drawGrid(int gridRes)
 				glVertex(v2);
 			}
 		}
-		for (int j = 0; j <= gridRes; j++)
-		{
-			for (int i = 0; i < fineGridRes; i++)
-			{
+		for (int j = 0; j <= gridRes; j++) {
+			for (int i = 0; i < fineGridRes; i++) {
 				v1 = Vec2f(j/(float)gridRes, i/(float)fineGridRes);
 				v2 = warpPoint(v1);
 				glVertex(v2);
@@ -535,8 +479,7 @@ SamplingApp::drawGrid(int gridRes)
 }
 
 
-Math::Vec3f SamplingApp::warpPoint(Math::Vec2f Sample)
-{
+Math::Vec3f SamplingApp::warpPoint(Math::Vec2f Sample) {
 	return currentWarping->warp(Sample);
 }
 

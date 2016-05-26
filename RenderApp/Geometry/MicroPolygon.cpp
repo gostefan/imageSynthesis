@@ -11,9 +11,7 @@
 using namespace Math;
 using namespace std;
 
-MicroPolygon::MicroPolygon()
-{
-}
+MicroPolygon::MicroPolygon() { }
 
 MicroPolygon::MicroPolygon(const Vec3f & p1,
                            const Vec3f & p2,
@@ -42,8 +40,7 @@ MicroPolygon::MicroPolygon(const Vec3f & p1,
 		// Calculate the bounding box
 		bbMin = Vec3f(min(min(vScaled[0].x, vScaled[1].x), min(vScaled[2].x, vScaled[3].x)), min(min(vScaled[0].y, vScaled[1].y), min(vScaled[2].y, vScaled[3].y)), min(min(v[0].z, v[1].z), min(v[2].z, v[3].z)));
 		bbMax = Vec3f(max(max(vScaled[0].x, vScaled[1].x), max(vScaled[2].x, vScaled[3].x)), max(max(vScaled[0].y, vScaled[1].y), max(vScaled[2].y, vScaled[3].y)), max(max(v[0].z, v[1].z), max(v[2].z, v[3].z)));
-	}
-	else {
+	} else {
 		vScaled[0] = Vec3f(-1);
 		vScaled[1] = Vec3f(-1);
 		vScaled[2] = Vec3f(-1);
@@ -68,8 +65,8 @@ void MicroPolygon::rasterize(Util::Array2D<Color4f>& rgbaBuffer, Util::Array2D<f
 	// Do flat shading
 	Color3f shaded = (color[0] + color[1] + color[2] + color[3])/4;
 
-	for (unsigned int x = static_cast<unsigned int>(max(floor(bbMin.x), 0.f)); x <= min(static_cast<unsigned int> (ceil(bbMax.x)), (unsigned int) rgbaBuffer.m_sizeX-1); x++) {
-		for (unsigned int y = static_cast<unsigned int> (max(floor(bbMin.y), 0.f)); y <= min(static_cast<unsigned int> (ceil(bbMax.y)), (unsigned int) rgbaBuffer.m_sizeY-1); y++) {
+	for (unsigned int x = static_cast<unsigned int>(max(floor(bbMin.x), 0.f)); x <= min(static_cast<unsigned int> (ceil(bbMax.x)), (unsigned int) rgbaBuffer.getSizeX()-1); x++) {
+		for (unsigned int y = static_cast<unsigned int> (max(floor(bbMin.y), 0.f)); y <= min(static_cast<unsigned int> (ceil(bbMax.y)), (unsigned int) rgbaBuffer.getSizeY()-1); y++) {
 			// Ignore all points with z-buffer in front of bounding box
 			if (zBuffer(x,y) > bbMin.z) {
 
@@ -81,20 +78,18 @@ void MicroPolygon::rasterize(Util::Array2D<Color4f>& rgbaBuffer, Util::Array2D<f
 
 				// It hit the first triangle
 				if ((baryFirst.x >= 0 && baryFirst.y >= 0 && baryFirst.z >= 0 && zFirst < zBuffer(x,y))
-					// It hit the second triangle
-					|| (barySecond.x >= 0 && barySecond.y >= 0 && barySecond.z >= 0 && zSecond < zBuffer(x,y))) {
+						// It hit the second triangle
+						|| (barySecond.x >= 0 && barySecond.y >= 0 && barySecond.z >= 0 && zSecond < zBuffer(x,y))) {
 
-						// Calculate average color and point for shading
-						rgbaBuffer(x,y).x = shaded.x;
-						rgbaBuffer(x,y).y = shaded.y;
-						rgbaBuffer(x,y).z = shaded.z;
-						rgbaBuffer(x,y).w = 1;
-						if (baryFirst.x >= 0 && baryFirst.y >= 0 && baryFirst.z >= 0) {
-							zBuffer(x,y) = zFirst;
-						}
-						else {
-							zBuffer(x,y) = zSecond;
-						}
+					// Calculate average color and point for shading
+					rgbaBuffer(x,y).x = shaded.x;
+					rgbaBuffer(x,y).y = shaded.y;
+					rgbaBuffer(x,y).z = shaded.z;
+					rgbaBuffer(x,y).w = 1;
+					if (baryFirst.x >= 0 && baryFirst.y >= 0 && baryFirst.z >= 0)
+						zBuffer(x,y) = zFirst;
+					else
+						zBuffer(x,y) = zSecond;
 				}
 			}
 		}

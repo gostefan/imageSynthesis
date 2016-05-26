@@ -7,25 +7,27 @@
 //
 
 #include "RayTracingRenderer.h"
-#include <Img/ImageIO.h>
-#include "../Shader/Shader.h"
-#include <stack>
-#include "../Scene/EnvironmentMap.h"
 
-RayTracingRenderer::RayTracingRenderer()
-{
+#include <Img/ImageIO.h>
+#include <OGL/FBO.h>
+
+#include "../Scene/EnvironmentMap.h"
+#include "../Shader/Shader.h"
+
+#include <memory>
+#include <stack>
+
+
+RayTracingRenderer::RayTracingRenderer() {
 	m_fbo = new FrameBuffer(GL_TEXTURE_2D, 512, 512, -1, GL_RGBA32F_ARB, 1, 1, 0, "Ray Tracing FBO");
 	m_fbo->checkFramebufferStatus(1);
 }
 
-RayTracingRenderer::~RayTracingRenderer()
-{
+RayTracingRenderer::~RayTracingRenderer() {
 	delete m_fbo;
 }
 
-void
-RayTracingRenderer::render(Scene & scene)
-{
+void RayTracingRenderer::render(Scene & scene) {
 	setRes(scene.camera->xRes(), scene.camera->yRes());
 
 	//clear m_rgbaBuffer
@@ -40,13 +42,12 @@ RayTracingRenderer::render(Scene & scene)
 	unsigned int yRes = scene.camera->yRes();
 	for (unsigned int i = 0; i < xRes; i++) {
 		for (unsigned int j = 0; j < yRes; j++) {
-			Ray* r = new Ray();
-			scene.camera->generateRay(r, static_cast<float>(i), static_cast<float>(j));
+			auto r = std::unique_ptr<Ray>(new Ray());
+			scene.camera->generateRay(r.get(), static_cast<float>(i), static_cast<float>(j));
 	
 			//loop over all scene objects and find the closest intersection
-			for (unsigned int k = 0; k < scene.shapes.size(); k++) {
-				scene.shapes[k]->intersect(r);
-			}
+			for (unsigned int k = 0; k < scene.shapes.size(); k++)
+				scene.shapes[k]->intersect(r.get());
 
 			//if ray hit something then shade it
 			if (r->hit.shape != 0 && r->hit.surfaceShader != 0) {
@@ -58,11 +59,8 @@ RayTracingRenderer::render(Scene & scene)
 				m_rgbaBuffer(i,j).y = shaded.y;
 				m_rgbaBuffer(i,j).z = shaded.z;
 				m_rgbaBuffer(i,j).w = 1;
-			}
-			else {
+			} else
 				m_rgbaBuffer(i,j) = scene.background->getBackground(r->d);
-			}
-			delete r;
 		}
 
 		if (i % 50 == 0)
@@ -80,9 +78,7 @@ RayTracingRenderer::render(Scene & scene)
 }
 
 
-void
-RayTracingRenderer::setRes(int x, int y)
-{
+void RayTracingRenderer::setRes(int x, int y) {
 	m_rgbaBuffer.resizeErase(x, y);
 	m_fbo->resizeExistingFBO(x, y);
 	
@@ -96,9 +92,7 @@ RayTracingRenderer::setRes(int x, int y)
 }
 
 
-
-void 
-RayTracingRenderer::saveImage(std::string filename) {
+void RayTracingRenderer::saveImage(std::string filename) {
 	Img::ImageData data (filename.append(".hdr"),m_rgbaBuffer);
 	Img::writeImage(data);
 }

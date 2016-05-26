@@ -27,59 +27,54 @@
     ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 */
-#ifndef PLATFORM_STOPWATCH_H_INCLUDED
-#define PLATFORM_STOPWATCH_H_INCLUDED
+#pragma once
 
 #include "Timestamp.h"
 
-namespace Platform
-{
+namespace Platform {
 
-//! A simple facility to measure time intervals with microsecond resolution.
-class Stopwatch
-{
-public:
-    Stopwatch();
-    ~Stopwatch();
+	//! A simple facility to measure time intervals with microsecond resolution.
+	class Stopwatch {
+		public:
+			Stopwatch();
+			~Stopwatch();
 
-    //! Starts (or resumes) the stopwatch.
-    void start() {_start.update(); _cpuStart = clock(); _running = true;}
+			//! Starts (or resumes) the stopwatch.
+			void start() {_start.update(); _cpuStart = clock(); _running = true;}
 
-    //! Stops or pauses the stopwatch.
-    void stop();
+			//! Stops or pauses the stopwatch.
+			void stop();
 
-    //! Resets the stopwatch.
-    void reset();
+			//! Resets the stopwatch.
+			void reset();
 
-    //! Resets and starts the stopwatch.
-    void restart();
+			//! Resets and starts the stopwatch.
+			void restart();
 
-    //! Returns the elapsed time in microseconds since the stopwatch started.
-    Timestamp::TimeDiff elapsed() const;
+			//! Returns the elapsed time in microseconds since the stopwatch started.
+			Timestamp::TimeDiff elapsed() const;
 
-    //! Returns the amount of CPU miscroseconds used since the stopwatch started.
-    Timestamp::TimeDiff cpu() const;
+			//! Returns the amount of CPU miscroseconds used since the stopwatch started.
+			Timestamp::TimeDiff cpu() const;
 
-    //! Returns the number of seconds elapsed since the stopwatch started.
-    double elapsedSeconds() const {return elapsed()/double(resolution());}
+			//! Returns the number of seconds elapsed since the stopwatch started.
+			double elapsedSeconds() const {return elapsed()/double(resolution());}
 
-    //! Returns the amount of CPU seconds used since the stopwatch started.
-    double cpuSeconds() const {return cpu()/double(resolution());}
+			//! Returns the amount of CPU seconds used since the stopwatch started.
+			double cpuSeconds() const {return cpu()/double(resolution());}
 
-    //! Returns the resolution of the stopwatch.
-    static Timestamp::TimeVal resolution() {return Timestamp::resolution();}
+			//! Returns the resolution of the stopwatch.
+			static Timestamp::TimeVal resolution() {return Timestamp::resolution();}
 
-private:
-    Stopwatch(const Stopwatch&);            // Not implementated
-    Stopwatch& operator=(const Stopwatch&); // Not implementated
+		private:
+			Stopwatch(const Stopwatch&);            // Not implementated
+			Stopwatch& operator=(const Stopwatch&); // Not implementated
 
-    Timestamp           _start;
-    Timestamp::TimeDiff _elapsed;
-    clock_t             _cpuStart;
-    Timestamp::TimeDiff _cpuTotal;
-    bool                _running;
-};
+			Timestamp           _start;
+			Timestamp::TimeDiff _elapsed;
+			clock_t             _cpuStart;
+			Timestamp::TimeDiff _cpuTotal;
+			bool                _running;
+	};
 
 } // namespace Platform
-
-#endif // PLATFORM_STOPWATCH_H_INCLUDED

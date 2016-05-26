@@ -6,8 +6,7 @@
 //  Copyright 2011 Student. All rights reserved.
 //
 
-#ifndef RENDER_APP_MESH_H
-#define RENDER_APP_MESH_H
+#pragma once
 
 #include "Shape.h"
 
@@ -15,33 +14,30 @@
 #include <Math/MeshBase.h>
 #include <Math/BBH.h>
 
-class Mesh : public Shape
-{
-protected:
-	Math::MeshBase * m_mesh;
-	Math::BBH m_bbh;
-    int m_maxDepth;
-    int m_maxObjects;
-	//SurfaceShader * m_shader;
-	int nTime;
+class Mesh : public Shape {
+	protected:
+		Math::MeshBase* m_mesh;
+		Math::BBH m_bbh;
+		int m_maxDepth;
+		int m_maxObjects;
+		//SurfaceShader* m_shader;
+		int nTime;
 
-	void getLocalCoordinates(int index, HitInfo& hit);
+		void getLocalCoordinates(int index, HitInfo& hit);
 	
-public:
+	public:
 	
-	Mesh(SurfaceShader * surfaceShader,
-		 Math::MeshBase * mesh, Motion* motion = 0, float shutterTime = 0, unsigned int nTime = 1,
-		 int maxDepth = 64, int maxObjects = 1);
+		Mesh(SurfaceShader* surfaceShader,
+			 Math::MeshBase* mesh, Motion* motion = nullptr, float shutterTime = 0, unsigned int nTime = 1,
+			 int maxDepth = 64, int maxObjects = 1);
 	
-	void renderGL() const;
+		void renderGL() const;
 	
-    bool intersect(Ray * r) const;
-    void fillHitInfo(Ray * r) const;
+		bool intersect(Ray* r) const;
+		void fillHitInfo(Ray* r) const;
 	
-    Math::Vec3f evalP(float u, float v) const;
-    Math::Vec3f evalN(float u, float v) const;
-	virtual BBox getBBox() const;
-	virtual BBox getBBox(float uStart, float uEnd, float vStart, float vEnd) const;
+		Math::Vec3f evalP(float u, float v) const;
+		Math::Vec3f evalN(float u, float v) const;
+		virtual BBox getBBox() const;
+		virtual BBox getBBox(float uStart, float uEnd, float vStart, float vEnd) const;
 };
-
-#endif // RENDER_APP_MESH_H

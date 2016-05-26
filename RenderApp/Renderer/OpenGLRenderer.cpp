@@ -12,20 +12,14 @@
 #include "../Scene/photonmap.h"
 
 
-OpenGLRenderer::OpenGLRenderer()
-{
-	m_fbo = new FrameBuffer(GL_TEXTURE_2D, 512, 512, -1, GL_RGBA32F_ARB, 1, 1, 0, "OpenGL FBO");
+OpenGLRenderer::OpenGLRenderer() {
+	m_fbo = std::unique_ptr<FrameBuffer>(new FrameBuffer(GL_TEXTURE_2D, 512, 512, -1, GL_RGBA32F_ARB, 1, 1, 0, "OpenGL FBO"));
 	m_fbo->checkFramebufferStatus(1);
 }
 
-OpenGLRenderer::~OpenGLRenderer()
-{
-	delete m_fbo;
-}
+OpenGLRenderer::~OpenGLRenderer() { } // needs to be here because of unique_ptr dtor
 
-void
-OpenGLRenderer::render(Scene & scene)
-{
+void OpenGLRenderer::render(Scene& scene) {
 	setRes(scene.camera->xRes(), scene.camera->yRes());
 	m_fbo->bindBuffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -33,9 +27,7 @@ OpenGLRenderer::render(Scene & scene)
 	scene.camera->renderGL();
 	
 	for (unsigned int i = 0; i < scene.shapes.size(); ++i)
-	{
 		scene.shapes[i]->renderGL();
-	}
 	scene.pMap->renderGL();
 	m_fbo->unbindBuffer();
 	
@@ -44,16 +36,13 @@ OpenGLRenderer::render(Scene & scene)
 	m_fbo->displayAsFullScreenTexture(FBO_COLOR0);
 }
 
-void
-OpenGLRenderer::setRes(int x, int y)
-{
+void OpenGLRenderer::setRes(int x, int y) {
 	m_fbo->resizeExistingFBO(x, y);
 }
 
 
 
-void 
-OpenGLRenderer::saveImage(std::string filename) {
+void OpenGLRenderer::saveImage(std::string filename) {
 	
 	Util::Array2D<Math::Color4f> rgbaBuffer(m_fbo->width(), m_fbo->height());
 

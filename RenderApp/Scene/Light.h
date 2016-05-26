@@ -6,14 +6,15 @@
 //  Copyright 2012 Student. All rights reserved.
 //
 
-#ifndef LIGHT_H
-#define LIGHT_H
+#pragma once
 
 #include <Math/Color.h>
 #include <Img/Fwd.h>
 #include "HitInfo.h"
 #include "../Geometry/Shape.h"
 #include "LightRay.h"
+
+#include <stack>
 
 class Ray;
 
@@ -25,28 +26,25 @@ struct TracePhoton {
 	stack<float> refractionIndex;
 };
 
-class Light : virtual public Shape
-{
-public:
-	virtual ~Light() {};
+class Light : virtual public Shape {
+	public:
+		virtual ~Light() { };
 	
-	/*!
-		Intersect the specified primitive in local space.
+		/*!
+			Intersect the specified primitive in local space.
 
-		\param r ray in the object's local space
-		\param primID primitive index to intersect
-	*/
-    virtual bool intersect(Ray * r) const = 0;
+			\param r ray in the object's local space
+			\param primID primitive index to intersect
+		*/
+		virtual bool intersect(Ray* r) const = 0;
 	
-    virtual void fillHitInfo(Ray * r) const = 0;
+		virtual void fillHitInfo(Ray* r) const = 0;
 
-	virtual Math::Color3f getPower() = 0;
+		virtual Math::Color3f getPower() = 0;
 
-	virtual Math::Vec3f getPosition() = 0;
+		virtual Math::Vec3f getPosition() = 0;
 
-	virtual void getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) = 0;
+		virtual void getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) = 0;
 
-	virtual TracePhoton samplePhoton() = 0;
+		virtual TracePhoton samplePhoton() = 0;
 };
-
-#endif

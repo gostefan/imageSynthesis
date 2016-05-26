@@ -1,6 +1,10 @@
 
 #include "MultipliedSineDisplacement.h"
 
+namespace {
+	const float PI = 3.1415926f;
+}
+
 MultipliedSineDisplacement::MultipliedSineDisplacement(float scale, unsigned int uTimes_in, unsigned int vTimes_in) : Displacement(scale), uTimes(uTimes_in), vTimes(vTimes_in) {};
 MultipliedSineDisplacement::~MultipliedSineDisplacement() {};
 	

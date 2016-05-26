@@ -1,8 +1,8 @@
 /*! \file MathGL.h
     \author Wojciech Jarosz
 */
-#ifndef MATH_MATHGL_H_INCLUDED
-#define MATH_MATHGL_H_INCLUDED
+
+#pragma once
 
 #include <OGL/Core.h>
 
@@ -99,53 +99,34 @@ inline void glGetMaterial(GLenum f, GLenum p, Math::Vec4f *v) {glMaterialfv(f, p
 inline void glGetMaterial(GLenum f, GLenum p, Math::Vec4i *v) {glMaterialiv(f, p, (GLint*)v->toArray());}
 
 
-inline void 
-glMultMatrix(const Math::Mat44f& m) 
-{
+inline void glMultMatrix(const Math::Mat44f& m) {
     glMultMatrixf((GLfloat*)m[0]);
 }
 
-inline void 
-glMultMatrix(const Math::Mat44f* m)
-{
+inline void glMultMatrix(const Math::Mat44f* m) {
     glMultMatrixf((GLfloat*)(*m)[0]);
 }
 
-inline void 
-glMultMatrix(const Math::Mat44d& m) 
-{
+inline void glMultMatrix(const Math::Mat44d& m) {
     glMultMatrixd((GLdouble*)m[0]);
 }
 
-inline void 
-glMultMatrix(const Math::Mat44d* m)
-{
+inline void glMultMatrix(const Math::Mat44d* m) {
     glMultMatrixd((GLdouble*)(*m)[0]);
 }
 
-inline void 
-glLoadMatrix(const Math::Mat44f& m) 
-{
+inline void glLoadMatrix(const Math::Mat44f& m) {
     glLoadMatrixf((GLfloat*)m[0]);
 }
 
-inline void 
-glLoadMatrix(const Math::Mat44f* m) 
-{
+inline void glLoadMatrix(const Math::Mat44f* m) {
     glLoadMatrixf((GLfloat*)(*m)[0]);
 }
 
-inline void 
-glLoadMatrix(const Math::Mat44d& m) 
-{
+inline void glLoadMatrix(const Math::Mat44d& m) {
     glLoadMatrixd((GLdouble*)m[0]);
 }
 
-inline void 
-glLoadMatrix(const Math::Mat44d* m) 
-{
+inline void glLoadMatrix(const Math::Mat44d* m) {
     glLoadMatrixd((GLdouble*)(*m)[0]);
 }
-
-
-#endif // MATH_MATHGL_H_INCLUDED

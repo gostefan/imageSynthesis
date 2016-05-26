@@ -1,12 +1,11 @@
 
-#ifndef SAMPLER_H
-#define SAMPLER_H
+#pragma once
 
-#include <Math/Vec2.h>
+#include<Math/Vec2.h>
+
+#include<vector>
 
 class Sampler {
-public:
-	virtual void generateSamples(int nSamplesSqrt, Math::Vec2f* sampleStorage) = 0;
+	public:
+		virtual void generateSamples(int nSamplesSqrt, std::vector<Math::Vec2f>& sampleStorage) = 0;
 };
-
-#endif

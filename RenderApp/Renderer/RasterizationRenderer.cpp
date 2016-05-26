@@ -9,39 +9,34 @@
 #include "RasterizationRenderer.h"
 #include <Img/ImageIO.h>
 
+#include <OGL/FBO.h>
+#include <Platform/Progress.h>
+
 using namespace Math;
 
 
-RasterizationRenderer::RasterizationRenderer()
-{
+RasterizationRenderer::RasterizationRenderer() {
 	m_fbo = new FrameBuffer(GL_TEXTURE_2D, 512, 512, -1, GL_RGBA32F_ARB, 1, 1, 0, "Rasterization FBO");
 	m_fbo->checkFramebufferStatus(1);
 }
 
-RasterizationRenderer::~RasterizationRenderer()
-{
+RasterizationRenderer::~RasterizationRenderer() {
 	delete m_fbo;
 }
 
-void
-RasterizationRenderer::render(Scene & scene)
-{
+void RasterizationRenderer::render(Scene& scene) {
 	setRes(scene.camera->xRes(), scene.camera->yRes());
 
 	std::list<SurfacePatch*> patches;
-	for (unsigned int i = 0; i < scene.shapes.size(); i++) {
-		if (scene.shapes[i]->isRenderable()) {
+	for (unsigned int i = 0; i < scene.shapes.size(); i++)
+		if (scene.shapes[i]->isRenderable())
 			scene.shapes[i]->split(patches, SurfacePatch(scene.shapes[i]), USplit);
-		}
-	}
 
 	std::list<SurfacePatch*> splitPatches;
-	for (std::list<SurfacePatch*>::iterator iter = patches.begin(); iter != patches.end(); iter++) {
+	for (std::list<SurfacePatch*>::iterator iter = patches.begin(); iter != patches.end(); iter++)
 		(*iter)->split(splitPatches, VSplit);
-	}
 
 	for (int i = 1; i <= 3; i++) {
-
 		patches.clear();
 		for (std::list<SurfacePatch*>::iterator iter = splitPatches.begin(); iter != splitPatches.end(); iter++) {
 			(*iter)->split(patches, USplit);
@@ -79,9 +74,7 @@ RasterizationRenderer::render(Scene & scene)
 }
 
 
-void
-RasterizationRenderer::setRes(int x, int y)
-{
+void RasterizationRenderer::setRes(int x, int y) {
 	m_rgbaBuffer.resizeErase(x, y);
 	m_zBuffer.resizeErase(x, y);
 	m_fbo->resizeExistingFBO(x, y);
@@ -96,8 +89,7 @@ RasterizationRenderer::setRes(int x, int y)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void 
-RasterizationRenderer::saveImage(std::string filename) {
-	Img::ImageData data (filename.append(".hdr"),m_rgbaBuffer);
+void RasterizationRenderer::saveImage(std::string filename) {
+	Img::ImageData data (filename.append(".hdr"), m_rgbaBuffer);
 	Img::writeImage(data);
 }

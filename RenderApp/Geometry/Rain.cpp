@@ -8,9 +8,10 @@
 #include "Sphere.h"
 #include "Proc.h"
 
-double round(double d)
-{
-  return floor(d + 0.5);
+namespace {
+	double round(double d) {
+		return floor(d + 0.5);
+	}
 }
 	
 Rain::Rain(Box3f size, float scale, int nDrops, float shutterTime, unsigned int nTime, int maxDepth, int maxObjects) :
@@ -23,8 +24,8 @@ Rain::Rain(Box3f size, float scale, int nDrops, float shutterTime, unsigned int 
 		float y = (static_cast<float>(rand()) / RAND_MAX) * (size.max[1] - size.min[1]) + size.min[1];
 		float z = (static_cast<float>(rand()) / RAND_MAX) * (size.max[2] - size.min[2]) + size.min[2];
 		float currRad = (static_cast<float>(rand()) / RAND_MAX) * 3; // Here it is in m but I devide later by 1000
-		Motion* currMotion = new Motion(Vec3f(0, -getSpeed(currRad)*scale, 0));
-		drops[i] = new Sphere(surfaceShader, Vec3f(x, y, z), currRad*scale/1000, currMotion);
+		Motion* currMotion = new Motion(Vec3f(0, -getSpeed(currRad) * scale, 0));
+		drops[i] = new Sphere(surfaceShader, Vec3f(x, y, z), currRad * scale / 1000, currMotion);
 	}
 
 	Proc proc(drops, motion, nTime, m_maxDepth, m_maxObjects, shutterTime);
@@ -35,9 +36,8 @@ Rain::Rain(Box3f size, float scale, int nDrops, float shutterTime, unsigned int 
 }
 	
 void Rain::renderGL() const {
-	for (unsigned i = 0; i < drops.size(); i++) {
+	for (unsigned i = 0; i < drops.size(); i++)
 		drops[i]->renderGL();
-	}
 }
 	
 bool Rain::intersect(Ray * r) const {
@@ -46,31 +46,22 @@ bool Rain::intersect(Ray * r) const {
 	
     int hitIndex = -1;
     const BBH::Node *node = &m_bbh.nodes[0];
-    while (node)
-    {
-        if (node->isLeaf())
-        {
+    while (node) {
+        if (node->isLeaf()) {
             // Check for intersections inside leaf node
             unsigned nObjects = node->nObjects();
-            if (nObjects == 1)
-            {
+            if (nObjects == 1) {
                 const int index = node->oneIndex;
 				drops[index]->intersect(r);
-            }
-            else if (nObjects > 1)
-            {
+            } else if (nObjects > 1) {
                 const unsigned * indices = node->indices;
-                for (unsigned i = 0; i < nObjects; ++i)
-                {
+                for (unsigned i = 0; i < nObjects; ++i) {
                     const unsigned index = indices[i];
 					drops[index]->intersect(r);
                 }
             }
-        }
-        else
-        {
-            if (Math::intersects(r->o, r->d, r->time, node->bbox, r->tMin, r->tMax))
-            {
+        } else {
+            if (Math::intersects(r->o, r->d, r->time, node->bbox, r->tMin, r->tMax)) {
                 // Enqueue secondChild in todo list
                 todo[todoPos] = &m_bbh.nodes[node->right];
                 ++todoPos;
@@ -82,12 +73,10 @@ bool Rain::intersect(Ray * r) const {
         }
 		
         // Grab next node to process from todo list
-        if (todoPos > 0)
-        {
+        if (todoPos > 0) {
             --todoPos;
             node = todo[todoPos];
-        }
-        else
+        } else
             break;
     }
 	

@@ -1,5 +1,10 @@
 
 #include "AmbientOcclusionShader.h"
+
+#include "SamplingApp/Sampler/RandomSampler.h"
+#include "SamplingApp/Warping/CosineHemisphereWarping.h"
+#include "SamplingApp/Warping/UniformHemisphereWarping.h"
+
 #include "../Scene/Scene.h"
 #include "../Scene/EnvironmentMap.h"
 
@@ -8,21 +13,13 @@ AmbientOcclusionShader::AmbientOcclusionShader(const Color3f & color_in, unsigne
 	nSamplesSqrt = round2Int(sqrt(static_cast<float>(nSamples)));
 	nSamples = nSamplesSqrt*nSamplesSqrt;
 
-	currentSampler = new RandomSampler();
-	if (cosineWeighted)
-		currentWarping = new CosineHemisphereWarping();
-	else
-		currentWarping = new UniformHemisphereWarping();
-}
-
-AmbientOcclusionShader::~AmbientOcclusionShader() {
-	delete currentSampler;
-	delete currentWarping;
+	currentSampler = std::unique_ptr<Sampler>(new RandomSampler());
+	currentWarping = std::unique_ptr<Warping>(cosineWeighted ? static_cast<Warping*>(new CosineHemisphereWarping()) : static_cast<Warping*>(new UniformHemisphereWarping));
 }
 
 Color3f AmbientOcclusionShader::shade(const HitInfo & hit, const Scene* scene, stack<float>& refractionIndices) const {
 	// Draw new samples
-	Vec2f* drawnPoints = new Vec2f[nSamples];
+	std::vector<Vec2f> drawnPoints(nSamples);
 	currentSampler->generateSamples(nSamplesSqrt, drawnPoints);
 	
 	// Calculate rotation
@@ -30,15 +27,15 @@ Color3f AmbientOcclusionShader::shade(const HitInfo & hit, const Scene* scene, s
 	rotation.rotateTo(Vec3f(0,0,1), hit.N);
 
 	Color3f sum = Color3f(0);
-	for (unsigned int i = 0; i < nSamples; i++) {
+	for (size_t i = 0; i < nSamples; i++) {
 		Vec3f warpedPoint;
 		// Include the environment Map weighting
 		if (environmentMapWeighted) {
 			warpedPoint = scene->background->importanceSample(drawnPoints[i]);
 			while (dot(warpedPoint, hit.N) < 0) {
-				Vec2f sample;
-				currentSampler->generateSamples(1, &sample);
-				warpedPoint = scene->background->importanceSample(sample);
+				std::vector<Vec2f> sample(1);
+				currentSampler->generateSamples(1, sample);
+				warpedPoint = scene->background->importanceSample(sample.front());
 			}
 		}
 		else {
@@ -61,7 +58,6 @@ Color3f AmbientOcclusionShader::shade(const HitInfo & hit, const Scene* scene, s
 				sum += Vec3f(scene->background->getBackground(r.d).toArray()) * dot(warpedPoint, hit.N);
 		}
 	}
-	delete drawnPoints;
 
 	if (!cosineWeighted)
 		sum *= 2;

@@ -6,20 +6,16 @@
 //  Copyright 2011 Student. All rights reserved.
 //
 
-#ifndef MRayTracingRenderer_h
-#define MRayTracingRenderer_h
+#pragma once
 
 #include "RayTracingRenderer.h"
 
-class MultipleRayTracingRenderer : public RayTracingRenderer
-{
-protected:
-	unsigned int nSamples;
-public:
-	MultipleRayTracingRenderer(unsigned int nSamples);
-	~MultipleRayTracingRenderer();
+class MultipleRayTracingRenderer : public RayTracingRenderer {
+	protected:
+		unsigned int nSamples;
+	public:
+		MultipleRayTracingRenderer(unsigned int nSamples);
+		~MultipleRayTracingRenderer();
 	
-	virtual void render(Scene & scene);
+		virtual void render(Scene & scene);
 };
-
-#endif

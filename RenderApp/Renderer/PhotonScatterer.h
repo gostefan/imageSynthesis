@@ -6,8 +6,7 @@
 //  Copyright 2012 Student. All rights reserved.
 //
 
-#ifndef PhotonScaterer_h
-#define PhotonScaterer_h
+#pragma once
 
 #include <OGL/FBO.h>
 #include <Math/Vec4.h>
@@ -15,17 +14,14 @@
 #include "RayTracingRenderer.h"
 #include <Platform/Progress.h>
 
-class PhotonScaterer
-{
-public:
-	PhotonScaterer(float continueProb = 0.5);
-	~PhotonScaterer();
+class PhotonScaterer {
+	public:
+		PhotonScaterer(float continueProb = 0.5);
+		~PhotonScaterer();
 	
-	virtual void scatter(Scene & scene);
+		virtual void scatter(Scene & scene);
 
-protected:
-	void tracePhotons(Scene& scene);
-	float continueProb;
+	protected:
+		void tracePhotons(Scene& scene);
+		float continueProb;
 };
-
-#endif

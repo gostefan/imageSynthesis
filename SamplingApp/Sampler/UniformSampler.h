@@ -1,6 +1,10 @@
 
+#pragma once
+
 #include "Sampler.h"
 
+#include <vector>
+
 class UniformSampler : public Sampler {
-	virtual void generateSamples(int nSamplesSqrt, Math::Vec2f* sampleStorage);
+	virtual void generateSamples(int nSamplesSqrt, std::vector<Math::Vec2f>& sampleStorage) override;
 };

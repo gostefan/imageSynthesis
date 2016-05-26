@@ -1,10 +1,5 @@
 
-#ifndef UNI_DISK_WARPING_H
-#define UNI_DISK_WARPING_H
-
-#ifndef PI
-#define PI 3.1415926f
-#endif
+#pragma once
 
 #include <Math/Vec2.h>
 #include <Math/Vec3.h>
@@ -14,9 +9,7 @@
 using namespace Math;
 
 class UniformDiskWarping : public Warping {
-public:
-	virtual Vec3f warp(Vec2f sample);
-	virtual float pdf(Vec2f coord);
+	public:
+		virtual Vec3f warp(Vec2f sample);
+		virtual float pdf(Vec2f coord);
 };
-
-#endif

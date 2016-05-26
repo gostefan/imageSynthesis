@@ -2,8 +2,7 @@
 #include "ConstantTexture.h"
 
 ConstantTexture::ConstantTexture(Color3f color_in) :
-	color(color_in) { }
-ConstantTexture::~ConstantTexture() { }
+		color(color_in) { }
 
 Color3f ConstantTexture::getAmbient(const HitInfo& hit) {
 	return color;

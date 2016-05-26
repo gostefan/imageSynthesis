@@ -4,17 +4,17 @@
 
 #include <algorithm>
 
-ImageTexture::ImageTexture(const string& diffuseName, const string& specularName, const string& ambientName) {
+ImageTexture::ImageTexture(const std::string& diffuseName, const std::string& specularName, const std::string& ambientName) {
 
 	// Load diffuse texture
 	std::cout << "Reading Diffuse Texture data...\n";
 	Math::Color3f* readColors = Img::readImage(diffuseName, &sizeDX, &sizeDY);
 
 	std::cout << "Converting Diffuse Texture data...\n";
-	diffuse = vector<vector<Math::Color3f> >(sizeDY);
+	diffuse = std::vector<std::vector<Math::Color3f> >(sizeDY);
 	int pos = 0;
 	for (int i = sizeDY-1; i >= 0; i--) {
-		diffuse[i] = vector<Math::Color3f>(sizeDX);
+		diffuse[i] = std::vector<Math::Color3f>(sizeDX);
 		for (int j = 0; j < sizeDX; j++) {
 			diffuse[i][j] = readColors[pos];
 			pos++;
@@ -27,10 +27,10 @@ ImageTexture::ImageTexture(const string& diffuseName, const string& specularName
 		readColors = Img::readImage(specularName, &sizeSX, &sizeSY);
 
 		std::cout << "Converting Specular Texture data...\n";
-		specular = vector<vector<Math::Color3f> >(sizeSY);
+		specular = std::vector<std::vector<Math::Color3f> >(sizeSY);
 		pos = 0;
 		for (int i = sizeSY-1; i >= 0; i--) {
-			specular[i] = vector<Math::Color3f>(sizeSX);
+			specular[i] = std::vector<Math::Color3f>(sizeSX);
 			for (int j = 0; j < sizeSX; j++) {
 				specular[i][j] = readColors[pos];
 				pos++;
@@ -48,10 +48,10 @@ ImageTexture::ImageTexture(const string& diffuseName, const string& specularName
 		readColors = Img::readImage(ambientName, &sizeAX, &sizeAY);
 
 		std::cout << "Converting Ambient Texture data...\n";
-		ambient = vector<vector<Math::Color3f> >(sizeAY);
+		ambient = std::vector<std::vector<Math::Color3f> >(sizeAY);
 		pos = 0;
 		for (int i = sizeAY-1; i >= 0; i--) {
-			ambient[i] = vector<Math::Color3f>(sizeAX);
+			ambient[i] = std::vector<Math::Color3f>(sizeAX);
 			for (int j = 0; j < sizeAX; j++) {
 				ambient[i][j] = readColors[pos];
 				pos++;
@@ -109,7 +109,7 @@ Color3f ImageTexture::interpolate1D(float pos, Color3f val0, Color3f val1, Color
 	return result;
 }
 
-Color3f ImageTexture::interpolate2D(const HitInfo& hit, vector<vector<Color3f> >& texture, int sizeX, int sizeY) {
+Color3f ImageTexture::interpolate2D(const HitInfo& hit, std::vector<std::vector<Color3f> >& texture, int sizeX, int sizeY) {
 	float X = hit.uv.x * (sizeX-1), Y = hit.uv.y * (sizeY-1);
 	int loX = static_cast<int>(floor(X)), hiX = static_cast<int>(ceil(X)), loY = static_cast<int>(floor(Y)), hiY = static_cast<int>(ceil(Y));
 	int minX = std::max(0, loX-1), maxX = std::min(sizeX-1, hiX+1), minY = std::max(0, loY-1), maxY = std::min(sizeY-1, hiY+1);

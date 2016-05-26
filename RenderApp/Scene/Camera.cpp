@@ -3,13 +3,16 @@
 
 using namespace Math;
 
+namespace {
+	const double PI = 3.1415926f;
+}
+
 Camera::Camera(unsigned x, unsigned y) :
-	m_resolution(x, y),
-	m_fovy(30),
-	m_aspect(x/float(y)),
-	m_height(2.0f*tanf(radians(0.5f*m_fovy))),
-	m_width(m_height*m_aspect)
-{
+		m_resolution(x, y),
+		m_fovy(30),
+		m_aspect(x/float(y)),
+		m_height(2.0f*tanf(radians(0.5f*m_fovy))),
+		m_width(m_height*m_aspect) {
     m_worldToCamera.lookAt(Vec3f(0.0, 4.0f, 6.0f), Vec3f(0,3.5f,-10.0f), Vec3f(0.0f, 1.0f, 0.0f));
     //m_worldToCamera.lookAt(Vec3f(0.0, 2.0f, 3.0f), Vec3f(0,0.5,0.0f), Vec3f(0.0f, 1.0f, 0.0f));
 	m_cameraToWorld = m_worldToCamera.inverse();
@@ -21,9 +24,7 @@ Camera::Camera(unsigned x, unsigned y) :
 
 
 
-void
-Camera::generateRay(Ray * r, float x, float y) const
-{
+void Camera::generateRay(Ray * r, float x, float y) const {
 	// Assume x in 0:res_x - 1 and y in 0:res_y-1
 	
 	//the preallocated Ray r should have a world space origin and direction
@@ -38,9 +39,7 @@ Camera::generateRay(Ray * r, float x, float y) const
 }
 
 
-void
-Camera::setResolution(unsigned x, unsigned y)
-{
+void Camera::setResolution(unsigned x, unsigned y) {
 	m_resolution.set(x, y);
 	m_aspect = x / float(y);
 	m_width = m_height*m_aspect;
@@ -50,9 +49,7 @@ Camera::setResolution(unsigned x, unsigned y)
 	m_WindowToWorld = m_worldToNDC.inverse() * m_NDCToWindow.inverse();
 }
 
-void
-Camera::setFOVY(float fov)
-{
+void Camera::setFOVY(float fov) {
 	m_fovy = fov;
 	m_height = 2.0f*tanf(radians(m_fovy)),
 	m_width = m_height*m_aspect;
@@ -61,9 +58,7 @@ Camera::setFOVY(float fov)
 	m_WindowToWorld = m_worldToNDC.inverse() * m_NDCToWindow.inverse();
 }
 
-void
-Camera::setWorldToCamera(const Mat44f & w2c)
-{
+void Camera::setWorldToCamera(const Mat44f & w2c) {
 	m_worldToCamera = w2c;
 	m_cameraToWorld = m_worldToCamera.inverse();
 	
@@ -71,9 +66,7 @@ Camera::setWorldToCamera(const Mat44f & w2c)
 	m_WindowToWorld = m_worldToNDC.inverse() * m_NDCToWindow.inverse();
 }
 
-void
-Camera::setCameraToWorld(const Mat44f & c2w)
-{
+void Camera::setCameraToWorld(const Mat44f & c2w) {
 	m_cameraToWorld = c2w;
 	m_worldToCamera = m_cameraToWorld.inverse();
 
@@ -81,9 +74,7 @@ Camera::setCameraToWorld(const Mat44f & c2w)
 	m_WindowToWorld = m_worldToNDC.inverse() * m_NDCToWindow.inverse();
 }
 
-void
-Camera::renderGL() const
-{
+void Camera::renderGL() const {
     // Set perspective projection
     glMatrixMode(GL_PROJECTION);
 	glLoadMatrix(m_perspective);

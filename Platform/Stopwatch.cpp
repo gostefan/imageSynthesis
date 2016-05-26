@@ -30,69 +30,51 @@
 
 #include "Stopwatch.h"
 
-namespace Platform
-{
+namespace Platform {
 
-namespace
-{
-const double USEC_PER_CLOCK = double(Stopwatch::resolution())/CLOCKS_PER_SEC;
-} // namespace
+	namespace {
+		const double USEC_PER_CLOCK = double(Stopwatch::resolution()) / CLOCKS_PER_SEC;
+	} // namespace
 
 
-Stopwatch::Stopwatch() : _elapsed(0), _cpuTotal(0), _running(false)
-{}
+	Stopwatch::Stopwatch() : _elapsed(0), _cpuTotal(0), _running(false) {}
+	Stopwatch::~Stopwatch() {}
 
 
-Stopwatch::~Stopwatch()
-{}
+	void Stopwatch::stop() {
+		Timestamp current;
+		_elapsed += current - _start;
+		_cpuTotal += Timestamp::TimeDiff((clock() - _cpuStart) * USEC_PER_CLOCK);
+		_running = false;
+	}
 
-
-void
-Stopwatch::stop()
-{
-    Timestamp current;
-    _elapsed += current - _start;
-    _cpuTotal += Timestamp::TimeDiff((clock() - _cpuStart)*USEC_PER_CLOCK);
-    _running = false;
-}
-
-
-Timestamp::TimeDiff
-Stopwatch::elapsed() const
-{
-    if (_running)
-    {
-        Timestamp now;
-        return _elapsed + (now - _start);
-    }
+	Timestamp::TimeDiff Stopwatch::elapsed() const {
+		if (_running) {
+			Timestamp now;
+			return _elapsed + (now - _start);
+		}
     
-    return _elapsed;
-}
+		return _elapsed;
+	}
     
     
-Timestamp::TimeDiff
-Stopwatch::cpu() const
-{
-    if (_running)
-        return _cpuTotal +
-               Timestamp::TimeDiff((clock() - _cpuStart)*USEC_PER_CLOCK);
-    return _cpuTotal;
-}
+	Timestamp::TimeDiff Stopwatch::cpu() const {
+		if (_running)
+			return _cpuTotal +
+				   Timestamp::TimeDiff((clock() - _cpuStart) * USEC_PER_CLOCK);
+		return _cpuTotal;
+	}
 
 
-void
-Stopwatch::reset()
-{
-    _elapsed = _cpuTotal = 0;
-    _running = false;
-}
+	void Stopwatch::reset() {
+		_elapsed = _cpuTotal = 0;
+		_running = false;
+	}
 
 
-void
-Stopwatch::restart()
-{
-    _elapsed = _cpuTotal = 0;
-    start();
-}
+	void Stopwatch::restart() {
+		_elapsed = _cpuTotal = 0;
+		start();
+	}
 
 } // namespace Platform

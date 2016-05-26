@@ -34,9 +34,7 @@ using namespace OGL;
 using namespace Math;
 
 
-namespace
-{
-	
+namespace {
 	const char* helpString = 
     "How to use this demo:\n"
     "\n"
@@ -53,9 +51,9 @@ MeshViewer::MeshViewer(GLUTMaster * glutMaster,
 					   int width, int height,
 					   const char * title,
 					   MeshBase * mesh) :
-	GfxGLUTWindow(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH, width, height),
-	m_mouseMode(MM_NULL),
-	m_mesh(mesh)
+		GfxGLUTWindow(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH, width, height),
+		m_mouseMode(MM_NULL),
+		m_mesh(mesh)
 {
     glutMaster->createWindow(title, this);
 	
@@ -77,14 +75,11 @@ MeshViewer::MeshViewer(GLUTMaster * glutMaster,
 }
 
 
-MeshViewer::~MeshViewer()
-{
+MeshViewer::~MeshViewer() {
     glutDestroyWindow(m_windowID);
 }
 
-void
-MeshViewer::resetView()
-{
+void MeshViewer::resetView() {
 	m_camera.incline = 0.0f;
 	m_camera.azimuth = 0.0f;
 	m_camera.distance = 2.0f;
@@ -92,16 +87,12 @@ MeshViewer::resetView()
 }
 
 
-void
-MeshViewer::update()
-{
+void MeshViewer::update() {
     display();
 }
 
 
-void
-MeshViewer::display(void)
-{
+void MeshViewer::display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	// update camera matrix
@@ -127,8 +118,7 @@ MeshViewer::display(void)
 	
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glBegin(GL_TRIANGLES);
-	for (unsigned int i = 0; i < m_mesh->numTris; ++i)
-	{
+	for (unsigned int i = 0; i < m_mesh->numTris; ++i) {
 		glVertex(m_mesh->vertices[m_mesh->vertexIndices[i].x]);
 		glVertex(m_mesh->vertices[m_mesh->vertexIndices[i].y]);
 		glVertex(m_mesh->vertices[m_mesh->vertexIndices[i].z]);
@@ -149,19 +139,14 @@ MeshViewer::display(void)
 }
 
 
-void
-MeshViewer::reshape(int width, int height)
-{
+void MeshViewer::reshape(int width, int height) {
     GfxGLUTWindow::reshape(width, height);
     display();
 }
 
 
-void
-MeshViewer::keyboard(unsigned char key, int x, int y)
-{
-    switch(key)
-    {
+void MeshViewer::keyboard(unsigned char key, int x, int y) {
+    switch(key) {
         case ' ':
 			resetView();
             update();
@@ -175,51 +160,38 @@ MeshViewer::keyboard(unsigned char key, int x, int y)
 }
 
 
-void
-MeshViewer::mouse(int btn, int state, int x, int y)
-{
+void MeshViewer::mouse(int btn, int state, int x, int y) {
     GfxGLUTWindow::mouse(btn, state, x, y);
 	
-    if (btn == GLUT_LEFT_BUTTON)
-    {
-        if (state == GLUT_DOWN)
-        {
+    if (btn == GLUT_LEFT_BUTTON) {
+        if (state == GLUT_DOWN) 
             m_mouseMode = MM_ROTATE;
-        }
         else
             m_mouseMode = MM_NULL;
-    }
-    else if (btn == GLUT_RIGHT_BUTTON)
-    {
+    } else if (btn == GLUT_RIGHT_BUTTON) {
         if (state == GLUT_DOWN)
-        {
             m_mouseMode = MM_ZOOM;
-        }
         else
             m_mouseMode = MM_NULL;
     }
 }
 
 
-void
-MeshViewer::motion(int nx, int ny)
-{
+void MeshViewer::motion(int nx, int ny) {
     int dx = nx - m_mouseX;
     int dy = ny - m_mouseY;
 	
     m_mouseX = nx;
     m_mouseY = ny;
 	
-    switch(m_mouseMode)
-    {
+    switch(m_mouseMode) {
         case MM_ROTATE:
 			m_camera.azimuth += dx;
 			m_camera.incline += dy;
             update();
 			break;
 			
-        case MM_ZOOM:
-		{
+        case MM_ZOOM: {
 			float r = 1.0f - 0.01f*dx;
 			m_camera.distance *= r;
             update();
@@ -232,9 +204,7 @@ MeshViewer::motion(int nx, int ny)
 }
 
 
-void
-MeshViewer::drawGrid(int gridRes)
-{
+void MeshViewer::drawGrid(int gridRes) {
 	if (!m_drawGrid)
 		return;
 	
@@ -245,10 +215,8 @@ MeshViewer::drawGrid(int gridRes)
 	{
 		int fineGridRes = 16*gridRes;
 		glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
-		for (int j = 0; j < fineGridRes; j++)
-		{
-			for (int i = 0; i <= gridRes; i++)
-			{
+		for (int j = 0; j < fineGridRes; j++) {
+			for (int i = 0; i <= gridRes; i++) {
 				v1 = Vec2f((j)/(float)fineGridRes, i/(float)gridRes);
 				glVertex(v2);
 				
@@ -256,10 +224,8 @@ MeshViewer::drawGrid(int gridRes)
 				glVertex(v2);
 			}
 		}
-		for (int j = 0; j <= gridRes; j++)
-		{
-			for (int i = 0; i < fineGridRes; i++)
-			{
+		for (int j = 0; j <= gridRes; j++) {
+			for (int i = 0; i < fineGridRes; i++) {
 				v1 = Vec2f(j/(float)gridRes, i/(float)fineGridRes);
 				glVertex(v2);
 				

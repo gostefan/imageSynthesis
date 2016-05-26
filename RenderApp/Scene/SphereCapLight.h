@@ -6,32 +6,27 @@
 //  Copyright 2012 Student. All rights reserved.
 //
 
-#ifndef SPHERE_CAP_LIGHT_H
-#define SPHERE_CAP_LIGHT_H
+#pragma once
 
-#include <vector>
-#include "../Scene/LightRay.h"
 #include "SphereLight.h"
+#include "../Scene/LightRay.h"
+
+#include <memory>
+#include <vector>
 
 class Ray;
 class Sampler;
 class Scene;
 class Warping;
 
-class SphereCapLight : public SphereLight
-{
-public:
-	SphereCapLight(Math::Color3f power, SurfaceShader* surfaceShader, const Math::Vec3f& location, float radius, unsigned int nSamplesSqrt = 4, Displacement* displacement = 0);
+class SphereCapLight : public SphereLight {
+	public:
+		SphereCapLight(Math::Color3f power, SurfaceShader* surfaceShader, const Math::Vec3f& location, float radius, unsigned int nSamplesSqrt = 4, Displacement* displacement = 0);
+		virtual ~SphereCapLight();
 
-	virtual ~SphereCapLight();
+		virtual Math::Color3f getPower();
+		virtual void getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time);
 
-	virtual Math::Color3f getPower();
-
-	virtual void getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time);
-
-protected:
-	Sampler* randomSampler;
-	Warping* sphereWarping;
+	protected:
+		std::unique_ptr<Sampler> randomSampler;
 };
-
-#endif

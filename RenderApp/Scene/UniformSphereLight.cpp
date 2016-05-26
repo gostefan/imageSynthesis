@@ -1,22 +1,19 @@
 
+#include "UniformSphereLight.h"
+
 #include "SamplingApp/Sampler/RandomSampler.h"
 #include "SamplingApp/Warping/UniformSphereWarping.h"
 #include "../Scene/Scene.h"
-#include "UniformSphereLight.h"
 
 #include <algorithm>
 
 UniformSphereLight::UniformSphereLight(Math::Color3f power, SurfaceShader* surfaceShader, const Math::Vec3f& location, float radius, unsigned int nSamplesSqrt, Displacement* displacement) :
-Sphere(0, location, radius, 0, displacement), SphereLight(power, surfaceShader, location, radius, nSamplesSqrt, displacement) {
-	randomSampler = new RandomSampler();
-	sphereWarping = new UniformSphereWarping();
+		Sphere(0, location, radius, 0, displacement), SphereLight(power, surfaceShader, location, radius, nSamplesSqrt, displacement) {
+	randomSampler = std::unique_ptr<Sampler>(new RandomSampler());
+	sphereWarping = std::unique_ptr<Warping>(new UniformSphereWarping());
 }
 
-UniformSphereLight::~UniformSphereLight() {
-	delete randomSampler;
-	delete sphereWarping;
-	SphereLight::~SphereLight();
-};
+UniformSphereLight::~UniformSphereLight() { };
 
 Math::Color3f UniformSphereLight::getPower() {
 	return power;
@@ -24,7 +21,7 @@ Math::Color3f UniformSphereLight::getPower() {
 
 void UniformSphereLight::getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) {
 	// Draw new samples
-	Vec2f* drawnPoints = new Vec2f[nSamples];
+	std::vector<Vec2f> drawnPoints(nSamples);
 	randomSampler->generateSamples(nSamplesSqrt, drawnPoints);
 	
 	Color3f sum = Color3f(0);
@@ -45,9 +42,8 @@ void UniformSphereLight::getIrradianceSamples(Vec3f point, const Scene* scene, v
 		r.time = time;
 
 		// Check for intersection
-		for (unsigned int k = 0; k < scene->shapes.size(); k++) {
+		for (unsigned int k = 0; k < scene->shapes.size(); k++)
 			scene->shapes[k]->intersect(&r);
-		}
 
 		//if ray hit something then it does not contribute
 		if (r.hit.shape == 0) {
@@ -56,11 +52,8 @@ void UniformSphereLight::getIrradianceSamples(Vec3f point, const Scene* scene, v
 			float b = pow(radius+distance, 2);
 			//lr.radiance = radiance * max(0.f,dot(lr.direction, warpedPoint)) /* (pdf/pow(radius, 2))*/ / pow(distance, 2);
 			lr.radiance = radiance * 4 * pow(radius,2) * max(0.f,dot(lr.direction, warpedPoint)) / pow(distance, 2);
-		}
-		else {
+		} else
 			lr.radiance = Color3f(0);
-		}
 		result.push_back(lr);
 	}
-	delete drawnPoints;	
 }

@@ -10,6 +10,7 @@
 #include <Math/Vec3.h>
 #include <Platform/Fwd.h>
 
+#include <memory>
 #include <vector>
 #include <assert.h>
 
@@ -78,89 +79,86 @@ namespace Math
 	
 	
 	
-class BBH
-{
-public:
-    //! Statistics gathering for BBH construction
-    class BuildStats
-    {
-    private:
-        int numNodes;
-        int numLeaves;
-        int sumObjects;
-        int minObjects;
-        int maxObjects;
-        int sumDepth;
-        int minDepth;
-        int maxDepth;
-        int numLeaves0;
-        int numLeaves1;
-        int numLeaves2;
-        int numLeaves3;
-        int numLeaves4;
-        int numLeaves4p;
-        Platform::Progress * progress;
+class BBH {
+	public:
+		//! Statistics gathering for BBH construction
+		class BuildStats {
+			private:
+				int numNodes;
+				int numLeaves;
+				int sumObjects;
+				int minObjects;
+				int maxObjects;
+				int sumDepth;
+				int minDepth;
+				int maxDepth;
+				int numLeaves0;
+				int numLeaves1;
+				int numLeaves2;
+				int numLeaves3;
+				int numLeaves4;
+				int numLeaves4p;
+				std::unique_ptr<Platform::Progress> progress;
 
-    public:
-        BuildStats();
-        ~BuildStats();
+			public:
+				BuildStats();
+				~BuildStats();
 
-        void startBuild(const char * title, int steps);
-        void stepProgress(int steps);
-        void finishBuild();
-        void updateInner(){numNodes++;}
-        void updateLeaf(int depth, int n);
-        void printStats();
-    };
+				void startBuild(const char * title, int steps);
+				void stepProgress(int steps);
+				void finishBuild();
+				void updateInner(){numNodes++;}
+				void updateLeaf(int depth, int n);
+				void printStats() const;
+		};
     
     
-    //! A Bounding Box Hierarchy node.
-    struct Node
-    {   
-        template <typename Proc>
-        void initLeaf(Proc & proc, BuildStats & stats,
-                      unsigned * objNums, unsigned min, unsigned max, int depth);
-        void initInterior(BuildStats & stats, const Math::Box4f& box);
-        bool isLeaf() const {return leaf == 1;}
-        int nObjects() const {return nObjs;}
-        void freeMemory();
-        void renderGL() const;
+		//! A Bounding Box Hierarchy node.
+		struct Node {   
+			void freeMemory();
+			void initInterior(BuildStats & stats, const Math::Box4f& box);
+			template <typename Proc>
+			void initLeaf(Proc & proc, BuildStats & stats,
+						  unsigned * objNums, unsigned min, unsigned max, int depth);
+			bool isLeaf() const { return leaf == 1; }
+			int nObjects() const { return nObjs; }
+			void renderGL() const;
 
-		float tMin, tMax;
+			float tMin, tMax;
 
-        Math::Box4f bbox;
+			Math::Box4f bbox;
 
-        unsigned leaf:1;
-        unsigned nObjs:31;      // Leaf
+			unsigned leaf:1;
+			unsigned nObjs:31;      // Leaf
             
-        union
-        {
-            unsigned right;     // Interior
-            unsigned  oneIndex; // Leaf w/ one object
-            unsigned* indices;  // Leaf w/ multiple objects
-        };
-    };
+			union
+			{
+				unsigned right;     // Interior
+				unsigned  oneIndex; // Leaf w/ one object
+				unsigned* indices;  // Leaf w/ multiple objects
+			};
+		};
     
-    ~BBH();
+		~BBH();
 
-    template <typename Proc>
-    void buildTree(Proc & proc, BuildStats & stats);
-    void clear();
+		template <typename Proc>
+		void buildTree(Proc & proc, BuildStats & stats);
+		void clear();
     
-    std::vector<Node> nodes;
+		std::vector<Node> nodes;
     
-private:
+	private:
 
-    template <typename Proc>
-    void buildBranch(unsigned nodeNum, unsigned *objNums,
-                     unsigned min, unsigned max,
-                     Proc & proc, BuildStats & stats, unsigned depth, const unsigned maxDepth,
-                     float totalProg);
+		template <typename Proc>
+		void buildBranch(unsigned nodeNum, unsigned *objNums,
+						 unsigned min, unsigned max,
+						 Proc & proc, BuildStats & stats, unsigned depth, const unsigned maxDepth,
+						 float totalProg);
 
     
-    template <typename Proc>
-    unsigned split(Proc & proc, unsigned *objNums,
-                   unsigned min, unsigned max, float pivot, int axis);
+		template <typename Proc>
+		unsigned split(Proc & proc, unsigned *objNums,
+					   unsigned min, unsigned max, float pivot, int axis);
 };
 
 

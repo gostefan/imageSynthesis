@@ -3,9 +3,14 @@
 #include <Img/ImageIO.h>
 #include <Math/Vec2.h>
 
-EnvironmentMap::EnvironmentMap(unsigned sizeX, unsigned sizeY, vector<vector<Color4f> > values) : values(values), sizeX(sizeX), sizeY(sizeY) { }
+namespace {
+	const double PI = 3.1415926539;
+}
 
-EnvironmentMap::EnvironmentMap(const string &name) : sizeX(sizeX), sizeY(sizeY) {
+EnvironmentMap::EnvironmentMap(unsigned sizeX, unsigned sizeY, vector<vector<Color4f> > values) : 
+		values(values), sizeX(sizeX), sizeY(sizeY) { }
+
+EnvironmentMap::EnvironmentMap(const string &name) : sizeX(0), sizeY(0) {
 	std::cout << "Reading Image data...\n";
 	Math::Color3f* readColors = Img::readImage(name, &sizeX, &sizeY);
 
@@ -15,7 +20,7 @@ EnvironmentMap::EnvironmentMap(const string &name) : sizeX(sizeX), sizeY(sizeY) 
 	condPDF = vector<vector<float> >(sizeY);
 	int pos = 0;
 	for (int i = sizeY-1; i >= 0; i--) {
-		float theta = PI*((static_cast<float>(i) / (sizeY-1))-0.5f) ;
+		float theta = static_cast<float>(PI)*((static_cast<float>(i) / (sizeY-1))-0.5f) ;
 		values[i] = vector<Math::Color4f>(sizeX);
 		condPDF[i] = vector<float>(sizeX);
 		for (int j = 0; j < sizeX; j++) {
@@ -74,8 +79,8 @@ Vec3f EnvironmentMap::importanceSample(Vec2f sample) const {
 		value2 = margPDF[0];
 	int secondInd = findBisective(value2, condPDF[firstInd], 0, sizeX-1);
 	// Calculate direction
-	float phi = 2*PI*((static_cast<float>(secondInd) / (sizeX-1))-0.5f);//posX = ((phi/static_cast<float>(2*PI))+0.5f)*(sizeX-1);
-	float theta = PI*((static_cast<float>(firstInd) / (sizeY-1))-0.5f) ;//posY = ((theta/static_cast<float>(PI))+0.5f)*(sizeY-1);
+	float phi = static_cast<float>(2*PI)*((static_cast<float>(secondInd) / (sizeX-1))-0.5f);//posX = ((phi/static_cast<float>(2*PI))+0.5f)*(sizeX-1);
+	float theta = static_cast<float>(PI)*((static_cast<float>(firstInd) / (sizeY-1))-0.5f) ;//posY = ((theta/static_cast<float>(PI))+0.5f)*(sizeY-1);
 	return Vec3f(cos(phi)*cos(theta), sin(phi)*cos(theta), sin(theta));
 }
 

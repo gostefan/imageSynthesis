@@ -4,13 +4,12 @@
 #include "EnvironmentMap.h"
 
 Scene::Scene() : nPhotons(0), usePMapDirect(false), nEstimatePhotons(100), maxPhotonDist(0.1f) {
-	pMap = new Photon_map(0);
+	pMap.reset(new PhotonMap(0));
 	camera = new Camera();
 	background = new EnvironmentMap("./imgs/city1.hdr");
 }
 
 Scene::~Scene() {
-	delete pMap;
 	delete camera;
 	delete background;
 }

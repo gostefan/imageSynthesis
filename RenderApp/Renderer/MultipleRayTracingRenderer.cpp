@@ -6,22 +6,18 @@
 //  Copyright 2011 Student. All rights reserved.
 //
 
+#include <OGL/FBO.h>
 #include "MultipleRayTracingRenderer.h"
 #include "../Shader/Shader.h"
 #include "../Shader/PathTracingShader.h"
 #include "../Scene/EnvironmentMap.h"
 
-MultipleRayTracingRenderer::MultipleRayTracingRenderer(unsigned int nSamples) : nSamples(nSamples), RayTracingRenderer()
-{
-}
+MultipleRayTracingRenderer::MultipleRayTracingRenderer(unsigned int nSamples) : 
+		nSamples(nSamples), RayTracingRenderer() { }
 
-MultipleRayTracingRenderer::~MultipleRayTracingRenderer()
-{
-}
+MultipleRayTracingRenderer::~MultipleRayTracingRenderer() { }
 
-void
-MultipleRayTracingRenderer::render(Scene & scene)
-{
+void MultipleRayTracingRenderer::render(Scene& scene) {
 	setRes(scene.camera->xRes(), scene.camera->yRes());
 
 	//clear m_rgbaBuffer
@@ -42,9 +38,8 @@ MultipleRayTracingRenderer::render(Scene & scene)
 				scene.camera->generateRay(&r, static_cast<float>(i), static_cast<float>(j));
 		
 				//loop over all scene objects and find the closest intersection
-				for (unsigned int k = 0; k < scene.shapes.size(); k++) {
+				for (unsigned int k = 0; k < scene.shapes.size(); k++)
 					scene.shapes[k]->intersect(&r);
-				}
 
 				//if ray hit something then shade it
 				if (r.hit.shape != 0 && r.hit.surfaceShader != 0) {
@@ -52,10 +47,8 @@ MultipleRayTracingRenderer::render(Scene & scene)
 					refraction.push(1);
 					Math::Color3f shaded = r.hit.surfaceShader->shade(r.hit, &scene, refraction);
 					color += Math::Color4f(shaded, 1);
-				}
-				else {
+				} else
 					color += scene.background->getBackground(r.d);
-				}
 			}
 			color /= static_cast<float>(nSamples);
 					

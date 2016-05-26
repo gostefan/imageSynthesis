@@ -4,16 +4,10 @@
 #include "BBox.h"
 #include "Shape.h"
 
-Shape::Shape(SurfaceShader * ss, Motion* motion, Displacement* displ) :
-	surfaceShader(ss), displacement(displ), motion(motion)
-{
-	// empty
-}
+Shape::Shape(SurfaceShader* ss, Motion* motion, Displacement* displ) :
+		surfaceShader(ss), displacement(displ), motion(motion) { }
 
-Shape::~Shape()
-{
-	// empty
-}
+Shape::~Shape() { }
 
 /*Color3f Shape::getAmbient(Vec3f position) {
 	return surfaceTexture->getAmbient(position);
@@ -31,40 +25,29 @@ Motion* Shape::getMotion() const {
 	return motion;
 }
 
-bool Shape::isRenderable() const
-{
+bool Shape::isRenderable() const {
     return true;
 }
 
-Displacement* Shape::getDisplacement() const
-{
+Displacement* Shape::getDisplacement() const {
     return displacement;
 }
 
-bool
-Shape::intersect(Ray * r) const
-{
+bool Shape::intersect(Ray * r) const {
     return false;
 }
 
-bool
-Shape::intersects(Ray * r) const
-{
+bool Shape::intersects(Ray * r) const {
     return intersect(r);
 }
 
 
-void
-Shape::fillHitInfo(Ray * r) const
-{
+void Shape::fillHitInfo(Ray * r) const {
 	
 }
 
-void Shape::splitData(SurfacePatch *child1, SurfacePatch *child2,
-					  const SurfacePatch & parent, SplitDirection direction) const
-{
-	if (direction == VSplit)
-	{
+void Shape::splitData(SurfacePatch *child1, SurfacePatch *child2, const SurfacePatch & parent, SplitDirection direction) const {
+	if (direction == VSplit) {
 		child1->vStart = parent.vStart;
 		child1->vEnd = parent.vStart + (parent.vEnd-parent.vStart) / 2.f;
 		child1->uStart = parent.uStart;
@@ -74,9 +57,7 @@ void Shape::splitData(SurfacePatch *child1, SurfacePatch *child2,
 		child2->vEnd = parent.vEnd;
 		child2->uStart = parent.uStart;
 		child2->uEnd = parent.uEnd;
-	}
-	else
-	{	
+	} else {	
 		child1->uStart = parent.uStart;
 		child1->uEnd = parent.uStart + (parent.uEnd - parent.uStart) / 2.f;
 		child1->vStart = parent.vStart;
@@ -93,10 +74,7 @@ void Shape::splitData(SurfacePatch *child1, SurfacePatch *child2,
 }
 
 
-void Shape::split(std::list<SurfacePatch *> &results,
-				  const SurfacePatch & parent,
-				  SplitDirection splitDirection) const
-{
+void Shape::split(std::list<SurfacePatch *> &results, const SurfacePatch & parent, SplitDirection splitDirection) const {
 	SurfacePatch *child1 = new SurfacePatch(this);
 	SurfacePatch *child2 = new SurfacePatch(this);
 	
@@ -106,11 +84,8 @@ void Shape::split(std::list<SurfacePatch *> &results,
 	results.push_front(child2);
 }
 
-void Shape::dice(MicroGrid *grid, const SurfacePatch & parent,
-				 short size_x, short size_y) const
-{
-	if (!grid->allocate(size_x, size_y))
-	{
+void Shape::dice(MicroGrid *grid, const SurfacePatch & parent, short size_x, short size_y) const {
+	if (!grid->allocate(size_x, size_y)) {
 		printf("Failed grid allocation!\n");
 		return;
 	} 
@@ -124,11 +99,9 @@ void Shape::dice(MicroGrid *grid, const SurfacePatch & parent,
     float du = 1 / float(size_x-1) * (parent.uEnd - parent.uStart);
     float dv = 1 / float(size_y-1) * (parent.vEnd - parent.vStart);
 	
-	for (int uu = 0; uu < size_x; uu++)
-  	{
+	for (int uu = 0; uu < size_x; uu++) {
 		float u = parent.uStart + du*uu;   		
-		for (int vv = 0; vv < size_y; vv++)
-   		{
+		for (int vv = 0; vv < size_y; vv++) {
             float v = parent.vStart + dv*vv;
 
 			if (displacement) {
@@ -136,18 +109,15 @@ void Shape::dice(MicroGrid *grid, const SurfacePatch & parent,
 				Vec3f point = evalP(u,v);
 				Vec3f normal = evalN(u,v);
 				Vec3f dirU, dirV;
-				if (u < 0.999) {
+				if (u < 0.999)
 					dirU = evalP(u + 0.0001f, v) - point;
-				}
-				else {
+				else
 					dirU = point - evalP(u - 0.0001f, v);
-				}
-				if (v < 0.999) {
+
+				if (v < 0.999)
 					dirV = evalP(u, v + 0.0001f) - point;
-				}
-				else {
+				else
 					dirV = point - evalP(u, v - 0.0001f);
-				}
 
 				// Calculate displacement and normal pertubation
 				float disp = displacement->getDisplacement(u,v);
@@ -157,8 +127,7 @@ void Shape::dice(MicroGrid *grid, const SurfacePatch & parent,
 				// set the values
      			grid->setVertex(uu, vv, evalP(u,v) + disp * normal);
 				grid->setNormal(uu, vv, (normal + dirU + dirV).normalized());
-			}
-			else {
+			} else {
 				grid->setVertex(uu, vv, evalP(u,v));
 				grid->setNormal(uu, vv, evalN(u,v));
 			}

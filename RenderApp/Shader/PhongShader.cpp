@@ -5,24 +5,16 @@
 #include <algorithm>
 
 PhongShader::PhongShader(Texture* surfaceTexture_in, float shininess) :
-	SurfaceShader(surfaceTexture_in), m_shininess(shininess) { }
+		SurfaceShader(surfaceTexture_in), m_shininess(shininess) { }
 
-PhongShader::PhongShader(const Color3f & kd,
-						 const Color3f & ks,
+PhongShader::PhongShader(const Color3f& kd,
+						 const Color3f& ks,
 						 float shininess) :
-	m_kd(kd), m_ks(ks), m_shininess(shininess)
-{
-	
-}
+		m_kd(kd), m_ks(ks), m_shininess(shininess) { }
 
-PhongShader::~PhongShader()
-{
-	
-}
+PhongShader::~PhongShader() { }
 
-Color3f
-PhongShader::shade(const HitInfo & hit, const Scene* scene) const
-{
+Color3f PhongShader::shade(const HitInfo& hit, const Scene* scene) const {
 	std::vector<Light*> lights = scene->lights;
 	Color3f color(0,0,0);
 	for (unsigned int i = 0; i < lights.size(); i++) {
@@ -37,8 +29,7 @@ PhongShader::shade(const HitInfo & hit, const Scene* scene) const
 			if (surfaceTexture == 0) {
 				estimate += dotProd * samples[j].radiance * m_kd; // Diffuse term
 				estimate += std::max(0.0f, pow(dot(-samples[j].direction, mirroredD), m_shininess)) * samples[j].radiance * m_ks; // specular term
-			}
-			else {
+			} else {
 				estimate += dotProd * samples[j].radiance * surfaceTexture->getDiffuse(hit); // Diffuse term
 				estimate += std::max(0.0f, pow(dot(-samples[j].direction, mirroredD), m_shininess)) * samples[j].radiance * surfaceTexture->getSpecular(hit); // specular term
 			}

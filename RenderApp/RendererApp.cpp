@@ -46,7 +46,6 @@
 #include "Shader/PhongShader.h"
 #include "Shader/PhongLobeShader.h"
 #include "Shader/RefractionShader.h"
-#include "Compat.h"
 
 
 using namespace OGL;
@@ -55,8 +54,7 @@ using namespace Math;
 using namespace Platform;
 using namespace std;
 
-const char * renderModeNames[] =
-{
+const char* renderModeNames[] = {
 	"RENDER_GL",
 	"RENDER_REYES",
 	"RENDER_RASTERIZE",
@@ -88,14 +86,12 @@ const float g_angleFact = 0.2f;
 const float g_scaleFact = 0.002f;
 
 
-RendererApp::RendererApp(GLUTMaster * glutMaster,
+RendererApp::RendererApp(GLUTMaster* glutMaster,
                          int width, int height,
-                         const char * title) :
-	GfxGLUTWindow(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH, width, height),
-	m_renderMode(RENDER_GL), m_renderer(NULL), nSamplesSqrt(4), sceneNr(1), radius(1)
+                         const char* title) :
+		GfxGLUTWindow(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH, width, height),
+		m_renderMode(RENDER_GL), nSamplesSqrt(4), sceneNr(1), radius(1)
 {
-	
-
 	m_scene.camera->setResolution(width, height);
 	
     glutMaster->createWindow(title, this);
@@ -113,9 +109,7 @@ RendererApp::RendererApp(GLUTMaster * glutMaster,
 }
 
 
-void
-RendererApp::createScene(int number)
-{
+void RendererApp::createScene(int number) {
 	sceneNr = number;
 	m_scene.shapes.clear();
 	m_scene.lights.clear();
@@ -166,7 +160,7 @@ void RendererApp::createStillScene() {
 
 	m_scene.addLight(new PointLight(Vec3f(0,2,0), Color3f(50,50,50)));
 
-	SurfaceShader * blue = new LambertShader(Color3f(0, 0, 1));
+	SurfaceShader* blue = new LambertShader(Color3f(0, 0, 1));
 	m_scene.shapes.push_back(new Sphere(blue, Vec3f(0.5f, -0.6f, 0.5f), 0.4f));
 	m_scene.shapes.push_back(new Mesh(blue, readObjMesh("./obj/planeX2.obj")));
 }
@@ -373,38 +367,31 @@ void RendererApp::createInterestingScene() {
 	m_scene.shapes.push_back(new Sphere(green, Vec3f(0, -15000, 0), 14600));
 }
 
-RendererApp::~RendererApp() {}
+RendererApp::~RendererApp() { }
 
-void
-RendererApp::reshape(int width, int height)
-{
+void RendererApp::reshape(int width, int height) {
     GfxGLUTWindow::reshape(width, height);
 }
 
-void
-RendererApp::render()
-{
-	delete m_renderer; 
-
-	switch (m_renderMode)
-	{
+void RendererApp::render() {
+	switch (m_renderMode) {
 		case RENDER_GL:
-			m_renderer = new OpenGLRenderer();
+			m_renderer.reset(new OpenGLRenderer());
 			break;
 		case RENDER_REYES:
-			m_renderer = new ReyesRenderer();
+			m_renderer.reset(new ReyesRenderer());
 			break;
 		case RENDER_REYES_TRACE:
-			m_renderer = new ReyesTracingRenderer();
+			m_renderer.reset(new ReyesTracingRenderer());
 			break;
 		case RENDER_RASTERIZE:
-			m_renderer = new RasterizationRenderer();
+			m_renderer.reset(new RasterizationRenderer());
 			break;
 		case RENDER_RAYTRACE:
-			m_renderer = new RayTracingRenderer();
+			m_renderer.reset(new RayTracingRenderer());
 			break;
 		case RENDER_PATH:
-			m_renderer = new MultipleRayTracingRenderer(nSamplesSqrt*nSamplesSqrt);
+			m_renderer.reset(new MultipleRayTracingRenderer(nSamplesSqrt*nSamplesSqrt));
 			break;
 	}
 
@@ -416,9 +403,7 @@ RendererApp::render()
 	std::cout << renderModeNames[m_renderMode] << " took: " << timer.cpuSeconds() << " seconds." << std::endl;
 }
 
-void
-RendererApp::display()
-{
+void RendererApp::display() {
 	render();
 
 	char buffer[1024];
@@ -434,11 +419,8 @@ RendererApp::display()
 	glutSwapBuffers();
 }
 
-void
-RendererApp::rotate(int dx, int dy)
-{
-    try
-    {
+void RendererApp::rotate(int dx, int dy) {
+    try {
         float xfact = -g_angleFact*dy;
         float yfact = -g_angleFact*dx;
         
@@ -463,19 +445,14 @@ RendererApp::rotate(int dx, int dy)
         m_scene.camera->setCameraToWorld(c2w);
 		
         glutPostRedisplay();
-    }
-    catch (const std::exception & e)
-    {
+    } catch (const std::exception& e) {
 		std::cout << "Error: " << e.what() << std::endl;
     }
 }
 
 
-void
-RendererApp::twist(int dx, int dy)
-{
-    try
-    {
+void RendererApp::twist(int dx, int dy) {
+    try {
         float fact = sign(dx)*g_angleFact*sqrtf((float)(dx*dx + dy*dy));
         
         Mat44f c2w = m_scene.camera->cameraToWorld();
@@ -493,19 +470,14 @@ RendererApp::twist(int dx, int dy)
         m_scene.camera->setCameraToWorld(c2w);
 		
         glutPostRedisplay();
-    }
-    catch (const std::exception & e)
-    {
+    } catch (const std::exception& e) {
 		std::cout << "Error: " << e.what() << std::endl;
     }
 }
 
 
-void
-RendererApp::pan(int dx, int dy, int dz)
-{
-    try
-    {
+void RendererApp::pan(int dx, int dy, int dz) {
+    try {
         Mat44f c2w = m_scene.camera->cameraToWorld();
         
         c2w.setD(c2w.D() - dx*g_scaleFact*c2w.A() + dy*g_scaleFact*c2w.B() - dz*g_scaleFact*c2w.C());
@@ -513,40 +485,29 @@ RendererApp::pan(int dx, int dy, int dz)
         m_scene.camera->setCameraToWorld(c2w);
         
         glutPostRedisplay();
-    }
-    catch (const std::exception & e)
-    {
+    } catch (const std::exception & e) {
 		std::cout << "Error: " << e.what() << std::endl;
     }
 }
 
 
-void
-RendererApp::motion(int x, int y)
-{
+void RendererApp::motion(int x, int y) {
 	if (m_mouseButton == GLUT_LEFT_BUTTON)
 		rotate(x - m_mousePressX, y - m_mousePressY);
-	else if (m_mouseButton == GLUT_RIGHT_BUTTON)
-	{
+	else if (m_mouseButton == GLUT_RIGHT_BUTTON) {
 		//twist(x - m_mousePressX, y - m_mousePressY);
 		pan(0, 0, 2*(x - m_mousePressX + y - m_mousePressY));
-	}	
-	else if (m_mouseButton == GLUT_MIDDLE_BUTTON)
-	{
+	} else if (m_mouseButton == GLUT_MIDDLE_BUTTON)
 		pan(x - m_mousePressX, y - m_mousePressY, 0);
-	}
 	
 	m_mousePressX = x;
 	m_mousePressY = y;
 }
 
 
-void
-RendererApp::keyboard(unsigned char key, int x, int y)
-{
+void RendererApp::keyboard(unsigned char key, int x, int y) {
 	bool redisplay = true;
-	switch (key)
-	{
+	switch (key) {
 		case '+':
 			nSamplesSqrt++;
 			createScene(sceneNr);
@@ -648,8 +609,7 @@ RendererApp::keyboard(unsigned char key, int x, int y)
 			redisplay = false;
 	}
 
-	if (redisplay) {
+	if (redisplay)
 		glutPostRedisplay();
-	}
 
 }

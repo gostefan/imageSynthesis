@@ -27,140 +27,124 @@
     ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 */
-#ifndef PLATFORM_TIMESTAMP_H_INCLUDED
-#define PLATFORM_TIMESTAMP_H_INCLUDED
+#pragma once
 
 #include <Platform/Fwd.h>
 #include <Platform/Types.h>
 #include <time.h>
 
-namespace Platform
-{
+namespace Platform {
+	//! A monotonic time value with(theoretical) microseconds resolution.
+	/*!
+		Timestamps can be compared with each other and simple arithmetics are
+		supported. Timestamps are UTC(Coordinated Universal Time) based and thus
+		independent of the timezone in effect on the system.
+	*/
+	class Timestamp {
+		public:
+			typedef signed long long Int64;
 
-//! A monotonic time value with(theoretical) microseconds resolution.
-/*!
-    Timestamps can be compared with each other and simple arithmetics are
-    supported. Timestamps are UTC(Coordinated Universal Time) based and thus
-    independent of the timezone in effect on the system.
-*/
-class Timestamp
-{
-public:
-    typedef signed long long Int64;
+			typedef Int64 TimeVal;    //!< monotonic UTC time value in microsecond resolution
+			typedef Int64 UtcTimeVal; //!< monotonic UTC time value in 100 nanosecond resolution
+			typedef Int64 TimeDiff;   //!< difference between two timestamps in microseconds
 
-    typedef Int64 TimeVal;    //!< monotonic UTC time value in microsecond resolution
-    typedef Int64 UtcTimeVal; //!< monotonic UTC time value in 100 nanosecond resolution
-    typedef Int64 TimeDiff;   //!< difference between two timestamps in microseconds
+			//! Creates a timestamp with the current time.
+			Timestamp();
 
-    //! Creates a timestamp with the current time.
-    Timestamp();
+			//! Creates a timestamp from the given time value.
+			Timestamp(TimeVal tv);
 
-    //! Creates a timestamp from the given time value.
-    Timestamp(TimeVal tv);
+			//! Copy constructor.
+			Timestamp(const Timestamp& other);
 
-    //! Copy constructor.
-    Timestamp(const Timestamp& other);
+			//! Destroys the timestamp
+			~Timestamp();
 
-    //! Destroys the timestamp
-    ~Timestamp();
+			Timestamp& operator=(const Timestamp& other);
+			Timestamp& operator=(TimeVal tv);
 
-    Timestamp& operator=(const Timestamp& other);
-    Timestamp& operator=(TimeVal tv);
+			//! Swaps the Timestamp with another one.
+			void swap(Timestamp& timestamp);
 
-    //! Swaps the Timestamp with another one.
-    void swap(Timestamp& timestamp);
+			void update();
 
-    void update();
+			bool operator==(const Timestamp& ts) const { return _ts == ts._ts; }
+			bool operator!=(const Timestamp& ts) const { return _ts != ts._ts; }
+			bool operator> (const Timestamp& ts) const { return _ts > ts._ts; }
+			bool operator>=(const Timestamp& ts) const { return _ts >= ts._ts; }
+			bool operator< (const Timestamp& ts) const { return _ts < ts._ts; }
+			bool operator<=(const Timestamp& ts) const { return _ts <= ts._ts; }
 
-    bool operator==(const Timestamp& ts) const {return _ts == ts._ts;}
-    bool operator!=(const Timestamp& ts) const {return _ts != ts._ts;}
-    bool operator> (const Timestamp& ts) const {return _ts > ts._ts;}
-    bool operator>=(const Timestamp& ts) const {return _ts >= ts._ts;}
-    bool operator< (const Timestamp& ts) const {return _ts < ts._ts;}
-    bool operator<=(const Timestamp& ts) const {return _ts <= ts._ts;}
+			Timestamp  operator+ (TimeDiff d) const { return Timestamp(_ts + d); }
+			Timestamp  operator- (TimeDiff d) const { return Timestamp(_ts - d); }
+			TimeDiff   operator- (const Timestamp& ts) const { return _ts - ts._ts; }
+			Timestamp& operator+=(TimeDiff d)       { _ts += d; return *this; }
+			Timestamp& operator-=(TimeDiff d)       { _ts -= d; return *this; }
 
-    Timestamp  operator+ (TimeDiff d) const {return Timestamp(_ts + d);}
-    Timestamp  operator- (TimeDiff d) const {return Timestamp(_ts - d);}
-    TimeDiff   operator- (const Timestamp& ts) const {return _ts - ts._ts;}
-    Timestamp& operator+=(TimeDiff d)       {_ts += d; return *this;}
-    Timestamp& operator-=(TimeDiff d)       {_ts -= d; return *this;}
+			//! Returns the timestamp expressed in time_t.
+			/*!
+				time_t base time is midnight, January 1, 1970.
+				Resolution is one second.
+			*/
+			time_t epochTime() const { return time_t(_ts / resolution()); }
 
-    //! Returns the timestamp expressed in time_t.
-    /*!
-        time_t base time is midnight, January 1, 1970.
-        Resolution is one second.
-    */
-    time_t epochTime() const {return time_t(_ts/resolution());}
+			//! Returns the timestamp expressed in UTC-based time.
+			/*!
+				UTC base time is midnight, October 15, 1582.
+				Resolution is 100 nanoseconds.
+			*/
+			UtcTimeVal utcTime() const;
 
-    //! Returns the timestamp expressed in UTC-based time.
-    /*!
-        UTC base time is midnight, October 15, 1582.
-        Resolution is 100 nanoseconds.
-    */
-    UtcTimeVal utcTime() const;
+			//! Returns the timestamp expressed in microseconds
+			/*!
+				since the Unix epoch, midnight, January 1, 1970.
+			*/
+			TimeVal epochMicroseconds() const { return _ts; }
 
-    //! Returns the timestamp expressed in microseconds
-    /*!
-        since the Unix epoch, midnight, January 1, 1970.
-    */
-    TimeVal epochMicroseconds() const {return _ts;}
+			//! Returns the time elapsed since the time denoted by the timestamp.
+			/*!
+				Equivalent to Timestamp() - *this.
+			*/
+			TimeDiff elapsed() const { Timestamp now; return now - *this; }
 
-    //! Returns the time elapsed since the time denoted by the timestamp.
-    /*!
-        Equivalent to Timestamp() - *this.
-    */
-    TimeDiff elapsed() const {Timestamp now; return now - *this;}
+			//! Returns true iff the given interval has passed since the time denoted by the timestamp.
+			bool isElapsed(TimeDiff interval) const;
 
-    //! Returns true iff the given interval has passed since the time denoted by the timestamp.
-    bool isElapsed(TimeDiff interval) const;
+			//! Creates a timestamp from a time_t.
+			static Timestamp fromEpochTime(time_t t);
 
-    //! Creates a timestamp from a time_t.
-    static Timestamp fromEpochTime(time_t t);
+			//! Creates a timestamp from a UTC time value.
+			static Timestamp fromUtcTime(UtcTimeVal val);
 
-    //! Creates a timestamp from a UTC time value.
-    static Timestamp fromUtcTime(UtcTimeVal val);
+			//! Returns the resolution in units per second.
+			/*!
+				Since the timestamp has microsecond resolution, the returned value is
+				always 1000000.
+			*/
+			static TimeVal resolution() { return 1000000; }
 
-    //! Returns the resolution in units per second.
-    /*!
-        Since the timestamp has microsecond resolution, the returned value is
-        always 1000000.
-    */
-    static TimeVal resolution() {return 1000000;}
+		#if defined(_WIN32)
+			static Timestamp fromFileTimeNP(UInt32 fileTimeLow, UInt32 fileTimeHigh);
+			void toFileTimeNP(UInt32& fileTimeLow, UInt32& fileTimeHigh) const;
+		#endif
 
-#if defined(_WIN32)
-    static Timestamp fromFileTimeNP(UInt32 fileTimeLow, UInt32 fileTimeHigh);
-    void toFileTimeNP(UInt32& fileTimeLow, UInt32& fileTimeHigh) const;
-#endif
-
-private:
-    TimeVal _ts;
-};
+		private:
+			TimeVal _ts;
+	};
 
 
-inline Timestamp::UtcTimeVal
-Timestamp::utcTime() const
-{
-    return _ts*10 + (TimeDiff(0x01b21dd2) << 32) + 0x13814000;
-}
+	inline Timestamp::UtcTimeVal
+	Timestamp::utcTime() const {
+		return _ts * 10 + (TimeDiff(0x01b21dd2) << 32) + 0x13814000;
+	}
 
+	inline bool Timestamp::isElapsed(Timestamp::TimeDiff interval) const {
+		Timestamp now;
+		Timestamp::TimeDiff diff = now - *this;
+		return diff >= interval;
+	}
 
-inline bool
-Timestamp::isElapsed(Timestamp::TimeDiff interval) const
-{
-    Timestamp now;
-    Timestamp::TimeDiff diff = now - *this;
-    return diff >= interval;
-}
-
-
-inline void
-swap(Timestamp& s1, Timestamp& s2)
-{
-    s1.swap(s2);
-}
-
-
+	inline void swap(Timestamp& s1, Timestamp& s2) {
+		s1.swap(s2);
+	}
 } // namespace Platform
-
-
-#endif // PLATFORM_TIMESTAMP_H_INCLUDED

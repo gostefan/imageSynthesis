@@ -6,26 +6,23 @@
 //  Copyright 2011 Student. All rights reserved.
 //
 
-#ifndef OpenGLRenderer_h
-#define OpenGLRenderer_h
+#pragma once
 
 #include "Renderer.h"
 #include <Img/ImageIO.h>
 #include <OGL/FBO.h>
 
-class OpenGLRenderer : public Renderer
-{
-protected:
-	void setRes(int x, int y);
-	FrameBuffer * m_fbo;
+#include <memory>
 
-public:
-	OpenGLRenderer();
-	~OpenGLRenderer();
+class OpenGLRenderer : public Renderer {
+	protected:
+		void setRes(int x, int y);
+		std::unique_ptr<FrameBuffer> m_fbo;
 
-	virtual void render(Scene & scene);
-	virtual void saveImage(std::string filename);
+	public:
+		OpenGLRenderer();
+		~OpenGLRenderer();
 
+		virtual void render(Scene & scene);
+		virtual void saveImage(std::string filename);
 };
-
-#endif

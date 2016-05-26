@@ -5,25 +5,26 @@
 #include "SamplingApp/Sampler/RandomSampler.h"
 #include "SamplingApp/Warping/CosineHemisphereWarping.h"
 
+#include <Math/Box.h>
+#include <Math/Fwd.h>
+
 #include <algorithm>
 
 RectangularLight::RectangularLight(Math::Color3f power_in, SurfaceShader* surfaceShader, const Math::Vec3f& minLoc, const Math::Vec2f& size_in, unsigned int nSamplesSqrt_in, Displacement* displacement) : 
-minPosition(minLoc), size(size_in), nSamplesSqrt(nSamplesSqrt_in), nSamples(nSamplesSqrt_in*nSamplesSqrt_in), power(power_in) {
-	randomSampler = new RandomSampler();
-	cosineWarping = new CosineHemisphereWarping();
+		minPosition(minLoc), size(size_in), nSamplesSqrt(nSamplesSqrt_in), nSamples(nSamplesSqrt_in*nSamplesSqrt_in), power(power_in) {
+	randomSampler = std::unique_ptr<Sampler>(new RandomSampler());
+	cosineWarping = std::unique_ptr<Warping>(new CosineHemisphereWarping());
 	radiance = power/(size.x * size.y);
 	Shape::surfaceShader = new LightShader(radiance, surfaceShader);
 }
 
 RectangularLight::~RectangularLight() {
 	delete surfaceShader;
-	delete randomSampler;
-	delete cosineWarping;
 }
 
 void RectangularLight::getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) {
 	// Draw new samples
-	Vec2f* drawnPoints = new Vec2f[nSamples];
+	std::vector<Vec2f> drawnPoints(nSamples);
 	randomSampler->generateSamples(nSamplesSqrt, drawnPoints);
 	
 	Color3f sum = Color3f(0);
@@ -43,21 +44,17 @@ void RectangularLight::getIrradianceSamples(Vec3f point, const Scene* scene, vec
 		r.time = time;
 
 		// Check for intersection
-		for (unsigned int k = 0; k < scene->shapes.size(); k++) {
+		for (unsigned int k = 0; k < scene->shapes.size(); k++)
 			scene->shapes[k]->intersect(&r);
-		}
 
 		//if ray hit something then it does not contribute
 		if (r.hit.shape == 0) {
 			float pdf = 1/(size.x*size.y);
 			lr.radiance = power * std::max(0.f,dot(lr.direction, Vec3f(0,-1,0))) / (2*static_cast<float>(M_PI)*pow(distance, 2));
-		}
-		else {
+		} else
 			lr.radiance = Color3f(0);
-		}
 		result.push_back(lr);
 	}
-	delete drawnPoints;	
 }
 
 Math::Color3f RectangularLight::getPower() {
@@ -84,7 +81,7 @@ bool RectangularLight::intersect(Ray* r) const {
 	return false;
 }
 
-void RectangularLight::fillHitInfo(Ray * r) const {
+void RectangularLight::fillHitInfo(Ray* r) const {
 	double hitDistance = r->tMax;
 	r->hit.shape = this;
 	r->hit.surfaceShader = this->surfaceShader;
@@ -131,9 +128,8 @@ void RectangularLight::renderGL() const {
 }
 
 TracePhoton RectangularLight::samplePhoton() {
-	Vec2f samples[2];
-	randomSampler->generateSamples(1,&samples[0]);
-	randomSampler->generateSamples(1,&samples[1]);
+	std::vector<Vec2f> samples(2);
+	randomSampler->generateSamples(2, samples);
 
 	Mat44f rot = Mat44f::I();
 	rot.rotateTo(Vec3f(0,0,1), Vec3f(0,-1,0));

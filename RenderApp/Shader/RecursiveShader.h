@@ -1,21 +1,17 @@
 
-#ifndef RECURSIVE_SHADER_H
-#define RECURSIVE_SHADER_H
+#pragma once
 
 #include <vector>
 #include "../Scene/Scene.h"
 #include "Shader.h"
 
-class RecursiveShader : public SurfaceShader
-{
-protected:
-	int maxRecursionDepth;
+class RecursiveShader : public SurfaceShader {
+	protected:
+		int maxRecursionDepth;
 
-public:
-	RecursiveShader(int maxRecursionDepth = 5) : maxRecursionDepth(maxRecursionDepth) {};
-	virtual ~RecursiveShader() {};
+	public:
+		RecursiveShader(int maxRecursionDepth = 5) : maxRecursionDepth(maxRecursionDepth) { };
+		virtual ~RecursiveShader() { };
 	
-	virtual Math::Color3f shade(const HitInfo & hit, const Scene* scene, stack<float>& refractionIndices, int recursionDepth) const = 0;
+		virtual Math::Color3f shade(const HitInfo& hit, const Scene* scene, stack<float>& refractionIndices, int recursionDepth) const = 0;
 };
-
-#endif

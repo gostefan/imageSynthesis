@@ -2,157 +2,116 @@
     \brief Contains the definition of a resizable 2D array.
     \author Wojciech Jarosz
 */
-#ifndef UTIL_ARRAY2D_H
-#define UTIL_ARRAY2D_H
 
-namespace Util
-{
+#pragma once
 
-//! Generic, resizable, 2D array class.
-template <typename T>
-class Array2D
-{
-public:
-    //@{ \name Constructors and destructors
-    Array2D();                     // empty array, 0 by 0 elements
-    Array2D(int sizeX, int sizeY); // sizeX by sizeY elements
-    ~Array2D ();
-    //@}
+#include <algorithm>
+#include <memory>
 
-    //@{ \name Element access
-    T &         operator()(int x, int y);
-    const T &   operator()(int x, int y) const;
-    T &         operator[](int i);
-    const T &   operator[](int i) const;
-    //@}
+namespace Util {
+
+	//! Generic, resizable, 2D array class.
+	template <typename T>
+	class Array2D {
+		public:
+			Array2D();                     // empty array, 0 by 0 elements
+			Array2D(int sizeX, int sizeY); // sizeX by sizeY elements
+			~Array2D ();
+
+			Array2D(const Array2D &) = delete;
+			Array2D & operator = (const Array2D &) = delete;
+			
+			T&         operator()(int x, int y);
+			const T&   operator()(int x, int y) const;
+			T&         operator[](int i);
+			const T&   operator[](int i) const;
+			
+			int getWidth()  const { return sizeX; }
+			int getHeight() const { return sizeY; }
     
-    //@{ \name Dimension sizes
-    int width()  const { return m_sizeX; }
-    int height() const { return m_sizeY; }
-    
-    int size()  const { return m_sizeX*m_sizeY; }
-    int sizeX() const { return m_sizeX; }
-    int sizeY() const { return m_sizeY; }
-    //@}
+			int getSize()  const { return sizeX * sizeY; }
+			int getSizeX() const { return sizeX; }
+			int getSizeY() const { return sizeY; }
+			
+			std::unique_ptr<T>&& setData(std::unique_ptr<T>&& data, int sizeX, int sizeY);
+			void resizeErase(int sizeX, int sizeY);
+			void reset(const T& value = T(0));
+			void operator=(const T&);
 
-    T* setData(T * data, int sizeX, int sizeY);
-    void resizeErase(int sizeX, int sizeY);
-    void reset(const T& value = T(0));
-    void operator=(const T&);
+		private:
+			std::unique_ptr<T[]> data;
+			int sizeX;
+			int sizeY;
+	};
 
-// protected:
-    T * m_data;
-    int m_sizeX;
-    int m_sizeY;
-
-private:
-    Array2D (const Array2D &);              // Copying and assignment
-    Array2D & operator = (const Array2D &); // are not implemented
-};
-
-template <typename T>
-inline
-Array2D<T>::Array2D():
-    m_data(0), m_sizeX(0), m_sizeY(0)
-{
-    // empty
-}
+	template <typename T>
+	inline Array2D<T>::Array2D():
+			data(nullptr), sizeX(0), sizeY(0) { }
 
 
-template <typename T>
-inline
-Array2D<T>::Array2D(int sizeX, int sizeY):
-    m_data(new T[sizeX * sizeY]), m_sizeX(sizeX), m_sizeY(sizeY)
-{
-    // empty
-}
+	template <typename T>
+	inline Array2D<T>::Array2D(int sizeX, int sizeY):
+		data(new T[sizeX * sizeY]), sizeX(sizeX), sizeY(sizeY) { }
 
 
-template <typename T>
-inline
-Array2D<T>::~Array2D ()
-{
-    delete [] m_data;
-}
+	template <typename T>
+	inline Array2D<T>::~Array2D () { } // Needs to be here because of destructor of unique_ptr
 
 
-template <typename T>
-inline T &
-Array2D<T>::operator()(int x, int y)
-{
-    return m_data[y*m_sizeX + x];
-}
+	template <typename T>
+	inline T& Array2D<T>::operator()(int x, int y) {
+		return data[y*sizeX + x];
+	}
 
 
-template <typename T>
-inline const T &
-Array2D<T>::operator()(int x, int y) const
-{
-    return m_data[y*m_sizeX + x];
-}
+	template <typename T>
+	inline const T& Array2D<T>::operator()(int x, int y) const {
+		return data[y*sizeX + x];
+	}
 
 
-template <typename T>
-inline T &
-Array2D<T>::operator[](int i)
-{
-    return m_data[i];
-}
+	template <typename T>
+	inline T& Array2D<T>::operator[](int i) {
+		return data[i];
+	}
 
 
-template <typename T>
-inline const T &
-Array2D<T>::operator[](int i) const
-{
-    return m_data[i];
-}
+	template <typename T>
+	inline const T& Array2D<T>::operator[](int i) const {
+		return data[i];
+	}
 
 
-template <typename T>
-inline T*
-Array2D<T>::setData(T * data, int sizeX, int sizeY)
-{
-    T* oldData = m_data;
-    m_data = data;
-    m_sizeX = sizeX;
-    m_sizeY = sizeY;
-    return oldData;
-}
+	template <typename T>
+	inline std::unique_ptr<T>&& Array2D<T>::setData(std::unique_ptr<T>&& data, int sizeX, int sizeY) {
+		auto oldData = std::move(this->data);
+		this->data = data;
+		this->sizeX = sizeX;
+		this->sizeY = sizeY;
+		return std::move(oldData);
+	}
 
 
-template <typename T>
-inline void
-Array2D<T>::resizeErase(int sizeX, int sizeY)
-{
-    if (sizeX == m_sizeX && sizeY == m_sizeY)
-        return;
+	template <typename T>
+	inline void Array2D<T>::resizeErase(int sizeX, int sizeY) {
+		if (sizeX == this->sizeX && sizeY == this->sizeY)
+			return;
 
-    delete [] m_data;
-    m_data = new T[sizeX * sizeY];
-    m_sizeX = sizeX;
-    m_sizeY = sizeY;
-}
+		data.reset(new T[sizeX * sizeY]);
+		this->sizeX = sizeX;
+		this->sizeY = sizeY;
+	}
 
 
-template <typename T>
-inline void
-Array2D<T>::reset(const T& value)
-{
-    int size = m_sizeX*m_sizeY;
-    for (int i = 0; i < size; i++)
-        m_data[i] = value;
-}
+	template <typename T>
+	inline void Array2D<T>::reset(const T& value) {
+		std::fill(data.get(), data.get() + getSize(), value);
+	}
 
 
-template <typename T>
-inline void
-Array2D<T>::operator=(const T& value)
-{
-    reset(value);
-}
+	template <typename T>
+	inline void Array2D<T>::operator=(const T& value) {
+		reset(value);
+	}
 
 } // namespace Util
-
-#endif // UTIL_ARRAY2D_H
-
-

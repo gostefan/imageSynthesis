@@ -20,8 +20,8 @@
 	 
 	Chris Wyman (4/27/2005)
  */
-#ifndef ___FRAMEBUFFER_OBJECT_H
-#define ___FRAMEBUFFER_OBJECT_H
+
+#pragma once
 
 #include <OGL/Core.h>
 
@@ -149,5 +149,3 @@ public:
 	//! Resize an FBO that already exists.
 	void resizeExistingFBO(int newWidth, int newHeight);
 };
-
-#endif

@@ -1,7 +1,7 @@
 
 #include "ShiftedSineDisplacement.h"
 
-ShiftedSineDisplacement::ShiftedSineDisplacement(float scale, unsigned int uTimes_in, unsigned int vTimes_in) : MultipliedSineDisplacement(scale, uTimes_in, vTimes_in) {};
+ShiftedSineDisplacement::ShiftedSineDisplacement(float scale, unsigned int uTimes_in, unsigned int vTimes_in) : MultipliedSineDisplacement(scale, uTimes_in, vTimes_in) { };
 ShiftedSineDisplacement::~ShiftedSineDisplacement() {};
 	
 /// Returns a displacement in [-scale, scale]

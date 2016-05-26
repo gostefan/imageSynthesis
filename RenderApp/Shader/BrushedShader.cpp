@@ -1,22 +1,21 @@
 
 #include "BrushedShader.h"
+
 #include "LambertShader.h"
-#include "../Scene/LightRay.h"
 #include "SamplingApp/Sampler/RandomSampler.h"
 #include "SamplingApp/Warping/BrushedMetalWarping.h"
 #include "../Scene/EnvironmentMap.h"
+#include "../Scene/LightRay.h"
 
 BrushedShader::BrushedShader(const Math::Color3f& kd, float mirrorPercentage_in, int maxRecursionDepth_in, SurfaceShader* recursiveShader_in, float exponent1, float exponent2, unsigned int nSamples_in) :
-PhongLobeShader(kd, mirrorPercentage_in, maxRecursionDepth_in, recursiveShader_in, exponent1, nSamples_in), exponent2(exponent2) {
+		PhongLobeShader(kd, mirrorPercentage_in, maxRecursionDepth_in, recursiveShader_in, exponent1, nSamples_in), exponent2(exponent2) {
 	delete phongLobeWarping;
 	phongLobeWarping = new BrushedMetalWarping(exponent1, exponent2);
 	if (recursiveShader == 0) {
 		myShader = true;
 		recursiveShader = new LambertShader(kd);
-	}
-	else {
+	} else
 		myShader = false;
-	}
 }
 
 BrushedShader::~BrushedShader() {
@@ -30,14 +29,12 @@ Color3f BrushedShader::shade(const HitInfo & hit, const Scene* scene, stack<floa
 	return shade(hit, scene, refractionIndices, 0);
 }
 
-Color3f BrushedShader::shade(const HitInfo & hit, const Scene* scene, stack<float>& refractionIndices, int recursionDepth) const
-{
+Color3f BrushedShader::shade(const HitInfo & hit, const Scene* scene, stack<float>& refractionIndices, int recursionDepth) const {
 	if (recursionDepth < maxRecursionDepth) {
 		std::vector<Light*> lights = scene->lights;
 		Color3f color(0,0,0);
-		if (mirrorPercentage < 1) {
+		if (mirrorPercentage < 1)
 			color += (1-mirrorPercentage) * recursiveShader->shade(hit, scene, refractionIndices);
-		}
 		
 		Vec3f mirroredD = 2*dot(hit.N, -hit.I)*hit.N + hit.I;
 		Mat44f rotation = Mat44f(1);
@@ -47,7 +44,7 @@ Color3f BrushedShader::shade(const HitInfo & hit, const Scene* scene, stack<floa
 		rotation = rotation2 * rotation;
 		//rotation.rotateTo(Vec3f(0,0,1), mirroredD);
 
-		Vec2f* samples = new Vec2f[nSamples];
+		std::vector<Vec2f> samples(nSamples);
 		randomSampler->generateSamples(nSamplesSqrt, samples);
 
 		for (unsigned int i = 0; i < nSamples; i++) {
@@ -57,14 +54,12 @@ Color3f BrushedShader::shade(const HitInfo & hit, const Scene* scene, stack<floa
 			r.d = rotation * phongLobeWarping->warp(samples[i]);
 
 			// Correct self-intersecting normals
-			if (dot(r.d, hit.Ng) < 0) {
+			if (dot(r.d, hit.Ng) < 0)
 				r.d = r.d - 1.01*dot(r.d, hit.N) * hit.N; // 1.01 is to go 1% away from the surface
-			}
 
 			//loop over all scene objects and find the closest intersection
-			for (unsigned int k = 0; k < scene->shapes.size(); k++) {
+			for (unsigned int k = 0; k < scene->shapes.size(); k++)
 				scene->shapes[k]->intersect(&r);
-			}
 
 			//if ray hit something then shade it
 			if (r.hit.shape != 0 && r.hit.surfaceShader != 0) {
@@ -75,18 +70,15 @@ Color3f BrushedShader::shade(const HitInfo & hit, const Scene* scene, stack<floa
 				else {
 					color += mirrorPercentage * r.hit.surfaceShader->shade(r.hit, scene, refractionIndices);
 				}
-			}
-			else {
+			} else {
 				Color4f background = scene->background->getBackground(r.d);
 				color += mirrorPercentage * Vec3f(background.x, background.y, background.z);
 			}
 		}
 	
 		return color / static_cast<float>(nSamples);
-	}
-	else {
+	} else
 		return recursiveShader->shade(hit, scene, refractionIndices);
-	}
 }
 
 bool BrushedShader::scatterPhoton(HitInfo hit, TracePhoton& photon, Scene& scene, float continueProb) const {

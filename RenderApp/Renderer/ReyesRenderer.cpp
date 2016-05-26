@@ -11,20 +11,14 @@
 
 using namespace Math;
 
-ReyesRenderer::ReyesRenderer() : maxSize(60.f), nDice(20) // nice values are 20.f and 5
-{
-	m_fbo = new FrameBuffer(GL_TEXTURE_2D, 512, 512, -1, GL_RGBA32F_ARB, 1, 1, 0, "Reyes FBO");
+ReyesRenderer::ReyesRenderer() : maxSize(60.f), nDice(20) { // nice values are 20.f and 5
+	m_fbo.reset(new FrameBuffer(GL_TEXTURE_2D, 512, 512, -1, GL_RGBA32F_ARB, 1, 1, 0, "Reyes FBO"));
 	m_fbo->checkFramebufferStatus(1);
 }
 
-ReyesRenderer::~ReyesRenderer()
-{
-	delete m_fbo;
-}
+ReyesRenderer::~ReyesRenderer() { } // Needs to be here because of unique_ptr's dtor
 
-void
-ReyesRenderer::render(Scene & scene)
-{
+void ReyesRenderer::render(Scene& scene) {
 	setRes(scene.camera->xRes(), scene.camera->yRes());
 
 	vector<SurfacePatch*> splitShapes;
@@ -81,19 +75,15 @@ void ReyesRenderer::split(Scene& scene, vector<SurfacePatch*>& result) {
 					std::list<SurfacePatch*> intermediate;
 					current->split(intermediate, USplit);
 
-					for (std::list<SurfacePatch*>::iterator iter = intermediate.begin(); iter != intermediate.end(); iter++) {
+					for (std::list<SurfacePatch*>::iterator iter = intermediate.begin(); iter != intermediate.end(); iter++)
 						(*iter)->split(toSplit, VSplit);
-					}
 					delete current;
-				}
-				else {
+				} else {
 					// Store for the next phase
 					result.push_back(current);
 				}
-			}
-			else {
+			} else
 				delete current;
-			}
 
 			if (toSplit.size() > 100000) {
 				cout << "To big displacement or too small max split size\n";
@@ -119,9 +109,8 @@ void ReyesRenderer::dice(vector<SurfacePatch*>& surfaces, vector<MicroGrid*>& re
 void ReyesRenderer::shade(vector<MicroGrid*>& grids, Scene& scene) {
 	clock_t start = clock();
 	// We shade each vertex of the grids
-	for (unsigned int i = 0; i < grids.size(); i++) {
+	for (unsigned int i = 0; i < grids.size(); i++)
 		grids[i]->shade(*scene.camera, &scene);
-	}
 	cout << "Shaded in " << (static_cast<float>(clock() - start)/CLOCKS_PER_SEC) << " Seconds\n";
 }
 
@@ -160,10 +149,9 @@ void ReyesRenderer::sample(vector<MicroPolygon*>& polygons) {
 
 void ReyesRenderer::filter() {
 	// We postprocess the final image
-
 }
-void ReyesRenderer::setRes(int x, int y)
-{
+
+void ReyesRenderer::setRes(int x, int y) {
 	m_rgbaBuffer.resizeErase(x, y);
 	m_zBuffer.resizeErase(x, y);
 	m_fbo->resizeExistingFBO(x, y);

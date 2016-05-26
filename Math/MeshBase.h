@@ -1,8 +1,8 @@
 /*! \file Mesh.h
     \author Wojciech Jarosz
 */
-#ifndef MATH_MESH_H
-#define MATH_MESH_H
+
+#pragma once
 
 #include <Math/LimitsT.h>
 #include <Math/Vec2.h>
@@ -13,59 +13,47 @@
 
 class Motion;
 
-namespace Math
-{
-
-struct MeshBase
-{
-public:
-    MeshBase() :
-        vertices(0),
-        normals(0),
-        vertexColors(0),
-        texCoords(0),
-        materials(0),
-        vertexIndices(0),
-        materialIndices(0),
-        numTris(0),
-        numVertices(0),
-        numMaterials(0),
-        bbox()
-    {
-        // empty
-    }
+namespace Math {
+	struct MeshBase{
+		public:
+			MeshBase() :
+				vertices(0),
+				normals(0),
+				vertexColors(0),
+				texCoords(0),
+				materials(0),
+				vertexIndices(0),
+				materialIndices(0),
+				numTris(0),
+				numVertices(0),
+				numMaterials(0),
+				bbox() { }
     
-    virtual ~MeshBase()
-    {
-        // empty
-    }
+			virtual ~MeshBase() { }
     
-    void computeNormals();
-    void flipNormals();
-    void reverseOrientation();
-    void calculateBBox();
+			void computeNormals();
+			void flipNormals();
+			void reverseOrientation();
+			void calculateBBox();
 
-    typedef Vec3<uint32_t> TupleI3;
+			typedef Vec3<uint32_t> TupleI3;
 
-    Vec3f* vertices;
-    Vec3f* normals;
-    Color3f* vertexColors;
-    Vec2f* texCoords;
-    std::string* materials;
-	Motion* motion;
-	unsigned int nTime;
-	float shutterTime;
+			Vec3f* vertices;
+			Vec3f* normals;
+			Color3f* vertexColors;
+			Vec2f* texCoords;
+			std::string* materials;
+			Motion* motion;
+			unsigned int nTime;
+			float shutterTime;
 
-    TupleI3* vertexIndices;
-    uint32_t* materialIndices;
+			TupleI3* vertexIndices;
+			uint32_t* materialIndices;
 
-    uint32_t numTris;
-    uint32_t numVertices;
-    uint32_t numMaterials;
+			uint32_t numTris;
+			uint32_t numVertices;
+			uint32_t numMaterials;
     
-    Box4f bbox;
-};
-
+			Box4f bbox;
+	};
 } // namespace Math
-
-#endif // MATH_MESH_H

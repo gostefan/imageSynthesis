@@ -3,11 +3,11 @@
 #include <algorithm>
 
 BBox::BBox(Vec3f lower, Vec3f upper) : lower(lower), upper(upper) {};
-BBox::~BBox() {};
 
 Vec3f BBox::getLower() {
 	return lower;
 };
+
 Vec3f BBox::getUpper(){
 	return upper;
 };

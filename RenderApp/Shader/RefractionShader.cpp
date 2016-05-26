@@ -1,18 +1,17 @@
 
 #include "RefractionShader.h"
+
 #include "LambertShader.h"
 #include "../Scene/LightRay.h"
 #include "../Scene/EnvironmentMap.h"
 
 RefractionShader::RefractionShader(float refractionIndex_in, const Math::Color3f& kd, float refractionPercentage_in, int maxRecursionDepth_in, SurfaceShader* recursiveShader_in) :
-	recursiveShader(recursiveShader_in), refractionIndex(refractionIndex_in), refractionPercentage(refractionPercentage_in), RecursiveShader(maxRecursionDepth_in) {
+		recursiveShader(recursiveShader_in), refractionIndex(refractionIndex_in), refractionPercentage(refractionPercentage_in), RecursiveShader(maxRecursionDepth_in) {
 	if (recursiveShader == 0) {
 		myShader = true;
 		recursiveShader = new LambertShader(kd);
-	}
-	else {
+	} else
 		myShader = false;
-	}
 }
 
 RefractionShader::~RefractionShader() {
@@ -20,18 +19,16 @@ RefractionShader::~RefractionShader() {
 		delete recursiveShader;
 }
 
-Color3f RefractionShader::shade(const HitInfo & hit, const Scene* scene, stack<float>& refractionIndices) const {
+Color3f RefractionShader::shade(const HitInfo& hit, const Scene* scene, stack<float>& refractionIndices) const {
 	return shade(hit, scene, refractionIndices, 0);
 }
 
-Color3f RefractionShader::shade(const HitInfo & hit, const Scene* scene, stack<float>& refractionIndices, int recursionDepth) const
-{
+Color3f RefractionShader::shade(const HitInfo& hit, const Scene* scene, stack<float>& refractionIndices, int recursionDepth) const {
 	if (recursionDepth < maxRecursionDepth) {
 		std::vector<Light*> lights = scene->lights;
 		Color3f color(0,0,0);
-		if (refractionPercentage < 1) {
+		if (refractionPercentage < 1)
 			color += (1-refractionPercentage) * recursiveShader->shade(hit, scene, refractionIndices);
-		}
 		
 		// From in- or outside
 		float dotProd = dot(hit.I, hit.N);
@@ -42,8 +39,7 @@ Color3f RefractionShader::shade(const HitInfo & hit, const Scene* scene, stack<f
 			if (refractionIndices.size() > 1) // This was needed due to numeric errors when mirroring
 				refractionIndices.pop();
 			n2 = refractionIndices.top();
-		}
-		else {
+		} else {
 			n2 = refractionIndex;
 			refractionIndices.push(refractionIndex);
 		}
@@ -56,25 +52,21 @@ Color3f RefractionShader::shade(const HitInfo & hit, const Scene* scene, stack<f
 		float reflectionCoeff = reflectFresnel(n1, n2, theta1, theta2);
 
 		// Only do the refraction if there is no total reflection
-		if (sinTheta2 < 1) {
+		if (sinTheta2 < 1)
 			color += (1-reflectionCoeff) * calculateRefraction(hit, scene, refractionIndices, recursionDepth, inside, normal, sinTheta2);
-		}
-		else {
+		else
 			reflectionCoeff = 1;
-		}
 
 		// Calculate reflection part
 		if (reflectionCoeff > 0.01) // This is to improve the rendering time
 			color += (reflectionCoeff) * calculateReflection(hit, scene, refractionIndices, recursionDepth, inside, normal);
 	
 		return color;
-	}
-	else {
+	} else
 		return recursiveShader->shade(hit, scene, refractionIndices);
-	}
 }
 
-Math::Color3f RefractionShader::calculateRefraction(const HitInfo & hit, const Scene* scene, stack<float> refractionIndices, int recursionDepth, bool inside, Vec3f normal, float sinTheta2) const {
+Math::Color3f RefractionShader::calculateRefraction(const HitInfo& hit, const Scene* scene, stack<float> refractionIndices, int recursionDepth, bool inside, Vec3f normal, float sinTheta2) const {
 	Ray r;
 	r.o = hit.P;
 	r.time = hit.time;
@@ -85,21 +77,20 @@ Math::Color3f RefractionShader::calculateRefraction(const HitInfo & hit, const S
 	r.d = (sinTheta2 * -orthDir) + (cos(asin(sinTheta2)) * -normal);
 
 	//loop over all scene objects and find the closest intersection
-	for (unsigned int k = 0; k < scene->shapes.size(); k++) {
+	for (unsigned int k = 0; k < scene->shapes.size(); k++)
 		scene->shapes[k]->intersect(&r);
-	}
 
 	//if ray hit something then shade it
 	if (r.hit.shape != 0 && r.hit.surfaceShader != 0) {
 		const RecursiveShader* rShader = dynamic_cast<const RecursiveShader*>(r.hit.surfaceShader);
-		if (rShader != 0) {
+		if (rShader != 0)
 			return rShader->shade(r.hit, scene, refractionIndices, recursionDepth+1);
-		}
 		return r.hit.surfaceShader->shade(r.hit, scene, refractionIndices);
 	}
 	return Color3f(scene->background->getBackground(r.d).toArray());
 }
-Math::Color3f RefractionShader::calculateReflection(const HitInfo & hit, const Scene* scene, stack<float> refractionIndices, int recursionDepth, bool inside, Vec3f normal) const {
+
+Math::Color3f RefractionShader::calculateReflection(const HitInfo& hit, const Scene* scene, stack<float> refractionIndices, int recursionDepth, bool inside, Vec3f normal) const {
 	Ray r;
 	r.o = hit.P;
 	r.time = hit.time;
@@ -108,9 +99,8 @@ Math::Color3f RefractionShader::calculateReflection(const HitInfo & hit, const S
 	r.d = 2*dot(hit.N, -hit.I)*hit.N + hit.I;
 
 	//loop over all scene objects and find the closest intersection
-	for (unsigned int k = 0; k < scene->shapes.size(); k++) {
+	for (unsigned int k = 0; k < scene->shapes.size(); k++)
 		scene->shapes[k]->intersect(&r);
-	}
 
 	// Correct refraction stack
 	if (inside)
@@ -121,9 +111,8 @@ Math::Color3f RefractionShader::calculateReflection(const HitInfo & hit, const S
 	//if ray hit something then shade it
 	if (r.hit.shape != 0 && r.hit.surfaceShader != 0) {
 		const RecursiveShader* rShader = dynamic_cast<const RecursiveShader*>(r.hit.surfaceShader);
-		if (rShader != 0) {
+		if (rShader != 0)
 			return rShader->shade(r.hit, scene, refractionIndices, recursionDepth+1);
-		}
 		return r.hit.surfaceShader->shade(r.hit, scene, refractionIndices);
 	}
 	return Color3f(scene->background->getBackground(r.d).toArray());
@@ -140,8 +129,7 @@ bool RefractionShader::scatterPhoton(HitInfo hit, TracePhoton& photon, Scene& sc
 	if (inside) {
 		photon.refractionIndex.pop();
 		n2 = photon.refractionIndex.top();
-	}
-	else {
+	} else {
 		n2 = refractionIndex;
 		photon.refractionIndex.push(refractionIndex);
 	}
@@ -159,14 +147,11 @@ bool RefractionShader::scatterPhoton(HitInfo hit, TracePhoton& photon, Scene& sc
 		float corr = dot(orthDir, normal);
 		float c = cos(asin(sinTheta2));
 		photon.direction = (sinTheta2 * -orthDir) + (cos(asin(sinTheta2)) * -normal);
-		if (inside) {
+		if (inside)
 			photon.refractionIndex.pop();
-		}
-		else {
+		else
 			photon.refractionIndex.push(refractionIndex);
-		}
-	}
-	else {
+	} else {
 		// Correct refraction stack
 		if (inside)
 			photon.refractionIndex.push(refractionIndex);

@@ -6,41 +6,38 @@
 //  Copyright 2011 Student. All rights reserved.
 //
 
-#ifndef Scene_h
-#define Scene_h
+#pragma once
 
-#include <Math/color.h>
-#include <vector>
-#include "../Geometry/Shape.h"
 #include "Camera.h"
 #include "Light.h"
+#include "../Geometry/Shape.h"
+
+#include <Math/color.h>
+
+#include <memory>
+#include <vector>
 
 class EnvironmentMap;
-class Photon_map;
+class PhotonMap;
 
-class Scene
-{
-public:
-	Scene();
-
-	~Scene();
+class Scene {
+	public:
+		Scene();
+		~Scene();
 	
-	Camera* camera;
-	int nPhotons;
-	Photon_map* pMap;
-	std::vector<Shape *> shapes;
-	std::vector<Light *> lights;
+		Camera* camera;
+		int nPhotons;
+		std::unique_ptr<PhotonMap> pMap;
+		std::vector<Shape *> shapes;
+		std::vector<Light *> lights;
 
-	void addLight(Light *);
+		void addLight(Light *);
 
-	EnvironmentMap* background;
+		EnvironmentMap* background;
 
-	int nEstimatePhotons;
-	float maxPhotonDist;
-	bool usePMapDirect;
+		int nEstimatePhotons;
+		float maxPhotonDist;
+		bool usePMapDirect;
 
-	float shutterTime;
+		float shutterTime;
 };
-
-
-#endif

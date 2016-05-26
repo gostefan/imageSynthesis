@@ -6,21 +6,17 @@
 //  Copyright 2011 Student. All rights reserved.
 //
 
-#ifndef NO_DISPLACEMENT_H
-#define NO_DISPLACEMENT_H
+#pragma once
 
 #include "Displacement.h"
 
-class NoDisplacement : public Displacement
-{
-public:
-	NoDisplacement();
-	~NoDisplacement();
+class NoDisplacement : public Displacement {
+	public:
+		NoDisplacement();
+		~NoDisplacement();
 	
-	/// Returns a displacement in [-scale, scale]
-	virtual float getDisplacement(float u, float v);
-	virtual float getDerivativeU(float u, float v);
-	virtual float getDerivativeV(float u, float v);
+		/// Returns a displacement in [-scale, scale]
+		virtual float getDisplacement(float u, float v);
+		virtual float getDerivativeU(float u, float v);
+		virtual float getDerivativeV(float u, float v);
 };
-
-#endif

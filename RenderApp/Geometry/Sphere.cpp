@@ -6,29 +6,24 @@
 
 using namespace Math;
 
-Sphere::Sphere(SurfaceShader * ss, const Vec3f & loc, float rad, Motion* motion, Displacement* displ) :
-	Shape(ss, motion, displ),
-	location(loc),
-	radius(rad)
-{
+namespace {
+	const double PI = 3.1415926f;
 }
 
-void
-Sphere::renderGL() const
-{
+Sphere::Sphere(SurfaceShader* ss, const Vec3f& loc, float rad, Motion* motion, Displacement* displ) :
+		Shape(ss, motion, displ), location(loc), radius(rad) { }
+
+void Sphere::renderGL() const {
 	glPushMatrix();
 		glTranslate(location);
 		glutWireSphere(radius, 16, 16);
 	glPopMatrix();
 }
 
-bool
-Sphere::intersect(Ray * r) const
-{
+bool Sphere::intersect(Ray * r) const {
 	Vec3f translLocation = location;
-	if (motion != 0) {
+	if (motion != 0)
 		translLocation += motion->getTranslation(r->time);
-	}
 	
 	Vec3f dist = translLocation - r->o;
 	float distOnRay = dot(dist, r->d);
@@ -52,9 +47,7 @@ Sphere::intersect(Ray * r) const
 }
 
 
-void
-Sphere::fillHitInfo(Ray * r) const
-{
+void Sphere::fillHitInfo(Ray* r) const {
 	Vec3f translLocation = location;
 	if (motion != 0) {
 		translLocation += motion->getTranslation(r->time);
@@ -84,8 +77,7 @@ Sphere::fillHitInfo(Ray * r) const
 	r->hit.dPdv = v;
 }
 
-Vec3f Sphere::evalP(float u, float v) const
-{
+Vec3f Sphere::evalP(float u, float v) const {
 	// u is phi and v is theta
 
 	float phi = u * 2*PI;
@@ -94,8 +86,7 @@ Vec3f Sphere::evalP(float u, float v) const
 	return Vec3f(location.x + radius * cos(phi) * cos(theta), location.y + radius * sin(phi) * cos(theta), location.z + radius * sin(theta));
 }
 
-Vec3f Sphere::evalN(float u, float v) const
-{
+Vec3f Sphere::evalN(float u, float v) const {
 	float phi = u * 2*PI;
 	float theta = (v - .5f) * PI;
 
@@ -104,25 +95,22 @@ Vec3f Sphere::evalN(float u, float v) const
 
 BBox Sphere::getBBox() const {
 	Vec3f additor = Vec3f(radius);
-	if (displacement != 0) {
+	if (displacement != 0)
 		Vec3f additor = Vec3f(radius + displacement->getScale());
-	}
 	return BBox(location - additor, location + additor);
 };
 
 BBox Sphere::getBBox(float uStart, float uEnd, float vStart, float vEnd) const {
 	// check for displacement
 	float displScale = 0;
-	if (displacement != 0) {
+	if (displacement != 0)
 		displScale = displacement->getScale();
-	}
 		
 
 	float maxCosTheta = 1;
 	// only if both values of v lie in one hemisphere we use their cosines
-	if (vStart >= 0.5 && vEnd <= 0.5) {
+	if (vStart >= 0.5 && vEnd <= 0.5)
 		maxCosTheta = max(cos((vStart - .5f) * PI), cos((vEnd - .5f) * PI));
-	}
 
 	// Calculate start and end points
 	Vec3f start = evalP(uStart, vStart);
@@ -136,15 +124,12 @@ BBox Sphere::getBBox(float uStart, float uEnd, float vStart, float vEnd) const {
 
 	// Include missed extremal points
 	// 0/2Pi is never missed
-	if (uStart < 0.25 && uEnd > 0.25) {
+	if (uStart < 0.25 && uEnd > 0.25)
 		upper.y = max(upper.y, location.y + maxCosTheta * (radius + displScale));
-	}
-	if (uStart < 0.5 && uEnd > 0.5) {
+	if (uStart < 0.5 && uEnd > 0.5)
 		lower.x = min(lower.x, location.x - maxCosTheta * (radius + displScale));
-	}
-	if (uStart < 0.75 && uEnd > 0.75) {
+	if (uStart < 0.75 && uEnd > 0.75)
 		lower.y = max(lower.y, location.y - maxCosTheta * (radius + displScale));
-	}
 
 	return BBox(lower, upper);
 };

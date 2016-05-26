@@ -12,16 +12,13 @@
 
 #include "RendererApp.h"
 
-int
-main(int argc, char*argv[])
-{
-    GLUTMaster* glutMaster = new GLUTMaster(&argc, argv);
-    RendererApp* window = new RendererApp(glutMaster, 800, 600, "RendererApp");
+#include <memory>
+
+int main(int argc, char* argv[]) {
+    auto glutMaster = std::unique_ptr<GLUTMaster>(new GLUTMaster(&argc, argv));
+    auto window = std::unique_ptr<RendererApp>(new RendererApp(glutMaster.get(), 800, 600, "RendererApp"));
     glutMaster->disableIdleFunction();
 	glutMaster->mainLoop();
-	
-    delete window;
-    delete glutMaster;
 	
     return 0;
 }

@@ -6,24 +6,19 @@
 //  Copyright 2012 Student. All rights reserved.
 //
 
-#ifndef CONST_TEXTURE_H
-#define CONST_TEXTURE_H
+#pragma once
 
-#include "math.h"
+#include "Math\Fwd.h"
 #include "Texture.h"
 
-class ConstantTexture : public Texture
-{
-public:
-	ConstantTexture(Color3f color = Color3f(1, 1, 1));
-	~ConstantTexture();
+class ConstantTexture : public Texture {
+	public:
+		ConstantTexture(Color3f color = Color3f(1, 1, 1));
 	
-	/// Returns a displacement in [-scale, scale]
-	virtual Color3f getAmbient(const HitInfo& hit);
-	virtual Color3f getDiffuse(const HitInfo& hit);
-	virtual Color3f getSpecular(const HitInfo& hit);
-protected:
-	Color3f color;
+		/// Returns a displacement in [-scale, scale]
+		virtual Color3f getAmbient(const HitInfo& hit);
+		virtual Color3f getDiffuse(const HitInfo& hit);
+		virtual Color3f getSpecular(const HitInfo& hit);
+	protected:
+		Color3f color;
 };
-
-#endif

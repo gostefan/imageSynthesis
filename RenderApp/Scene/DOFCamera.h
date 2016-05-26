@@ -2,28 +2,26 @@
  \brief Contains the Camera class
  \author Wojciech Jarosz
 */
-#ifndef DOF_CAMERA_H
-#define DOF_CAMERA_H
+#pragma once
 
 #include "Camera.h"
+
+#include <memory>
 
 class Sampler;
 class Warping;
 
-class DOFCamera : public Camera
-{
-protected:
-	float sharpDistance;
-	float discRadius;
+class DOFCamera : public Camera {
+	protected:
+		float sharpDistance;
+		float discRadius;
 
-	Sampler* randomSampler;
-	Warping* discWarping;
+		std::unique_ptr<Sampler> randomSampler;
+		std::unique_ptr<Warping> discWarping;
 
-public:
-	DOFCamera(unsigned resX = 640, unsigned resY = 480, float sharpDistance = 1, float discRadius = 1);
-	~DOFCamera();
+	public:
+		DOFCamera(unsigned resX = 640, unsigned resY = 480, float sharpDistance = 1, float discRadius = 1);
+		~DOFCamera();
 
-    virtual void generateRay(Ray * r, float x, float y) const;
+		virtual void generateRay(Ray * r, float x, float y) const;
 };
-
-#endif

@@ -19,60 +19,52 @@
 using namespace Math;
 using std::vector;
 
-namespace
-{
+namespace {
+	bool intersectTriangle(Ray* r, MeshBase* mesh, unsigned int index) {
+		Vec3f transl = Vec3f(0,0,0);
+		if (mesh->motion != nullptr)
+			transl = mesh->motion->getTranslation(r->time);
+		if (Math::intersect(r->o, r->d,
+						   mesh->vertices[mesh->vertexIndices[index].x]+transl,
+						   mesh->vertices[mesh->vertexIndices[index].y]+transl,
+						   mesh->vertices[mesh->vertexIndices[index].z]+transl,
+						   r->tMin, r->tMax,
+						   &r->hit.t, &r->hit.uv, &r->hit.Ng))
+		{
+			r->hit.Ng.normalize();
+			//r->hit.N = r->hit.Ng.normalize(); Interpolate normal barycentrically
+			if (mesh->normals != nullptr) {
+				Vec3f normal = mesh->normals[mesh->vertexIndices[index].x] * (1 - r->hit.uv.x - r->hit.uv.y);
+				normal += mesh->normals[mesh->vertexIndices[index].y] * r->hit.uv.x;
+				normal += mesh->normals[mesh->vertexIndices[index].z] * r->hit.uv.y;
+				r->hit.N = normal.normalized();
+			} else 
+				r->hit.N = r->hit.Ng;
 
-bool
-intersectTriangle(Ray * r, MeshBase * mesh, unsigned int index)
-{
-	Vec3f transl = Vec3f(0,0,0);
-	if (mesh->motion != 0) {
-		transl = mesh->motion->getTranslation(r->time);
-	}
-	if (Math::intersect(r->o, r->d,
-					   mesh->vertices[mesh->vertexIndices[index].x]+transl,
-					   mesh->vertices[mesh->vertexIndices[index].y]+transl,
-					   mesh->vertices[mesh->vertexIndices[index].z]+transl,
-					   r->tMin, r->tMax,
-					   &r->hit.t, &r->hit.uv, &r->hit.Ng))
-	{
-		r->hit.Ng.normalize();
-		//r->hit.N = r->hit.Ng.normalize(); Interpolate normal barycentrically
-		if (mesh->normals != 0) {
-			Vec3f normal = mesh->normals[mesh->vertexIndices[index].x] * (1 - r->hit.uv.x - r->hit.uv.y);
-			normal += mesh->normals[mesh->vertexIndices[index].y] * r->hit.uv.x;
-			normal += mesh->normals[mesh->vertexIndices[index].z] * r->hit.uv.y;
-			r->hit.N = normal.normalized();
+			r->hit.P = r->o + r->hit.t * r->d;
+			if (mesh->texCoords != nullptr) {
+				Vec2f texCoord = mesh->texCoords[mesh->vertexIndices[index].x] * (1 - r->hit.uv.x - r->hit.uv.y);
+				texCoord += mesh->texCoords[mesh->vertexIndices[index].y] * r->hit.uv.x;
+				texCoord += mesh->texCoords[mesh->vertexIndices[index].z] * r->hit.uv.y;
+				r->hit.uv = texCoord;
+			}
+			return true;
 		}
-		else 
-			r->hit.N = r->hit.Ng;
-
-		r->hit.P = r->o + r->hit.t * r->d;
-		if (mesh->texCoords != 0) {
-			Vec2f texCoord = mesh->texCoords[mesh->vertexIndices[index].x] * (1 - r->hit.uv.x - r->hit.uv.y);
-			texCoord += mesh->texCoords[mesh->vertexIndices[index].y] * r->hit.uv.x;
-			texCoord += mesh->texCoords[mesh->vertexIndices[index].z] * r->hit.uv.y;
-			r->hit.uv = texCoord;
-		}
-		return true;
+		return false;
 	}
-	
-	return false;
-}
-	
 } // namespace 
 
 
 
 
-Mesh::Mesh(SurfaceShader * ss, 
-		   Math::MeshBase * mesh, Motion* motion, float shutterTime, unsigned int nTime, int maxDepth, int maxObjects) :
-	Shape(ss),
-	m_mesh(mesh),
-	m_maxDepth(maxDepth),
-	m_maxObjects(maxObjects)
+Mesh::Mesh(SurfaceShader* ss, 
+		Math::MeshBase* mesh, Motion* motion, float shutterTime, unsigned int nTime, int maxDepth, int maxObjects) :
+		Shape(ss),
+		m_mesh(mesh),
+		m_maxDepth(maxDepth),
+		m_maxObjects(maxObjects)
 {
-	if (mesh != 0) {
+	if (mesh != nullptr) {
 		mesh->motion = motion;
 		mesh->nTime = nTime;
 		mesh->shutterTime = shutterTime;
@@ -84,9 +76,7 @@ Mesh::Mesh(SurfaceShader * ss,
 	}
 }
 
-void
-Mesh::renderGL() const
-{
+void Mesh::renderGL() const {
 	if (!m_mesh)
 		return;
 
@@ -99,8 +89,7 @@ Mesh::renderGL() const
 		glVertex(m_mesh->vertices[m_mesh->vertexIndices[i].z]);
 	}*/
 	glBegin(GL_LINES);
-	for (unsigned int i = 0; i < m_mesh->numTris; ++i)
-	{
+	for (unsigned int i = 0; i < m_mesh->numTris; ++i) {
 		glVertex(m_mesh->vertices[m_mesh->vertexIndices[i].x]);
 		glVertex(m_mesh->vertices[m_mesh->vertexIndices[i].y]);
 		glVertex(m_mesh->vertices[m_mesh->vertexIndices[i].y]);
@@ -111,26 +100,20 @@ Mesh::renderGL() const
 	glEnd();
 }
 
-bool
-Mesh::intersect(Ray * r) const
-{
+bool Mesh::intersect(Ray* r) const {
 	#define MAX_TODO 64
     const BBH::Node * todo[MAX_TODO];
     int todoPos = 0;
 	
     int hitIndex = -1;
     const BBH::Node *node = &m_bbh.nodes[0];
-    while (node)
-    {
-        if (node->isLeaf())
-        {
+    while (node) {
+        if (node->isLeaf()) {
             // Check for intersections inside leaf node
             unsigned nObjects = node->nObjects();
-            if (nObjects == 1)
-            {
+            if (nObjects == 1) {
                 const int index = node->oneIndex;
-                if (intersectTriangle(r, m_mesh, index))
-                {
+                if (intersectTriangle(r, m_mesh, index)) {
 					r->hit.shape = this;
 					r->hit.surfaceShader = this->surfaceShader;
 					r->hit.I = r->d;
@@ -138,15 +121,11 @@ Mesh::intersect(Ray * r) const
 					r->hit.time = r->time;
                     hitIndex = index;
                 }
-            }
-            else if (nObjects > 1)
-            {
+            } else if (nObjects > 1) {
                 const unsigned * indices = node->indices;
-                for (unsigned i = 0; i < nObjects; ++i)
-                {
+                for (unsigned i = 0; i < nObjects; ++i) {
                     const unsigned index = indices[i];
-                    if (intersectTriangle(r, m_mesh, index))
-                    {
+                    if (intersectTriangle(r, m_mesh, index)) {
 						r->hit.shape = this;
 						r->hit.surfaceShader = this->surfaceShader;
 						r->hit.I = r->d;
@@ -156,11 +135,8 @@ Mesh::intersect(Ray * r) const
                     }
                 }
             }
-        }
-        else
-        {
-            if (Math::intersects(r->o, r->d, r->time, node->bbox, r->tMin, r->tMax))
-            {
+        } else {
+            if (Math::intersects(r->o, r->d, r->time, node->bbox, r->tMin, r->tMax)) {
                 // Enqueue secondChild in todo list
                 todo[todoPos] = &m_bbh.nodes[node->right];
                 ++todoPos;
@@ -172,12 +148,10 @@ Mesh::intersect(Ray * r) const
         }
 		
         // Grab next node to process from todo list
-        if (todoPos > 0)
-        {
+        if (todoPos > 0) {
             --todoPos;
             node = todo[todoPos];
-        }
-        else
+        } else
             break;
     }
 	
@@ -185,20 +159,16 @@ Mesh::intersect(Ray * r) const
 }
 
 
-void
-Mesh::fillHitInfo(Ray * r) const
-{
+void Mesh::fillHitInfo(Ray* r) const {
 	r->hit.surfaceShader = surfaceShader;
 }
 
-Vec3f Mesh::evalP(float u, float v) const
-{
+Vec3f Mesh::evalP(float u, float v) const {
 	// Reyes rendering not supported yet for triangle meshes
 	return Vec3f(0.0f);
 }
 
-Vec3f Mesh::evalN(float u, float v) const
-{
+Vec3f Mesh::evalN(float u, float v) const {
 	// Reyes rendering not supported yet for triangle meshes
 	return Vec3f(0.0f);
 }

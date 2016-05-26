@@ -16,11 +16,10 @@ class CheckerboardTexture : public Texture
 {
 public:
 	CheckerboardTexture(float frequencyX = 1, float frequencyY = 1, float frequencyZ = 1, Color3f color1 = Color3f(1, 1, 1), Color3f color2 = Color3f(0, 0, 0));
-	~CheckerboardTexture();
 	
 	/// Returns a displacement in [-scale, scale]
-	virtual Color3f getAmbient(const HitInfo& hit);
-	virtual Color3f getDiffuse(const HitInfo& hit);
+	virtual Color3f getAmbient (const HitInfo& hit);
+	virtual Color3f getDiffuse (const HitInfo& hit);
 	virtual Color3f getSpecular(const HitInfo& hit);
 protected:
 	float frequencyX, frequencyY, frequencyZ;

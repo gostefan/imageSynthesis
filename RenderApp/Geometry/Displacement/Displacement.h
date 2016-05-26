@@ -6,24 +6,19 @@
 //  Copyright 2011 Student. All rights reserved.
 //
 
-#ifndef DISPLACEMENT_H
-#define DISPLACEMENT_H
+#pragma once
 
-class Displacement
-{
-protected:
-	float scale;
+class Displacement {
+	protected:
+		float scale;
 	
-public:
-	Displacement(float scale = 1.f);
-	~Displacement();
+	public:
+		Displacement(float scale = 1.f);
 	
-	/// Returns a displacement in [-scale, scale]
-	virtual float getDisplacement(float u, float v) = 0;
-	virtual float getDerivativeU(float u, float v) = 0;
-	virtual float getDerivativeV(float u, float v) = 0;
-	float getScale();
-	void setScale(float scale);
+		/// Returns a displacement in [-scale, scale]
+		virtual float getDisplacement(float u, float v) = 0;
+		virtual float getDerivativeU(float u, float v) = 0;
+		virtual float getDerivativeV(float u, float v) = 0;
+		float getScale();
+		void setScale(float scale);
 };
-
-#endif

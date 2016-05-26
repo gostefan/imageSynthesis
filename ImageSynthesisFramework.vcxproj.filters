@@ -57,9 +57,6 @@
     <ClInclude Include="math\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderApp\Compat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="platform\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>

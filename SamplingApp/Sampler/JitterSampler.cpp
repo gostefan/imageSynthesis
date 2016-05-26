@@ -1,16 +1,18 @@
 
 #include "JitterSampler.h"
 
+#include <Math/Rand.h>
+
 /**
  * Generates uniformly distributed with jitter Samples in the range [0,1].
  *
  */
-void JitterSampler::generateSamples(int nSamplesSqrt, Math::Vec2f* sampleStorage) {
+void JitterSampler::generateSamples(int nSamplesSqrt, std::vector<Math::Vec2f>& sampleStorage) {
 	float spacing = 1.f/(nSamplesSqrt);
-	for (int i = 0; i < nSamplesSqrt; i++) {
-		for (int j = 0; j < nSamplesSqrt; j++) {
-			float x = static_cast<float>(rand()) / RAND_MAX;
-			float y = static_cast<float>(rand()) / RAND_MAX;
+	for (size_t i = 0; i < nSamplesSqrt; i++) {
+		for (size_t j = 0; j < nSamplesSqrt; j++) {
+			const float x = static_cast<float>(rand()) / RAND_MAX;
+			const float y = static_cast<float>(rand()) / RAND_MAX;
 			sampleStorage[i+nSamplesSqrt*j] = Math::Vec2f(spacing * (i + x), spacing * (j + y));
 		}
 	}

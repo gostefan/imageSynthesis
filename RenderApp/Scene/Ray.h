@@ -2,13 +2,14 @@
     \brief Definition of the Ray class.
     \author Wojciech Jarosz
 */
-#ifndef CORE_RAY_H
-#define CORE_RAY_H
+
+#pragma once
 
 #include "HitInfo.h"
-#include <Math/Vec3.h>
-#include <Math/Line.h>
-#include <Math/LimitsT.h>
+
+#include "Math\Line.h"
+#include "Math\Fwd.h"
+
 #include <stack>
 
 //! Definition of a general ray class.
@@ -20,18 +21,14 @@
     primatives. A ray also keeps track of the number of reflective, refractive,
     and diffuse surfaces that it has hit.
 */
-class Ray : public Math::Line3f
-{
-public:
-
-    explicit Ray();
-    Ray(const Math::Vec3f& o, const Math::Vec3f& d, const float time = 0);
+class Ray : public Math::Line3f {
+	public:
+		explicit Ray();
+		Ray(const Math::Vec3f& o, const Math::Vec3f& d, const float time = 0);
     
-    float tMin, tMax;                  //!< Region of interest
-	float time;
-	std::stack<float> refractionIndex;
+		float tMin, tMax;                  //!< Region of interest
+		float time;
+		std::stack<float> refractionIndex;
 
-    HitInfo hit;                       //!< Information about the hitpoint
+		HitInfo hit;                       //!< Information about the hitpoint
 };
-
-#endif // CORE_RAY_H

@@ -5,9 +5,9 @@
 
 #include "../Scene/photonmap.h"
 
-PhotonScaterer::PhotonScaterer(float continueProb) : continueProb(continueProb) {}
+PhotonScaterer::PhotonScaterer(float continueProb) : continueProb(continueProb) { }
 
-PhotonScaterer::~PhotonScaterer() {}
+PhotonScaterer::~PhotonScaterer() { }
 
 void PhotonScaterer::scatter(Scene & scene) {
 	tracePhotons(scene);
@@ -32,11 +32,9 @@ void PhotonScaterer::tracePhotons(Scene& scene) {
 			}
 
 			// See whether it intersected
-			if (r.hit.shape != 0 && r.hit.surfaceShader != 0) {
+			if (r.hit.shape != 0 && r.hit.surfaceShader != 0)
 				isContinue = r.hit.surfaceShader->scatterPhoton(r.hit, photon, scene, continueProb);
-			}
-		}
-		while (isContinue && scene.pMap->getStoredPhotons() < scene.nPhotons);
+		} while (isContinue && scene.pMap->getStoredPhotons() < scene.nPhotons);
 	}
 	scene.pMap->scale_photon_power(1/static_cast<float>(scene.pMap->getStoredPhotons()));
 }
