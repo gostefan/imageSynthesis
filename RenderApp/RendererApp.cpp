@@ -54,43 +54,256 @@ using namespace Math;
 using namespace Platform;
 using namespace std;
 
-const char* renderModeNames[] = {
-	"RENDER_GL",
-	"RENDER_REYES",
-	"RENDER_RASTERIZE",
-	"RENDER_RAYTRACE",
-	"RENDER_PATH",
-	"RENDER_REYES_TRACE"
-};
+namespace {
+	const char* renderModeNames[] = {
+		"RENDER_GL",
+		"RENDER_REYES",
+		"RENDER_RASTERIZE",
+		"RENDER_RAYTRACE",
+		"RENDER_PATH",
+		"RENDER_REYES_TRACE"
+	};
 
 
-const char* helpString =
-"Keyboard/mouse usage is as follows:\n"
-"    'h'     Toggle this help screen\n"
-"    'H'     Toggle heads-up-display\n"
-"    LMB     Rotate camera\n"
-"    MMB     Pan camera\n"
-"    RMB     Dolly camera\n"
-"    'w/s'   Dolly camera forward/backward \n"
-"    'a/d'   Pan camera left/right\n"
-"    'q/z'   Pan camera up/down\n"
-"    'g'     Switch to OpenGL rendering mode\n"
-"    'r'     Switch to REYES rendering mode\n"
-"    'x'     Switch to REYES Tracing rendering mode\n"
-"    'R'     Switch to software rasterization mode\n"
-"    't'     Switch to ray tracing mode\n"
-"    'p'     Switch to path tracing mode\n"
-"    'i'     Save HDR Image\n";
+	const char* helpString =
+		"Keyboard/mouse usage is as follows:\n"
+		"    'h'     Toggle this help screen\n"
+		"    'H'     Toggle heads-up-display\n"
+		"    LMB     Rotate camera\n"
+		"    MMB     Pan camera\n"
+		"    RMB     Dolly camera\n"
+		"    'w/s'   Dolly camera forward/backward \n"
+		"    'a/d'   Pan camera left/right\n"
+		"    'q/z'   Pan camera up/down\n"
+		"    'g'     Switch to OpenGL rendering mode\n"
+		"    'r'     Switch to REYES rendering mode\n"
+		"    'x'     Switch to REYES Tracing rendering mode\n"
+		"    'R'     Switch to software rasterization mode\n"
+		"    't'     Switch to ray tracing mode\n"
+		"    'p'     Switch to path tracing mode\n"
+		"    'i'     Save HDR Image\n";
 
-const float g_angleFact = 0.2f;
-const float g_scaleFact = 0.002f;
+	const float g_angleFact = 0.2f;
+	const float g_scaleFact = 0.002f;
+	
+	void createStillScene(Scene& scene) {
+		scene.camera = std::unique_ptr<Camera>(new Camera(scene.camera->xRes(), scene.camera->yRes()));
+
+		Math::Mat44f w2c = scene.camera->worldToCamera();
+		w2c.lookAt(Vec3f(0, 0, -5), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
+		scene.camera->setWorldToCamera(w2c);
+
+		scene.addLight(new PointLight(Vec3f(0, 2, 0), Color3f(50, 50, 50)));
+
+		SurfaceShader* blue = new LambertShader(Color3f(0, 0, 1));
+		scene.shapes.push_back(new Sphere(blue, Vec3f(0.5f, -0.6f, 0.5f), 0.4f));
+		scene.shapes.push_back(new Mesh(blue, readObjMesh("./obj/planeX2.obj")));
+	}
+
+	void createMovingScene(Scene& scene) {
+		float shutterTime = 0.5f;
+
+		auto oldCam = std::move(scene.camera);
+		scene.camera = std::unique_ptr<Camera>(new ShutterCamera(shutterTime, oldCam));
+
+		Math::Mat44f w2c = scene.camera->worldToCamera();
+		w2c.lookAt(Vec3f(0, 0, -5), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
+		scene.camera->setWorldToCamera(w2c);
+
+		scene.addLight(new PointLight(Vec3f(0, 0, 0), Color3f(50, 50, 50)));
+		scene.addLight(new PointLight(Vec3f(1, 0, 5), Color3f(50, 50, 50)));
+
+		SurfaceShader * grey = new LambertShader(Color3f(1, 1, 1));
+		SurfaceShader * mirror = new MirrorShader(Color3f(0.2f, 0.2f, 0.2f), 0.8f);
+		SurfaceShader * glass = new RefractionShader(1.6f, Color3f(0.2f, 0.2f, 0.2f), 0.8f);
+
+		Motion* left = new TranslatedMotion(Vec3f(1, 0, 5), Vec3f(-0.5f, 0, 0));
+		Motion* offsetLeft = new TranslatedMotion(Vec3f(-1, 0.5f, 0), Vec3f(-0.5f, -0.5f, 0));
+		Motion* none = new TranslatedMotion(Vec3f(-0.5, 0.5, 5), Vec3f(0, 0, 0));
+
+		scene.shapes.push_back(new Sphere(grey, Vec3f(0, 0, 0), 0.4f, offsetLeft));
+		scene.shapes.push_back(new Sphere(glass, Vec3f(0.9f, 0, 0), 0.4f));
+		scene.shapes.push_back(new Mesh(grey, readObjMesh("./obj/planeX2.obj"), left, shutterTime, 2));
+		scene.shapes.push_back(new Mesh(mirror, readObjMesh("./obj/planeZ.obj"), none, shutterTime, 2));
+	}
+
+	void createMovingScene2(Scene& scene) {
+		float shutterTime = 0.5f;
+
+		auto oldCam = std::move(scene.camera);
+		scene.camera = std::unique_ptr<Camera>(new ShutterCamera(shutterTime, oldCam));
+
+		Math::Mat44f w2c = scene.camera->worldToCamera();
+		w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
+		scene.camera->setWorldToCamera(w2c);
+
+		SurfaceShader * aos = new AmbientOcclusionShader(Color3f(1, 1, 1), 10);
+		Motion* offsetLeft = new TranslatedMotion(Vec3f(0.5f, 0, 0), Vec3f(-1, 0, 0));
+
+		scene.shapes.push_back(new Sphere(aos, Vec3f(0, -30, 0), 29));
+		scene.shapes.push_back(new Sphere(aos, Vec3f(0, 0, 0), 1, offsetLeft));
+	}
+
+	void createRainScene(Scene& scene) {
+		float shutterTime = 0.01f;
+
+		auto oldCam = std::move(scene.camera);
+		scene.camera = std::unique_ptr<Camera>(new ShutterCamera(shutterTime, oldCam));
+
+		Math::Mat44f w2c = scene.camera->worldToCamera();
+		w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
+		scene.camera->setWorldToCamera(w2c);
+
+		scene.addLight(new PointLight(Vec3f(0, 0, 0), Color3f(10, 10, 10)));
+
+		scene.shapes.push_back(new Rain(Box3f(Vec3f(-3, -1, -5), Vec3f(3, 3, 5)), 10, 50, shutterTime, 2));
+	}
+
+	void createTextureScene(Scene& scene) {
+		scene.camera.reset(new Camera(scene.camera->xRes(), scene.camera->yRes()));
+
+		Math::Mat44f w2c = scene.camera->worldToCamera();
+		w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
+		scene.camera->setWorldToCamera(w2c);
+
+		scene.addLight(new PointLight(Vec3f(0, 0, 0), Color3f(10, 10, 10)));
+
+		SurfaceShader* metalPlate = new LambertShader((Texture*)new ImageTexture("./imgs/metalplate.hdr"));
+
+		scene.shapes.push_back(new Mesh(metalPlate, readObjMesh("./obj/planeZ.obj")));
+	}
+
+	void createDOFScene(Scene& scene) {
+		Camera* oldCam = scene.camera;
+		scene.camera = new DOFCamera(scene.camera->xRes(), scene.camera->yRes(), 13, 3000);
+		delete oldCam;
+
+		Math::Mat44f w2c = scene.camera->worldToCamera();
+		w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
+		scene.camera->setWorldToCamera(w2c);
+
+		scene.addLight(new PointLight(Vec3f(0, 3, 3), Color3f(50, 50, 50)));
+		scene.addLight(new PointLight(Vec3f(0, 3, -1), Color3f(50, 50, 50)));
+
+		SurfaceShader* blue = new LambertShader(Color3f(0, 0, 1));
+		SurfaceShader* green = new LambertShader(Color3f(0, 1, 0));
+		SurfaceShader* red = new LambertShader(Color3f(1, 0, 0));
+
+		scene.shapes.push_back(new Sphere(blue, Vec3f(-1, 0, 1)));
+		scene.shapes.push_back(new Sphere(green, Vec3f(0, 0, 3)));
+		scene.shapes.push_back(new Sphere(red, Vec3f(1, 0, 5)));
+	}
+
+	void createBrushedScene(Scene& scene) {
+		Camera* oldCam = scene.camera;
+		scene.camera = new Camera(scene.camera->xRes(), scene.camera->yRes());
+		delete oldCam;
+
+		Math::Mat44f w2c = scene.camera->worldToCamera();
+		w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
+		scene.camera->setWorldToCamera(w2c);
+
+		scene.addLight(new RectangularLight(Color3f(10, 10, 10), 0, Vec3f(-0.5f, 10, 0.5f), Vec2f(1, 1)));
+
+		SurfaceShader* mirror = new MirrorShader(Color3f(0.8f, 0.8f, 0.8f), 0.8f, 2);
+		SurfaceShader* brushedMetal1 = new BrushedShader(Color3f(0.8f, 0.8f, 0.8f), 0.8f, 2, 0, 100000, 1000);
+		SurfaceShader* brushedMetal2 = new BrushedShader(Color3f(0.8f, 0.8f, 0.8f), 0.8f, 2, 0, 1000, 100000);
+
+		scene.shapes.push_back(new Sphere(brushedMetal1, Vec3f(0, 0, 0), 0.7f));
+		scene.shapes.push_back(new Sphere(brushedMetal2, Vec3f(1.8f, 0, 0), 0.7f));
+		scene.shapes.push_back(new Sphere(mirror, Vec3f(-1.8f, 0, 0), 0.7f));
+	}
+
+	void createImpSampScene(Scene& scene) {
+		Camera* oldCam = scene.camera;
+		scene.camera = new Camera(scene.camera->xRes(), scene.camera->yRes());
+		delete oldCam;
+
+		Math::Mat44f w2c = scene.camera->worldToCamera();
+		w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
+		scene.camera->setWorldToCamera(w2c);
+
+		scene.addLight(new PointLight(Vec3f(0, 0, 0), Color3f(50, 50, 50)));
+
+		SurfaceShader * aos = new AmbientOcclusionShader(Color3f(1, 1, 1), 10, false, true);
+
+		scene.shapes.push_back(new Sphere(aos, Vec3f(0, -30, 0), 29));
+		scene.shapes.push_back(new Sphere(aos, Vec3f(0, 0, 0), 1));
+	}
+
+	void createNormalScene(Scene& scene) {
+		Camera* oldCam = scene.camera;
+		scene.camera = new Camera(scene.camera->xRes(), scene.camera->yRes());
+		delete oldCam;
+
+		Math::Mat44f w2c = scene.camera->worldToCamera();
+		w2c.lookAt(Vec3f(-2000, 0, 0), Vec3f(0, 0, -20), Vec3f(0.0f, 1.0f, 0.0f));
+		scene.camera->setWorldToCamera(w2c);
+
+		scene.addLight(new PointLight(Vec3f(-300, 300, 0), Color3f(1000000, 1000000, 1000000)));
+
+		SurfaceShader * red = new LambertShader(Color3f(1, 0, 0));
+		scene.shapes.push_back(new Mesh(red, readObjMesh("./obj/mitsubishi-car.obj")));
+	}
 
 
-RendererApp::RendererApp(GLUTMaster* glutMaster,
-                         int width, int height,
-                         const char* title) :
-		GfxGLUTWindow(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH, width, height),
-		m_renderMode(RENDER_GL), nSamplesSqrt(4), sceneNr(1), radius(1)
+	void createInterestingScene(Scene& scene) {
+		float shutterTime = 0.005f;
+		float scale = 1000;
+
+		Camera* oldCam = scene.camera;
+		scene.camera = new ShutterCamera(shutterTime, new DOFCamera(oldCam->xRes(), oldCam->yRes(), 2000, 50000));
+		delete oldCam;
+
+		delete scene.background;
+		scene.background = new EnvironmentMap("./imgs/meadow2.hdr");
+
+		Math::Mat44f w2c = scene.camera->worldToCamera();
+		w2c.lookAt(Vec3f(2000, 0, 0), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
+		//w2c.lookAt(Vec3f(0, 1000, 0), Vec3f(0,0,1), Vec3f(0.0f, 1.0f, 0.0f));
+		scene.camera->setWorldToCamera(w2c);
+
+		scene.shapes.clear();
+
+		scene.addLight(new SphereCapLight(Color3f(25000000, 20000000, 5000000), 0, Vec3f(-290, 138, -29), 15, 1));
+		scene.addLight(new SphereCapLight(Color3f(25000000, 20000000, 5000000), 0, Vec3f(-290, 138, -879), 15, 1));
+		scene.addLight(new SphereCapLight(Color3f(25000000, 20000000, 5000000), 0, Vec3f(-290, 138, 841), 15, 1));
+		scene.addLight(new PointLight(Vec3f(0, 700, -800), Color3f(10000000, 10000000, 50000000)));
+		scene.addLight(new PointLight(Vec3f(0, 700, 200), Color3f(10000000, 10000000, 50000000)));
+
+		Motion* car = new TranslatedMotion(Vec3f(0, -200, 800), Vec3f(0, 0, 15 * scale)); // 15 m/s
+		Motion* carOpp = new TranslatedMotion(Vec3f(500, -200, -800), Vec3f(0, 0, -15 * scale));
+		Motion* sceneDown = new TranslatedMotion(Vec3f(0, -220, 0), Vec3f(0, 0, 0));
+
+		SurfaceShader* red = new PathTracingShader(new LambertShader(Color3f(1, 0, 0)), Color3f(1, 0, 0));
+		SurfaceShader* darkGrey = new PathTracingShader(new LambertShader(Color3f(0.2f, 0.2f, 0.2f)), Color3f(0.2f, 0.2f, 0.2f));
+		SurfaceShader* streetGrey = new PathTracingShader(new LambertShader(Color3f(0.1f, 0.1f, 0.2f)), Color3f(0.1f, 0.1f, 0.2f));
+		SurfaceShader* mirror = new MirrorShader(Color3f(0.2f, 0.2f, 0.2f), 0.5f);
+		SurfaceShader* grey = new PathTracingShader(new LambertShader(Color3f(0.8f, 0.8f, 0)), Color3f(0.8f, 0.8f, 0));
+		SurfaceShader* brushedMetal = new BrushedShader(Color3f(0.8f, 0.8f, 0.8f), 0.8f, 5, grey, 100, 1000, 1);
+		SurfaceShader* green = new PathTracingShader(new LambertShader(Color3f(0, 0.2f, 0)), Color3f(0, 0.2f, 0));
+
+		scene.shapes.push_back(new Mesh(red, readObjMesh("./obj/mitsubishi-car.obj"), car, shutterTime, 5));
+		scene.shapes.push_back(new Mesh(mirror, readObjMesh("./obj/mitsubishi-wheel.obj"), car, shutterTime, 5));
+		scene.shapes.push_back(new Mesh(darkGrey, readObjMesh("./obj/mitsubishi-pneu.obj"), car, shutterTime, 5));
+		scene.shapes.push_back(new Mesh(mirror, readObjMesh("./obj/mitsubishi-light-interior.obj"), car, shutterTime, 5));
+		scene.shapes.push_back(new Mesh(red, readObjMesh("./obj/mitsubishi-car-opp.obj"), carOpp, shutterTime, 5));
+		scene.shapes.push_back(new Mesh(mirror, readObjMesh("./obj/mitsubishi-wheel-opp.obj"), carOpp, shutterTime, 5));
+		scene.shapes.push_back(new Mesh(darkGrey, readObjMesh("./obj/mitsubishi-pneu-opp.obj"), carOpp, shutterTime, 5));
+		scene.shapes.push_back(new Mesh(mirror, readObjMesh("./obj/mitsubishi-light-interior-opp.obj"), carOpp, shutterTime, 5));
+
+		scene.shapes.push_back(new Mesh(brushedMetal, readObjMesh("./obj/pole.obj"), sceneDown, shutterTime, 2));
+		scene.shapes.push_back(new Mesh(streetGrey, readObjMesh("./obj/street.obj"), sceneDown, shutterTime, 2));
+
+		scene.shapes.push_back(new Rain(Box3f(Vec3f(-1000, -200, -1000), Vec3f(1000, 500, 1000)), scale, 1000, shutterTime, 10));
+
+		scene.shapes.push_back(new Sphere(green, Vec3f(0, -15000, 0), 14600));
+	}
+}
+
+
+RendererApp::RendererApp(GLUTMaster* glutMaster, int width, int height, const char* title) :
+		GfxGLUTWindow(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH, width, height), mRenderMode(RENDER_GL), nSamplesSqrt(4), sceneNr(1)
 {
 	m_scene.camera->setResolution(width, height);
 	
@@ -116,255 +329,38 @@ void RendererApp::createScene(int number) {
 	switch (number) {
 		default:
 		case 1:
-			createStillScene();
+			createStillScene(m_scene);
 			break;
 		case 2:
-			createMovingScene();
+			createMovingScene(m_scene);
 			break;
 		case 3:
-			createMovingScene2();
+			createMovingScene2(m_scene);
 			break;
 		case 4:
-			createRainScene();
+			createRainScene(m_scene);
 			break;
 		case 5:
-			createTextureScene();
+			createTextureScene(m_scene);
 			break;
 		case 6:
-			createBrushedScene();
+			createBrushedScene(m_scene);
 			break;
 		case 7:
-			createDOFScene();
+			createDOFScene(m_scene);
 			break;
 		case 8:
-			createImpSampScene();
+			createImpSampScene(m_scene);
 			break;
 		case 9:
-			createNormalScene();
+			createNormalScene(m_scene);
 			break;
 		case 0:
-			createInterestingScene();
+			createInterestingScene(m_scene);
 			break;
 		case 10:
 			break;
 	}
-}
-
-void RendererApp::createStillScene() {
-	Camera* oldCam = m_scene.camera;
-	m_scene.camera = new Camera(m_scene.camera->xRes(), m_scene.camera->yRes());
-
-	Math::Mat44f w2c = m_scene.camera->worldToCamera();
-	w2c.lookAt(Vec3f(0, 0, -5), Vec3f(0,0,1), Vec3f(0.0f, 1.0f, 0.0f));
-	m_scene.camera->setWorldToCamera(w2c);
-
-	m_scene.addLight(new PointLight(Vec3f(0,2,0), Color3f(50,50,50)));
-
-	SurfaceShader* blue = new LambertShader(Color3f(0, 0, 1));
-	m_scene.shapes.push_back(new Sphere(blue, Vec3f(0.5f, -0.6f, 0.5f), 0.4f));
-	m_scene.shapes.push_back(new Mesh(blue, readObjMesh("./obj/planeX2.obj")));
-}
-
-void RendererApp::createMovingScene() {
-	float shutterTime = 0.5f;
-
-	Camera* oldCam = m_scene.camera;
-	m_scene.camera = new ShutterCamera(shutterTime, oldCam);
-
-	Math::Mat44f w2c = m_scene.camera->worldToCamera();
-	w2c.lookAt(Vec3f(0, 0, -5), Vec3f(0,0,1), Vec3f(0.0f, 1.0f, 0.0f));
-	m_scene.camera->setWorldToCamera(w2c);
-
-	m_scene.addLight(new PointLight(Vec3f(0,0,0), Color3f(50,50,50)));
-	m_scene.addLight(new PointLight(Vec3f(1,0,5), Color3f(50,50,50)));
-
-	SurfaceShader * grey = new LambertShader(Color3f(1, 1, 1));
-	SurfaceShader * mirror = new MirrorShader(Color3f(0.2f,0.2f,0.2f),0.8f);
-	SurfaceShader * glass = new RefractionShader(1.6f,Color3f(0.2f,0.2f,0.2f),0.8f);
-
-	Motion* left = new TranslatedMotion(Vec3f(1, 0, 5), Vec3f(-0.5f, 0, 0));
-	Motion* offsetLeft = new TranslatedMotion(Vec3f(-1, 0.5f, 0), Vec3f(-0.5f, -0.5f, 0));
-	Motion* none = new TranslatedMotion(Vec3f(-0.5, 0.5, 5), Vec3f(0, 0, 0));
-
-	m_scene.shapes.push_back(new Sphere(grey, Vec3f(0, 0, 0), 0.4f, offsetLeft));
-	m_scene.shapes.push_back(new Sphere(glass, Vec3f(0.9f, 0, 0), 0.4f));
-	m_scene.shapes.push_back(new Mesh(grey, readObjMesh("./obj/planeX2.obj"), left, shutterTime, 2));
-	m_scene.shapes.push_back(new Mesh(mirror, readObjMesh("./obj/planeZ.obj"), none, shutterTime, 2));
-}
-
-void RendererApp::createMovingScene2() {
-	float shutterTime = 0.5f;
-
-	Camera* oldCam = m_scene.camera;
-	m_scene.camera = new ShutterCamera(shutterTime, oldCam);
-
-	Math::Mat44f w2c = m_scene.camera->worldToCamera();
-	w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0,0,1), Vec3f(0.0f, 1.0f, 0.0f));
-	m_scene.camera->setWorldToCamera(w2c);
-
-	SurfaceShader * aos = new AmbientOcclusionShader(Color3f(1,1,1), 10);
-	Motion* offsetLeft = new TranslatedMotion(Vec3f(0.5f, 0, 0), Vec3f(-1, 0, 0));
-
-	m_scene.shapes.push_back(new Sphere(aos, Vec3f(0, -30, 0), 29));
-	m_scene.shapes.push_back(new Sphere(aos, Vec3f(0, 0, 0), 1, offsetLeft));
-}
-
-void RendererApp::createRainScene() {
-	float shutterTime = 0.01f;
-
-	Camera* oldCam = m_scene.camera;
-	m_scene.camera = new ShutterCamera(shutterTime, oldCam);
-
-	Math::Mat44f w2c = m_scene.camera->worldToCamera();
-	w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0,0,1), Vec3f(0.0f, 1.0f, 0.0f));
-	m_scene.camera->setWorldToCamera(w2c);
-
-	m_scene.addLight(new PointLight(Vec3f(0,0,0), Color3f(10,10,10)));
-
-	m_scene.shapes.push_back(new Rain(Box3f(Vec3f(-3,-1,-5), Vec3f(3,3,5)), 10, 50, shutterTime, 2));
-}
-
-void RendererApp::createTextureScene() {
-	Camera* oldCam = m_scene.camera;
-	m_scene.camera = new Camera(m_scene.camera->xRes(), m_scene.camera->yRes());
-	delete oldCam;
-
-	Math::Mat44f w2c = m_scene.camera->worldToCamera();
-	w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0,0,1), Vec3f(0.0f, 1.0f, 0.0f));
-	m_scene.camera->setWorldToCamera(w2c);
-
-	m_scene.addLight(new PointLight(Vec3f(0,0,0), Color3f(10,10,10)));
-
-	SurfaceShader* metalPlate = new LambertShader((Texture*)new ImageTexture("./imgs/metalplate.hdr"));
-
-	m_scene.shapes.push_back(new Mesh(metalPlate, readObjMesh("./obj/planeZ.obj")));
-}
-
-void RendererApp::createDOFScene() {
-	Camera* oldCam = m_scene.camera;
-	m_scene.camera = new DOFCamera(m_scene.camera->xRes(), m_scene.camera->yRes(), 13, 3000);
-	delete oldCam;
-
-	Math::Mat44f w2c = m_scene.camera->worldToCamera();
-	w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0,0,1), Vec3f(0.0f, 1.0f, 0.0f));
-	m_scene.camera->setWorldToCamera(w2c);
-
-	m_scene.addLight(new PointLight(Vec3f(0,3,3), Color3f(50,50,50)));
-	m_scene.addLight(new PointLight(Vec3f(0,3,-1), Color3f(50,50,50)));
-
-	SurfaceShader* blue = new LambertShader(Color3f(0, 0, 1));
-	SurfaceShader* green = new LambertShader(Color3f(0, 1, 0));
-	SurfaceShader* red = new LambertShader(Color3f(1, 0, 0));
-
-	m_scene.shapes.push_back(new Sphere(blue, Vec3f(-1, 0, 1)));
-	m_scene.shapes.push_back(new Sphere(green, Vec3f(0, 0, 3)));
-	m_scene.shapes.push_back(new Sphere(red, Vec3f(1, 0, 5)));
-}
-
-void RendererApp::createBrushedScene() {
-	Camera* oldCam = m_scene.camera;
-	m_scene.camera = new Camera(m_scene.camera->xRes(), m_scene.camera->yRes());
-	delete oldCam;
-
-	Math::Mat44f w2c = m_scene.camera->worldToCamera();
-	w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0,0,1), Vec3f(0.0f, 1.0f, 0.0f));
-	m_scene.camera->setWorldToCamera(w2c);
-
-	m_scene.addLight(new RectangularLight(Color3f(10,10,10), 0, Vec3f(-0.5f,10,0.5f), Vec2f(1, 1)));
-
-	SurfaceShader* mirror = new MirrorShader(Color3f(0.8f,0.8f, 0.8f), 0.8f, 2);
-	SurfaceShader* brushedMetal1 = new BrushedShader(Color3f(0.8f,0.8f, 0.8f), 0.8f, 2, 0, 100000, 1000);
-	SurfaceShader* brushedMetal2 = new BrushedShader(Color3f(0.8f,0.8f, 0.8f), 0.8f, 2, 0, 1000, 100000);
-
-	m_scene.shapes.push_back(new Sphere(brushedMetal1, Vec3f(0,0,0), 0.7f));
-	m_scene.shapes.push_back(new Sphere(brushedMetal2, Vec3f(1.8f,0,0), 0.7f));
-	m_scene.shapes.push_back(new Sphere(mirror, Vec3f(-1.8f,0,0), 0.7f));
-}
-
-void RendererApp::createImpSampScene() {
-	Camera* oldCam = m_scene.camera;
-	m_scene.camera = new Camera(m_scene.camera->xRes(), m_scene.camera->yRes());
-	delete oldCam;
-
-	Math::Mat44f w2c = m_scene.camera->worldToCamera();
-	w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0,0,1), Vec3f(0.0f, 1.0f, 0.0f));
-	m_scene.camera->setWorldToCamera(w2c);
-
-	m_scene.addLight(new PointLight(Vec3f(0,0,0), Color3f(50,50,50)));
-
-	SurfaceShader * aos = new AmbientOcclusionShader(Color3f(1,1,1), 10, false, true);
-
-	m_scene.shapes.push_back(new Sphere(aos, Vec3f(0, -30, 0), 29));
-	m_scene.shapes.push_back(new Sphere(aos, Vec3f(0, 0, 0), 1));
-}
-
-void RendererApp::createNormalScene() {
-	Camera* oldCam = m_scene.camera;
-	m_scene.camera = new Camera(m_scene.camera->xRes(), m_scene.camera->yRes());
-	delete oldCam;
-
-	Math::Mat44f w2c = m_scene.camera->worldToCamera();
-	w2c.lookAt(Vec3f(-2000, 0, 0), Vec3f(0,0,-20), Vec3f(0.0f, 1.0f, 0.0f));
-	m_scene.camera->setWorldToCamera(w2c);
-
-	m_scene.addLight(new PointLight(Vec3f(-300,300,0), Color3f(1000000,1000000,1000000)));
-
-	SurfaceShader * red = new LambertShader(Color3f(1, 0, 0));
-	m_scene.shapes.push_back(new Mesh(red, readObjMesh("./obj/mitsubishi-car.obj")));
-}
-
-
-void RendererApp::createInterestingScene() {
-	float shutterTime = 0.005f;
-	float scale = 1000;
-
-	Camera* oldCam = m_scene.camera;
-	m_scene.camera = new ShutterCamera(shutterTime, new DOFCamera(oldCam->xRes(), oldCam->yRes(), 2000, 50000));
-	delete oldCam;
-
-	delete m_scene.background;
-	m_scene.background = new EnvironmentMap("./imgs/meadow2.hdr");
-
-	Math::Mat44f w2c = m_scene.camera->worldToCamera();
-	w2c.lookAt(Vec3f(2000, 0, 0), Vec3f(0,0,1), Vec3f(0.0f, 1.0f, 0.0f));
-	//w2c.lookAt(Vec3f(0, 1000, 0), Vec3f(0,0,1), Vec3f(0.0f, 1.0f, 0.0f));
-	m_scene.camera->setWorldToCamera(w2c);
-
-	m_scene.shapes.clear();
-
-	m_scene.addLight(new SphereCapLight(Color3f(25000000,20000000,5000000), 0, Vec3f(-290, 138, -29), 15, 1));
-	m_scene.addLight(new SphereCapLight(Color3f(25000000,20000000,5000000), 0, Vec3f(-290, 138, -879), 15, 1));
-	m_scene.addLight(new SphereCapLight(Color3f(25000000,20000000,5000000), 0, Vec3f(-290, 138, 841), 15, 1));
-	m_scene.addLight(new PointLight(Vec3f(0, 700, -800), Color3f(10000000,10000000,50000000)));
-	m_scene.addLight(new PointLight(Vec3f(0, 700, 200), Color3f(10000000,10000000,50000000)));
-
-	Motion* car = new TranslatedMotion(Vec3f(0, -200, 800), Vec3f(0,0,15 * scale)); // 15 m/s
-	Motion* carOpp = new TranslatedMotion(Vec3f(500, -200, -800), Vec3f(0,0,-15 * scale));
-	Motion* sceneDown = new TranslatedMotion(Vec3f(0, -220, 0), Vec3f(0,0,0));
-
-	SurfaceShader * red = new PathTracingShader(new LambertShader(Color3f(1, 0, 0)), Color3f(1, 0, 0));
-	SurfaceShader * darkGrey = new PathTracingShader(new LambertShader(Color3f(0.2f, 0.2f, 0.2f)), Color3f(0.2f, 0.2f, 0.2f));
-	SurfaceShader * streetGrey = new PathTracingShader(new LambertShader(Color3f(0.1f, 0.1f, 0.2f)), Color3f(0.1f, 0.1f, 0.2f));
-	SurfaceShader * mirror = new MirrorShader(Color3f(0.2f,0.2f,0.2f),0.5f);
-	SurfaceShader * grey = new PathTracingShader(new LambertShader(Color3f(0.8f, 0.8f, 0)), Color3f(0.8f, 0.8f, 0));
-	SurfaceShader * brushedMetal = new BrushedShader(Color3f(0.8f, 0.8f, 0.8f), 0.8f, 5, grey, 100, 1000, 1);
-	SurfaceShader * green = new PathTracingShader(new LambertShader(Color3f(0, 0.2f, 0)), Color3f(0, 0.2f, 0));
-	
-	m_scene.shapes.push_back(new Mesh(red, readObjMesh("./obj/mitsubishi-car.obj"), car, shutterTime, 5));
-	m_scene.shapes.push_back(new Mesh(mirror, readObjMesh("./obj/mitsubishi-wheel.obj"), car, shutterTime, 5));
-	m_scene.shapes.push_back(new Mesh(darkGrey, readObjMesh("./obj/mitsubishi-pneu.obj"), car, shutterTime, 5));
-	m_scene.shapes.push_back(new Mesh(mirror, readObjMesh("./obj/mitsubishi-light-interior.obj"), car, shutterTime, 5));
-	m_scene.shapes.push_back(new Mesh(red, readObjMesh("./obj/mitsubishi-car-opp.obj"), carOpp, shutterTime, 5));
-	m_scene.shapes.push_back(new Mesh(mirror, readObjMesh("./obj/mitsubishi-wheel-opp.obj"), carOpp, shutterTime, 5));
-	m_scene.shapes.push_back(new Mesh(darkGrey, readObjMesh("./obj/mitsubishi-pneu-opp.obj"), carOpp, shutterTime, 5));
-	m_scene.shapes.push_back(new Mesh(mirror, readObjMesh("./obj/mitsubishi-light-interior-opp.obj"), carOpp, shutterTime, 5));
-	
-	m_scene.shapes.push_back(new Mesh(brushedMetal, readObjMesh("./obj/pole.obj"), sceneDown, shutterTime, 2));
-	m_scene.shapes.push_back(new Mesh(streetGrey, readObjMesh("./obj/street.obj"), sceneDown, shutterTime, 2));
-	
-	m_scene.shapes.push_back(new Rain(Box3f(Vec3f(-1000,-200,-1000), Vec3f(1000,500,1000)), scale, 1000, shutterTime, 10));
-
-	m_scene.shapes.push_back(new Sphere(green, Vec3f(0, -15000, 0), 14600));
 }
 
 RendererApp::~RendererApp() { }
@@ -374,33 +370,33 @@ void RendererApp::reshape(int width, int height) {
 }
 
 void RendererApp::render() {
-	switch (m_renderMode) {
+	switch (mRenderMode) {
 		case RENDER_GL:
-			m_renderer.reset(new OpenGLRenderer());
+			mRenderer.reset(new OpenGLRenderer());
 			break;
 		case RENDER_REYES:
-			m_renderer.reset(new ReyesRenderer());
+			mRenderer.reset(new ReyesRenderer());
 			break;
 		case RENDER_REYES_TRACE:
-			m_renderer.reset(new ReyesTracingRenderer());
+			mRenderer.reset(new ReyesTracingRenderer());
 			break;
 		case RENDER_RASTERIZE:
-			m_renderer.reset(new RasterizationRenderer());
+			mRenderer.reset(new RasterizationRenderer());
 			break;
 		case RENDER_RAYTRACE:
-			m_renderer.reset(new RayTracingRenderer());
+			mRenderer.reset(new RayTracingRenderer());
 			break;
 		case RENDER_PATH:
-			m_renderer.reset(new MultipleRayTracingRenderer(nSamplesSqrt*nSamplesSqrt));
+			mRenderer.reset(new MultipleRayTracingRenderer(nSamplesSqrt*nSamplesSqrt));
 			break;
 	}
 
 	Stopwatch timer;
 	timer.start();
 	
-	m_renderer->render(m_scene);
+	mRenderer->render(m_scene);
 
-	std::cout << renderModeNames[m_renderMode] << " took: " << timer.cpuSeconds() << " seconds." << std::endl;
+	std::cout << renderModeNames[mRenderMode] << " took: " << timer.cpuSeconds() << " seconds." << std::endl;
 }
 
 void RendererApp::display() {
@@ -410,7 +406,7 @@ void RendererApp::display() {
 	snprintf(buffer, 1024,
 			 "Press \"h\" for help\n"
 			 "Rendering Mode: %s\n"
-			 "N Samples: %d", renderModeNames[m_renderMode], nSamplesSqrt*nSamplesSqrt);
+			 "N Samples: %d", renderModeNames[mRenderMode], nSamplesSqrt*nSamplesSqrt);
 	drawHUD(buffer);
 	drawHelp(helpString);
 	
@@ -552,31 +548,31 @@ void RendererApp::keyboard(unsigned char key, int x, int y) {
 			createScene(10);
 			break;
 		case 'i':
-			m_renderer->saveImage(renderModeNames[m_renderMode]);
+			mRenderer->saveImage(renderModeNames[mRenderMode]);
 			redisplay = false;
 			break;
 		case 'g':
-			m_renderMode = RENDER_GL;
+			mRenderMode = RENDER_GL;
 			break;
 			
 		case 't':
-			m_renderMode = RENDER_RAYTRACE;
+			mRenderMode = RENDER_RAYTRACE;
 			break;
 			
 		case 'r':
-			m_renderMode = RENDER_REYES;
+			mRenderMode = RENDER_REYES;
 			break;
 			
 		case 'R':
-			m_renderMode = RENDER_RASTERIZE;
+			mRenderMode = RENDER_RASTERIZE;
 			break;
 			
 		case 'x':
-			m_renderMode = RENDER_REYES_TRACE;
+			mRenderMode = RENDER_REYES_TRACE;
 			break;
 			
 		case 'p':
-			m_renderMode = RENDER_PATH;
+			mRenderMode = RENDER_PATH;
 			break;
 			
 		case 'w':

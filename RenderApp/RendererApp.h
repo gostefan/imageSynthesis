@@ -23,6 +23,15 @@
 
 using namespace OGL;
 
+enum RenderType {
+	RENDER_GL = 0,
+	RENDER_REYES,
+	RENDER_RASTERIZE,
+	RENDER_RAYTRACE,
+	RENDER_PATH,
+	RENDER_REYES_TRACE
+};
+
 class RendererApp : public GfxGLUTWindow {
 	public:
 		RendererApp(GLUTMaster* glutMaster,
@@ -30,18 +39,7 @@ class RendererApp : public GfxGLUTWindow {
 					const char * title);
 		virtual ~RendererApp();
 	
-		float radius;
 		void createScene(int n);
-		void createStillScene();
-		void createMovingScene();
-		void createMovingScene2();
-		void createRainScene();
-		void createTextureScene();
-		void createBrushedScene();
-		void createDOFScene();
-		void createImpSampScene();
-		void createNormalScene();
-		void createInterestingScene();
 		void render();
 	
 		// Event handlers
@@ -51,21 +49,12 @@ class RendererApp : public GfxGLUTWindow {
 		void motion(int x, int y);
 	
 	private:
-	
 		void pan(int dx, int dy, int dz);
 		void rotate(int dx, int dy);
 		void twist(int dx, int dy);
 	
-		enum {
-			RENDER_GL = 0,
-			RENDER_REYES,
-			RENDER_RASTERIZE,
-			RENDER_RAYTRACE,
-			RENDER_PATH,
-			RENDER_REYES_TRACE
-		} m_renderMode;
-
+		RenderType mRenderMode;
 		Scene m_scene;
-		std::unique_ptr<Renderer> m_renderer;
+		std::unique_ptr<Renderer> mRenderer;
 		int nSamplesSqrt, sceneNr;
 };
