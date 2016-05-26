@@ -25,19 +25,17 @@ class Scene {
 		Scene();
 		~Scene();
 	
-		Camera* camera;
-		int nPhotons;
-		std::unique_ptr<PhotonMap> pMap;
-		std::vector<Shape *> shapes;
-		std::vector<Light *> lights;
+		std::unique_ptr<Camera> camera;
 
-		void addLight(Light *);
-
+		std::vector<Shape*> shapes;
+		std::vector<Light*> lights;
 		EnvironmentMap* background;
 
+		int nPhotons;
 		int nEstimatePhotons;
 		float maxPhotonDist;
 		bool usePMapDirect;
+		std::unique_ptr<PhotonMap> pMap;
 
-		float shutterTime;
+		void addLight(Light*);
 };

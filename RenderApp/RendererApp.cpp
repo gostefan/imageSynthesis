@@ -87,7 +87,7 @@ namespace {
 	const float g_scaleFact = 0.002f;
 	
 	void createStillScene(Scene& scene) {
-		scene.camera = std::unique_ptr<Camera>(new Camera(scene.camera->xRes(), scene.camera->yRes()));
+		scene.camera.reset(new Camera(scene.camera->xRes(), scene.camera->yRes()));
 
 		Math::Mat44f w2c = scene.camera->worldToCamera();
 		w2c.lookAt(Vec3f(0, 0, -5), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
@@ -103,8 +103,7 @@ namespace {
 	void createMovingScene(Scene& scene) {
 		float shutterTime = 0.5f;
 
-		auto oldCam = std::move(scene.camera);
-		scene.camera = std::unique_ptr<Camera>(new ShutterCamera(shutterTime, oldCam));
+		scene.camera.reset(new ShutterCamera(shutterTime, std::move(scene.camera)));
 
 		Math::Mat44f w2c = scene.camera->worldToCamera();
 		w2c.lookAt(Vec3f(0, 0, -5), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
@@ -130,8 +129,7 @@ namespace {
 	void createMovingScene2(Scene& scene) {
 		float shutterTime = 0.5f;
 
-		auto oldCam = std::move(scene.camera);
-		scene.camera = std::unique_ptr<Camera>(new ShutterCamera(shutterTime, oldCam));
+		scene.camera.reset(new ShutterCamera(shutterTime, std::move(scene.camera)));
 
 		Math::Mat44f w2c = scene.camera->worldToCamera();
 		w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
@@ -147,8 +145,7 @@ namespace {
 	void createRainScene(Scene& scene) {
 		float shutterTime = 0.01f;
 
-		auto oldCam = std::move(scene.camera);
-		scene.camera = std::unique_ptr<Camera>(new ShutterCamera(shutterTime, oldCam));
+		scene.camera.reset(new ShutterCamera(shutterTime, std::move(scene.camera)));
 
 		Math::Mat44f w2c = scene.camera->worldToCamera();
 		w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
@@ -174,9 +171,7 @@ namespace {
 	}
 
 	void createDOFScene(Scene& scene) {
-		Camera* oldCam = scene.camera;
-		scene.camera = new DOFCamera(scene.camera->xRes(), scene.camera->yRes(), 13, 3000);
-		delete oldCam;
+		scene.camera.reset(new DOFCamera(scene.camera->xRes(), scene.camera->yRes(), 13, 3000));
 
 		Math::Mat44f w2c = scene.camera->worldToCamera();
 		w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
@@ -195,9 +190,7 @@ namespace {
 	}
 
 	void createBrushedScene(Scene& scene) {
-		Camera* oldCam = scene.camera;
-		scene.camera = new Camera(scene.camera->xRes(), scene.camera->yRes());
-		delete oldCam;
+		scene.camera.reset(new Camera(scene.camera->xRes(), scene.camera->yRes()));
 
 		Math::Mat44f w2c = scene.camera->worldToCamera();
 		w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
@@ -215,9 +208,7 @@ namespace {
 	}
 
 	void createImpSampScene(Scene& scene) {
-		Camera* oldCam = scene.camera;
-		scene.camera = new Camera(scene.camera->xRes(), scene.camera->yRes());
-		delete oldCam;
+		scene.camera.reset(new Camera(scene.camera->xRes(), scene.camera->yRes()));
 
 		Math::Mat44f w2c = scene.camera->worldToCamera();
 		w2c.lookAt(Vec3f(0, 0, -10), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));
@@ -232,9 +223,7 @@ namespace {
 	}
 
 	void createNormalScene(Scene& scene) {
-		Camera* oldCam = scene.camera;
-		scene.camera = new Camera(scene.camera->xRes(), scene.camera->yRes());
-		delete oldCam;
+		scene.camera.reset(new Camera(scene.camera->xRes(), scene.camera->yRes()));
 
 		Math::Mat44f w2c = scene.camera->worldToCamera();
 		w2c.lookAt(Vec3f(-2000, 0, 0), Vec3f(0, 0, -20), Vec3f(0.0f, 1.0f, 0.0f));
@@ -251,9 +240,7 @@ namespace {
 		float shutterTime = 0.005f;
 		float scale = 1000;
 
-		Camera* oldCam = scene.camera;
-		scene.camera = new ShutterCamera(shutterTime, new DOFCamera(oldCam->xRes(), oldCam->yRes(), 2000, 50000));
-		delete oldCam;
+		scene.camera.reset(new ShutterCamera(shutterTime, std::unique_ptr<Camera>(new DOFCamera(scene.camera->xRes(), scene.camera->yRes(), 2000, 50000))));
 
 		delete scene.background;
 		scene.background = new EnvironmentMap("./imgs/meadow2.hdr");

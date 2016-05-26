@@ -1,9 +1,11 @@
 
 #include "Camera.h"
 
+#include <memory>
+
 class ShutterCamera : public Camera {
 	public:
-		ShutterCamera(float shutterTime, Camera* recursiveCamera);
+		ShutterCamera(float shutterTime, std::unique_ptr<Camera>&& recursiveCamera);
 		virtual void generateRay(Ray* r, float x, float y) const;
 
 		virtual void renderGL() const { recursiveCamera->renderGL(); }
@@ -24,5 +26,5 @@ class ShutterCamera : public Camera {
 		virtual void setCameraToWorld(const Math::Mat44f& c2w) { recursiveCamera->setCameraToWorld(c2w); }
 	protected:
 		float shutterTime;
-		Camera* recursiveCamera;
+		std::unique_ptr<Camera> recursiveCamera;
 };
