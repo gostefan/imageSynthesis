@@ -59,20 +59,7 @@ namespace {
 		"    '1-3'   Cycle through point sets\n"
 		"    'q-i'   Cycle through warping modes\n"
 		"    ' '     Reset camera\n";
-	
-	enum {
-		RANDOM,
-		UNIFORM,
-		JITTERED,
-		NUM_MODES
-	};
-	
-	const char *modes[] = {
-		"Random",
-		"Uniform",
-		"Jittered",
-	};
-	
+		
 	enum {
 		UNIFORM_SQUARE,
 		UNIFORM_DISK,
@@ -100,9 +87,9 @@ namespace {
 
 
 SamplingApp::SamplingApp(GLUTMaster* glutMaster, int width, int height, const char* title) :
+		mSampler(new RandomSampler()),
 		GfxGLUTWindow(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH, width, height),
 		m_mouseMode(MM_NULL),
-		m_pointSet(RANDOM),
 		m_warpMode(UNIFORM_SQUARE),
 		m_drawGrid(true), nPointsSqrt(10), nPoints(100), capValue(100), nValue(50)
 {
@@ -121,7 +108,7 @@ SamplingApp::SamplingApp(GLUTMaster* glutMaster, int width, int height, const ch
 	
     glPixelZoom(1.0f, -1.0f);
 
-	currentWarping.reset(new UniformSquareWarping());
+	mWarping.reset(new UniformSquareWarping());
 
 	inputPoints.resize(1);
 	warpedPoints.reset(new Math::Vec3f[1]);
@@ -194,7 +181,7 @@ void SamplingApp::display() {
              "Warp mode: %s\n"
 			 "Sample number: %i\n"
 			 "Cap Value:%f\n",
-             modes[m_pointSet],
+             mSampler->getName(),
              warpModes[m_warpMode],
 			 nPoints, capValue/100.);
     drawHUD(buffer);
@@ -215,76 +202,76 @@ void SamplingApp::reshape(int width, int height) {
 void SamplingApp::keyboard(unsigned char key, int x, int y) {
     switch(key) {
         case '1': 
-			m_pointSet = RANDOM; 
+			mSampler.reset(new RandomSampler());
 			generateSamples();
 			break;
-        case '2': 
-			m_pointSet = UNIFORM;
+        case '2':
+			mSampler.reset(new UniformSampler());
 			generateSamples();
 			break;
-        case '3': 
-			m_pointSet = JITTERED; 
+        case '3':
+			mSampler.reset(new JitterSampler());
 			generateSamples();
 			break;
 			
 
         case 'q': 
 			m_warpMode = UNIFORM_SQUARE;
-			currentWarping.reset(new UniformSquareWarping());
+			mWarping.reset(new UniformSquareWarping());
 			warpSamples();
 			break;
         case 'w': 
 			m_warpMode = UNIFORM_DISK; 
-			currentWarping.reset(new UniformDiskWarping());
+			mWarping.reset(new UniformDiskWarping());
 			warpSamples();
 			break;
         case 'e': 
 			m_warpMode = UNIFORM_CYLINDER;
-			currentWarping.reset(new UniformCylinderWarping());
+			mWarping.reset(new UniformCylinderWarping());
 			warpSamples();
 			break;
         case 'r': 
 			m_warpMode = UNIFORM_SPHERE;
-			currentWarping.reset(new UniformSphereWarping());
+			mWarping.reset(new UniformSphereWarping());
 			warpSamples();
 			break;
         case 't':
 			m_warpMode = UNIFORM_SPHERE_CAP;
 			if (capValue < 200)
 				capValue++;
-			currentWarping.reset(new UniformSphereCapWarping(capValue / 100.f));
+			mWarping.reset(new UniformSphereCapWarping(capValue / 100.f));
 			warpSamples();
 			break;
         case 'g':
 			m_warpMode = UNIFORM_SPHERE_CAP; 
 			if (capValue > 1)
 				capValue--;
-			currentWarping.reset(new UniformSphereCapWarping(capValue / 100.f));
+			mWarping.reset(new UniformSphereCapWarping(capValue / 100.f));
 			warpSamples();
 			break;
         case 'y':
 		case 'z':
 			m_warpMode = UNIFORM_HEMISPHERE;
-			currentWarping.reset(new UniformHemisphereWarping());
+			mWarping.reset(new UniformHemisphereWarping());
 			warpSamples();
 			break;
         case 'u': 
 			m_warpMode = COSINE_HEMISPHERE;
-			currentWarping.reset(new CosineHemisphereWarping());
+			mWarping.reset(new CosineHemisphereWarping());
 			warpSamples();
 			break;
         case 'i': 
 			m_warpMode = PHONG_HEMISPHERE; 
 			if (nValue < 100)
 				nValue++;
-			currentWarping.reset(new PhongHemisphereWarping(nValue / 100.f));
+			mWarping.reset(new PhongHemisphereWarping(nValue / 100.f));
 			warpSamples();
 			break;
         case 'k': 
 			m_warpMode = PHONG_HEMISPHERE; 
 			if (nValue > 0)
 				nValue--;
-			currentWarping.reset(new PhongHemisphereWarping(nValue / 100.f));
+			mWarping.reset(new PhongHemisphereWarping(nValue / 100.f));
 			warpSamples();
 			break;
 			
@@ -345,7 +332,7 @@ void SamplingApp::keyboard(unsigned char key, int x, int y) {
 						break;
 				}
 				//double nominator = sin(warpedPoints[i].x)*sin(warpedPoints[i].y)*sin(warpedPoints[i].z);
-				double denominator = currentWarping->pdf(inputPoints[i]);
+				double denominator = mWarping->pdf(inputPoints[i]);
 				sum += nominator/denominator;
 			}
 			sum /= nPointsSqrt*nPointsSqrt;
@@ -354,7 +341,7 @@ void SamplingApp::keyboard(unsigned char key, int x, int y) {
 		case 's':
 			sum = 0;
 			for(size_t i = 0; i < nPointsSqrt*nPointsSqrt; i++) {
-				double denominator = currentWarping->pdf(inputPoints[i]);
+				double denominator = mWarping->pdf(inputPoints[i]);
 				sum += 1/denominator;
 			}
 			sum /= nPointsSqrt*nPointsSqrt;
@@ -376,22 +363,7 @@ void SamplingApp::generateSamples() {
 
 void SamplingApp::drawSamples() {
 	inputPoints.resize(nPointsSqrt*nPointsSqrt);
-	
-	Sampler* currentSampler;
-	switch (m_pointSet) {
-		case RANDOM:
-			currentSampler = &RandomSampler();
-			break;
-		default:
-		case UNIFORM:
-			currentSampler = &UniformSampler();
-			break;
-		case JITTERED:
-			currentSampler = &JitterSampler();
-			break;
-	}
-
-	currentSampler->generateSamples(nPointsSqrt, inputPoints);
+	mSampler->generateSamples(nPointsSqrt, inputPoints);
 }
 
 void SamplingApp::warpSamples() {
@@ -399,7 +371,7 @@ void SamplingApp::warpSamples() {
 
 	for (unsigned int i = 0; i < nPointsSqrt*nPointsSqrt; i++) {
 		Vec2f current = inputPoints[i];
-		warpedPoints[i] = currentWarping->warp(current);
+		warpedPoints[i] = mWarping->warp(current);
 	}
 }
 
@@ -487,7 +459,7 @@ void SamplingApp::drawGrid(int gridRes) {
 
 
 Math::Vec3f SamplingApp::warpPoint(Math::Vec2f Sample) {
-	return currentWarping->warp(Sample);
+	return mWarping->warp(Sample);
 }
 
 unsigned int SamplingApp::getNPoints() {

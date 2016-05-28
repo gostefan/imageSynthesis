@@ -17,6 +17,7 @@
 #include <memory>
 #include <vector>
 
+class Sampler;
 class Warping;
 
 class SamplingApp : public OGL::GfxGLUTWindow {
@@ -37,9 +38,10 @@ class SamplingApp : public OGL::GfxGLUTWindow {
 		void setNPoints(unsigned int nPoints);
     
 	private:
+		std::unique_ptr<Sampler> mSampler;
+		std::unique_ptr<Warping> mWarping;
 		unsigned int capValue;
 		unsigned int nValue;
-		std::unique_ptr<Warping> currentWarping;
 		unsigned int nPoints;
 		unsigned int nPointsSqrt;
 		std::vector<Math::Vec2f> inputPoints;
@@ -59,7 +61,6 @@ class SamplingApp : public OGL::GfxGLUTWindow {
 			MM_SELECT
 		} m_mouseMode;
     
-		int m_pointSet;
 		int m_warpMode;
 	
 		struct Camera {

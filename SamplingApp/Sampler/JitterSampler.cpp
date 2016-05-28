@@ -3,6 +3,10 @@
 
 #include <Math/Rand.h>
 
+namespace {
+	const char* NAME = "Jitter";
+}
+
 /**
  * Generates uniformly distributed with jitter Samples in the range [0,1].
  *
@@ -16,4 +20,8 @@ void JitterSampler::generateSamples(int nSamplesSqrt, std::vector<Math::Vec2f>& 
 			sampleStorage[i+nSamplesSqrt*j] = Math::Vec2f(spacing * (i + x), spacing * (j + y));
 		}
 	}
+}
+
+const char* JitterSampler::getName() {
+	return NAME;
 }

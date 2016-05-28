@@ -3,6 +3,10 @@
 
 #include <Math/Rand.h>
 
+namespace {
+	const char* NAME = "Random";
+}
+
 /**
  * Generates uniformly distributed Samples in the range [0,1].
  *
@@ -13,4 +17,8 @@ void RandomSampler::generateSamples(int nSamplesSqrt, std::vector<Math::Vec2f>& 
 		const float y = static_cast<float>(rand()) / RAND_MAX;
 		sampleStorage[i] = Math::Vec2f(x, y);
 	}
+}
+
+const char* RandomSampler::getName() {
+	return NAME;
 }

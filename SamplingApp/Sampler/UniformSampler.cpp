@@ -1,6 +1,10 @@
 
 #include "UniformSampler.h"
 
+namespace {
+	const char* NAME = "Uniform";
+}
+
 /**
  * Generates uniformly distributed Samples in the range [0,1].
  *
@@ -12,4 +16,8 @@ void UniformSampler::generateSamples(int nSamplesSqrt, std::vector<Math::Vec2f>&
 			sampleStorage[i+nSamplesSqrt*j] = Math::Vec2f(spacing * (2*i + 1), spacing * (2*j + 1));
 		}
 	}
+}
+
+const char* UniformSampler::getName() {
+	return NAME;
 }
