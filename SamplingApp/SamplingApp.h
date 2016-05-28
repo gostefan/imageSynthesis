@@ -8,18 +8,6 @@
 
 #pragma once
 
-#include "Sampler/JitterSampler.h"
-#include "Sampler/RandomSampler.h"
-#include "Sampler/UniformSampler.h"
-#include "Warping/CosineHemisphereWarping.h"
-#include "Warping/PhongHemisphereWarping.h"
-#include "Warping/UniformCylinderWarping.h"
-#include "Warping/UniformDiskWarping.h"
-#include "Warping/UniformHemisphereWarping.h"
-#include "Warping/UniformSphereCapWarping.h"
-#include "Warping/UniformSphereWarping.h"
-#include "Warping/UniformSquareWarping.h"
-
 #include <Math/Vec2.h>
 #include <Math/Vec3.h>
 #include <Math/Mat44.h>
@@ -28,6 +16,8 @@
 #include <math.h>
 #include <memory>
 #include <vector>
+
+class Warping;
 
 class SamplingApp : public OGL::GfxGLUTWindow {
 	public:
@@ -40,8 +30,9 @@ class SamplingApp : public OGL::GfxGLUTWindow {
 		void display(void);
 		void reshape(int w, int h);
 		void keyboard(unsigned char key, int x, int y);
-		void motion(int x, int y);
 		void mouse(int button, int state, int x, int y);
+		void motion(int x, int y);
+
 		unsigned int getNPoints();
 		void setNPoints(unsigned int nPoints);
     

@@ -12,6 +12,18 @@
 
 #include "SamplingApp.h"
 
+#include "Sampler/JitterSampler.h"
+#include "Sampler/RandomSampler.h"
+#include "Sampler/UniformSampler.h"
+#include "Warping/CosineHemisphereWarping.h"
+#include "Warping/PhongHemisphereWarping.h"
+#include "Warping/UniformCylinderWarping.h"
+#include "Warping/UniformDiskWarping.h"
+#include "Warping/UniformHemisphereWarping.h"
+#include "Warping/UniformSphereCapWarping.h"
+#include "Warping/UniformSphereWarping.h"
+#include "Warping/UniformSquareWarping.h"
+
 #include <Math/Rand.h>
 #include <Math/Warp.h>
 #include <Math/MathGL.h>
@@ -64,28 +76,21 @@ namespace {
 	enum {
 		UNIFORM_SQUARE,
 		UNIFORM_DISK,
-		
 		UNIFORM_CYLINDER,
-		
 		UNIFORM_SPHERE,
 		UNIFORM_SPHERE_CAP,
-		
 		UNIFORM_HEMISPHERE,
 		COSINE_HEMISPHERE,
 		PHONG_HEMISPHERE,
-
 		NUM_WARP_MODES
 	};
 	
 	const char* warpModes[] = {
 		"Uniform Square",
 		"Uniform Disk",
-		
 		"Uniform Cylinder",
-		
 		"Uniform Sphere",
 		"Uniform Sphere Cap",
-		
 		"Uniform Hemisphere",
 		"Cosine Hemisphere",
 		"Phong Hemisphere",
@@ -114,7 +119,7 @@ SamplingApp::SamplingApp(GLUTMaster* glutMaster, int width, int height, const ch
     glEnable(GL_POINT_SMOOTH);
     glPointSize(3.0f);
 	
-    glPixelZoom(1.0f,-1.0f);
+    glPixelZoom(1.0f, -1.0f);
 
 	currentWarping.reset(new UniformSquareWarping());
 
@@ -143,8 +148,10 @@ void SamplingApp::update() {
     display();
 }
 
-
-void SamplingApp::display(void) {
+/**
+ * Renders to the viewport
+ */
+void SamplingApp::display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	// update camera matrix
@@ -157,7 +164,7 @@ void SamplingApp::display(void) {
     glLoadIdentity();
 	
     // Set perspective projection
-    gluPerspective(55, float(m_windowWidth)/float(m_windowHeight), 0.1f, 100.0f);
+    gluPerspective(55, static_cast<float>(m_windowWidth) / static_cast<float>(m_windowHeight), 0.1f, 100.0f);
 	
     // Place camera
     glMatrixMode(GL_MODELVIEW);
