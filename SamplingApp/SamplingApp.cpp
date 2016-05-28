@@ -37,7 +37,9 @@
 #if !defined(_WIN32)
 #include <unistd.h>
 #endif
+
 #include <iomanip>
+#include <functional>
 
 
 using namespace std;
@@ -46,7 +48,6 @@ using namespace Math;
 
 
 namespace {
-	
 	const char* helpString = 
 		"How to use this demo:\n"
 		"\n"
@@ -59,38 +60,22 @@ namespace {
 		"    '1-3'   Cycle through point sets\n"
 		"    'q-i'   Cycle through warping modes\n"
 		"    ' '     Reset camera\n";
-		
-	enum {
-		UNIFORM_SQUARE,
-		UNIFORM_DISK,
-		UNIFORM_CYLINDER,
-		UNIFORM_SPHERE,
-		UNIFORM_SPHERE_CAP,
-		UNIFORM_HEMISPHERE,
-		COSINE_HEMISPHERE,
-		PHONG_HEMISPHERE,
-		NUM_WARP_MODES
-	};
-	
-	const char* warpModes[] = {
-		"Uniform Square",
-		"Uniform Disk",
-		"Uniform Cylinder",
-		"Uniform Sphere",
-		"Uniform Sphere Cap",
-		"Uniform Hemisphere",
-		"Cosine Hemisphere",
-		"Phong Hemisphere",
-	};
-	
+
+	auto VALUE_X_Y = [](const Math::Vec3f& point) { return pow(point.x, 2) + pow(point.y, 2)				  ; };
+	auto VALUE_X   = [](const Math::Vec3f& point) { return					 pow(point.y, 2)				  ; };
+	auto VALUE_Z   = [](const Math::Vec3f& point) { return									   pow(point.z, 2); };
+	//double nominator = sin(warpedPoints[i].x)*sin(warpedPoints[i].y)*sin(warpedPoints[i].z);
+
+	std::function<float(Math::Vec3f&)> VALUES[] = { VALUE_X_Y, VALUE_X, VALUE_Z };
+	const char* VALUE_NAMES[] = { "x^2 + y^2", "   x^2   ", "   z^2   " };
 } // namespace 
 
 
 SamplingApp::SamplingApp(GLUTMaster* glutMaster, int width, int height, const char* title) :
 		mSampler(new RandomSampler()),
+		mWarping(new UniformSquareWarping),
 		GfxGLUTWindow(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH, width, height),
 		m_mouseMode(MM_NULL),
-		m_warpMode(UNIFORM_SQUARE),
 		m_drawGrid(true), nPointsSqrt(10), nPoints(100), capValue(100), nValue(50)
 {
     glutMaster->createWindow(title, this);
@@ -107,8 +92,6 @@ SamplingApp::SamplingApp(GLUTMaster* glutMaster, int width, int height, const ch
     glPointSize(3.0f);
 	
     glPixelZoom(1.0f, -1.0f);
-
-	mWarping.reset(new UniformSquareWarping());
 
 	inputPoints.resize(1);
 	warpedPoints.reset(new Math::Vec3f[1]);
@@ -182,7 +165,7 @@ void SamplingApp::display() {
 			 "Sample number: %i\n"
 			 "Cap Value:%f\n",
              mSampler->getName(),
-             warpModes[m_warpMode],
+             mWarping->getName(),
 			 nPoints, capValue/100.);
     drawHUD(buffer);
     drawHelp(helpString);
@@ -200,90 +183,77 @@ void SamplingApp::reshape(int width, int height) {
 
 
 void SamplingApp::keyboard(unsigned char key, int x, int y) {
-    switch(key) {
-        case '1': 
+	switch (key) {
+		case '1':
 			mSampler.reset(new RandomSampler());
 			generateSamples();
 			break;
-        case '2':
+		case '2':
 			mSampler.reset(new UniformSampler());
 			generateSamples();
 			break;
-        case '3':
+		case '3':
 			mSampler.reset(new JitterSampler());
 			generateSamples();
 			break;
-			
 
-        case 'q': 
-			m_warpMode = UNIFORM_SQUARE;
+		case 'q':
 			mWarping.reset(new UniformSquareWarping());
 			warpSamples();
 			break;
-        case 'w': 
-			m_warpMode = UNIFORM_DISK; 
+		case 'w':
 			mWarping.reset(new UniformDiskWarping());
 			warpSamples();
 			break;
-        case 'e': 
-			m_warpMode = UNIFORM_CYLINDER;
+		case 'e':
 			mWarping.reset(new UniformCylinderWarping());
 			warpSamples();
 			break;
-        case 'r': 
-			m_warpMode = UNIFORM_SPHERE;
+		case 'r':
 			mWarping.reset(new UniformSphereWarping());
 			warpSamples();
 			break;
-        case 't':
-			m_warpMode = UNIFORM_SPHERE_CAP;
+		case 't':
 			if (capValue < 200)
 				capValue++;
 			mWarping.reset(new UniformSphereCapWarping(capValue / 100.f));
 			warpSamples();
 			break;
-        case 'g':
-			m_warpMode = UNIFORM_SPHERE_CAP; 
+		case 'g':
 			if (capValue > 1)
 				capValue--;
 			mWarping.reset(new UniformSphereCapWarping(capValue / 100.f));
 			warpSamples();
 			break;
-        case 'y':
+		case 'y':
 		case 'z':
-			m_warpMode = UNIFORM_HEMISPHERE;
 			mWarping.reset(new UniformHemisphereWarping());
 			warpSamples();
 			break;
-        case 'u': 
-			m_warpMode = COSINE_HEMISPHERE;
+		case 'u':
 			mWarping.reset(new CosineHemisphereWarping());
 			warpSamples();
 			break;
-        case 'i': 
-			m_warpMode = PHONG_HEMISPHERE; 
+		case 'i':
 			if (nValue < 100)
 				nValue++;
 			mWarping.reset(new PhongHemisphereWarping(nValue / 100.f));
 			warpSamples();
 			break;
-        case 'k': 
-			m_warpMode = PHONG_HEMISPHERE; 
+		case 'k':
 			if (nValue > 0)
 				nValue--;
 			mWarping.reset(new PhongHemisphereWarping(nValue / 100.f));
 			warpSamples();
 			break;
-			
 
+		case 'G': m_drawGrid = !m_drawGrid;
+			update();
+			break;
 
-        case 'G': m_drawGrid = !m_drawGrid;
-            update();
-            break;
-
-        case ' ':
+		case ' ':
 			resetView();
-            update();
+			update();
 			break;
 
 		case '*':
@@ -312,31 +282,16 @@ void SamplingApp::keyboard(unsigned char key, int x, int y) {
 
 		case 'm':
 			double sum;
-			sum = 0;
-			for(size_t i = 0; i < nPointsSqrt*nPointsSqrt; i++) {
-				double nominator = 0;
-				switch (m_warpMode) {
-					case UNIFORM_SQUARE: 
-						nominator = pow(warpedPoints[i].x, 2) + pow(warpedPoints[i].y, 2);
-						break;
-					case UNIFORM_DISK: 
-						nominator = pow(warpedPoints[i].x, 2);
-						break;
-					case UNIFORM_SPHERE:
-					case UNIFORM_HEMISPHERE:
-					case COSINE_HEMISPHERE: 
-					case UNIFORM_CYLINDER:
-					case UNIFORM_SPHERE_CAP:
-					case PHONG_HEMISPHERE:
-						nominator = pow(warpedPoints[i].z, 2);
-						break;
+			for (size_t valuePos = 0; valuePos < 3; valuePos++) {
+				sum = 0;
+				for (size_t i = 0; i < nPointsSqrt*nPointsSqrt; i++) {
+					double nominator = VALUES[valuePos](warpedPoints[i]);
+					double denominator = mWarping->pdf(inputPoints[i]);
+					sum += nominator / denominator;
 				}
-				//double nominator = sin(warpedPoints[i].x)*sin(warpedPoints[i].y)*sin(warpedPoints[i].z);
-				double denominator = mWarping->pdf(inputPoints[i]);
-				sum += nominator/denominator;
+				sum /= nPointsSqrt*nPointsSqrt;
+				cout << "Estimated Value for function " << VALUE_NAMES[valuePos] << ": " << sum << "\n";
 			}
-			sum /= nPointsSqrt*nPointsSqrt;
-			cout << "Estimated Value: " << sum << "\n";
 			break;
 		case 's':
 			sum = 0;

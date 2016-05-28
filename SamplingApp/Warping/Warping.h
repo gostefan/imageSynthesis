@@ -8,6 +8,7 @@ using namespace Math;
 
 class Warping {
 	public:
-		virtual Vec3f warp(Vec2f sample) = 0;
-		virtual float pdf(Vec2f coord) = 0;
+		virtual Vec3f warp(Vec2f sample) const = 0;
+		virtual float pdf(Vec2f coord) const = 0;
+		virtual const char* getName() const = 0;
 };

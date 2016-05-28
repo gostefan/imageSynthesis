@@ -40,6 +40,7 @@ class SamplingApp : public OGL::GfxGLUTWindow {
 	private:
 		std::unique_ptr<Sampler> mSampler;
 		std::unique_ptr<Warping> mWarping;
+		size_t mValueCalc;
 		unsigned int capValue;
 		unsigned int nValue;
 		unsigned int nPoints;
@@ -60,8 +61,6 @@ class SamplingApp : public OGL::GfxGLUTWindow {
 			MM_MOVE,
 			MM_SELECT
 		} m_mouseMode;
-    
-		int m_warpMode;
 	
 		struct Camera {
 			float incline, azimuth, distance;
