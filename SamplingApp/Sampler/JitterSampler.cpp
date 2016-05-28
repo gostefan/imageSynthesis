@@ -11,7 +11,7 @@ namespace {
  * Generates uniformly distributed with jitter Samples in the range [0,1].
  *
  */
-void JitterSampler::generateSamples(int nSamplesSqrt, std::vector<Math::Vec2f>& sampleStorage) {
+void JitterSampler::generateSamples(size_t nSamplesSqrt, std::vector<Math::Vec2f>& sampleStorage) {
 	float spacing = 1.f/(nSamplesSqrt);
 	for (size_t i = 0; i < nSamplesSqrt; i++) {
 		for (size_t j = 0; j < nSamplesSqrt; j++) {

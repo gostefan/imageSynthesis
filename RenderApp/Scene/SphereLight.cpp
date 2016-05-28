@@ -4,7 +4,7 @@
 
 
 namespace {
-	const double PI = 3.1415926f;
+	const float PI = 3.1415926f;
 }
 
 SphereLight::SphereLight(Math::Color3f power_in, SurfaceShader* surfaceShader, const Math::Vec3f& location, float radius, unsigned int nSamplesSqrt_in, Displacement* displacement) : 

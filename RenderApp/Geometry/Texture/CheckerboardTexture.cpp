@@ -8,7 +8,7 @@ CheckerboardTexture::CheckerboardTexture(float frequencyX_in, float frequencyY_i
 
 Color3f CheckerboardTexture::getAmbient (const HitInfo& hit) {
 	Vec3f position = hit.P;
-	float n = fmod(position.x * 2 * frequencyX + position.y * 2 * frequencyY + position.z * 2 * frequencyZ, 2);
+	float n = static_cast<float>(fmod(position.x * 2 * frequencyX + position.y * 2 * frequencyY + position.z * 2 * frequencyZ, 2));
 	return n > 1 ? color2 : color1;
 }
 Color3f CheckerboardTexture::getDiffuse (const HitInfo& hit) {

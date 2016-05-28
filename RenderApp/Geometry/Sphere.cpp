@@ -7,7 +7,7 @@
 using namespace Math;
 
 namespace {
-	const double PI = 3.1415926f;
+	const float PI = 3.1415926f;
 }
 
 Sphere::Sphere(SurfaceShader* ss, const Vec3f& loc, float rad, Motion* motion, Displacement* displ) :

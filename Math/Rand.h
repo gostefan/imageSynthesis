@@ -110,11 +110,11 @@ namespace Math {
 
 
 	inline bool RandMT::nextb() {
-		return nexti() & 0x80000000UL;
+		return (nexti() & 0x80000000UL) > 0;
 	}
 
 	inline unsigned char RandMT::nextc() {
-		return (nexti() & 0xE0000000UL) >> 14;
+		return static_cast<uint8_t>((nexti() & 0xE0000000UL) >> 14);
 	}
 
 	inline float RandMT::nextf() {
