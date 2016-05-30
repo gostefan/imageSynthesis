@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{123422C1-A5F6-4037-8DA0-2329ED47323B}</ProjectGuid>
+    <RootNamespace>ImageSynthesisFramework-vs2008</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>14.0.24730.2</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\SamplingVisualization\bin\</OutDir>
+    <IntDir>$(SolutionDir)\SamplingVisualization\build\$(Configuration)\</IntDir>
+    <ExtensionsToDeleteOnClean>*.*.dll%3b*.obj%3b*.ilk%3b*.tlb%3b*.tli%3b*.tlh%3b*.tmp%3b*.rsp%3b*.pgc%3b*.pgd%3b*.meta%3b$(TargetPath)%3b$(SolutionDir)build</ExtensionsToDeleteOnClean>
+    <LinkIncremental>false</LinkIncremental>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)\SamplingVisualization\bin\</OutDir>
+    <IntDir>$(SolutionDir)\SamplingVisualization\build\$(Configuration)\</IntDir>
+    <ExtensionsToDeleteOnClean>*.*.dll%3b*.obj%3b*.ilk%3b*.tlb%3b*.tli%3b*.tlh%3b*.tmp%3b*.rsp%3b*.pgc%3b*.pgd%3b*.meta%3b$(TargetPath)%3b$(SolutionDir)build</ExtensionsToDeleteOnClean>
+    <LinkIncremental>false</LinkIncremental>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\dependencies\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\dependencies\windows\lib32\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)dependencies\windows\lib32\$(Configuration)\*.dll" "$(OutDir)" /Y
+copy "$(SolutionDir)dependencies\windows\lib32\$(Configuration)\*.dll" "$(OutDir)" /Y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\dependencies\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\dependencies\windows\lib32\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)dependencies\windows\lib32\$(Configuration)\*.dll" "$(OutDir)" /Y
+copy "$(SolutionDir)dependencies\windows\lib32\$(Configuration)\*.dll" "$(OutDir)" /Y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="dependencies\windows\include\gl\freeglut.h" />
+    <ClInclude Include="dependencies\windows\include\gl\freeglut_ext.h" />
+    <ClInclude Include="dependencies\windows\include\gl\freeglut_std.h" />
+    <ClInclude Include="dependencies\windows\include\gl\glew.h" />
+    <ClInclude Include="dependencies\windows\include\gl\glut.h" />
+    <ClInclude Include="math\Core.h" />
+    <ClInclude Include="math\Fwd.h" />
+    <ClInclude Include="math\LimitsT.h" />
+    <ClInclude Include="math\MathGL.h" />
+    <ClInclude Include="math\MathT.h" />
+    <ClInclude Include="Math\Rand.h" />
+    <ClInclude Include="Math\stdint.h" />
+    <ClInclude Include="math\Vec2.h" />
+    <ClInclude Include="math\Vec3.h" />
+    <ClInclude Include="math\Vec4.h" />
+    <ClInclude Include="ogl\Core.h" />
+    <ClInclude Include="ogl\FBO.h" />
+    <ClInclude Include="ogl\GfxGLUTWindow.h" />
+    <ClInclude Include="ogl\GLUTMaster.h" />
+    <ClInclude Include="ogl\GLUTWindow.h" />
+    <ClInclude Include="ogl\Primitive.h" />
+    <ClInclude Include="ogl\Text.h" />
+    <ClInclude Include="platform\config.h" />
+    <ClInclude Include="platform\Fwd.h" />
+    <ClInclude Include="platform\Types.h" />
+    <ClInclude Include="SamplingApp\Sampler\JitterSampler.h" />
+    <ClInclude Include="SamplingApp\Sampler\RandomSampler.h" />
+    <ClInclude Include="SamplingApp\Sampler\Sampler.h" />
+    <ClInclude Include="SamplingApp\Sampler\UniformSampler.h" />
+    <ClInclude Include="SamplingApp\SamplingApp.h" />
+    <ClInclude Include="SamplingApp\Warping\BrushedMetalWarping.h" />
+    <ClInclude Include="SamplingApp\Warping\CosineHemisphereWarping.h" />
+    <ClInclude Include="SamplingApp\Warping\PhongHemisphereWarping.h" />
+    <ClInclude Include="SamplingApp\Warping\UniformCylinderWarping.h" />
+    <ClInclude Include="SamplingApp\Warping\UniformDiskWarping.h" />
+    <ClInclude Include="SamplingApp\Warping\UniformHemisphereWarping.h" />
+    <ClInclude Include="SamplingApp\Warping\UniformSphereCapWarping.h" />
+    <ClInclude Include="SamplingApp\Warping\UniformSphereWarping.h" />
+    <ClInclude Include="SamplingApp\Warping\UniformSquareWarping.h" />
+    <ClInclude Include="SamplingApp\Warping\Warping.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MeshViewer\MeshViewer.cpp" />
+    <ClCompile Include="ogl\FBO.cpp" />
+    <ClCompile Include="ogl\GfxGLUTWindow.cpp" />
+    <ClCompile Include="ogl\GLUTMaster.cpp" />
+    <ClCompile Include="ogl\GLUTWindow.cpp" />
+    <ClCompile Include="ogl\Primitive.cpp" />
+    <ClCompile Include="ogl\Text.cpp" />
+    <ClCompile Include="SamplingApp\main.cpp" />
+    <ClCompile Include="SamplingApp\Sampler\JitterSampler.cpp" />
+    <ClCompile Include="SamplingApp\Sampler\RandomSampler.cpp" />
+    <ClCompile Include="SamplingApp\Sampler\UniformSampler.cpp" />
+    <ClCompile Include="SamplingApp\SamplingApp.cpp" />
+    <ClCompile Include="SamplingApp\Warping\BrushedMetalWarping.cpp" />
+    <ClCompile Include="SamplingApp\Warping\CosineHemisphereWarping.cpp" />
+    <ClCompile Include="SamplingApp\Warping\PhongHemisphereWarping.cpp" />
+    <ClCompile Include="SamplingApp\Warping\UniformCylinderWarping.cpp" />
+    <ClCompile Include="SamplingApp\Warping\UniformDiskWarping.cpp" />
+    <ClCompile Include="SamplingApp\Warping\UniformHemisphereWarping.cpp" />
+    <ClCompile Include="SamplingApp\Warping\UniformSphereCapWarping.cpp" />
+    <ClCompile Include="SamplingApp\Warping\UniformSphereWarping.cpp" />
+    <ClCompile Include="SamplingApp\Warping\UniformSquareWarping.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

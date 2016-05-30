@@ -282,9 +282,6 @@
     <ClInclude Include="SamplingApp\Sampler\Sampler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SamplingApp\SamplingApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RenderApp\Scene\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -452,9 +449,6 @@
     <ClCompile Include="RenderApp\Shader\LightShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderApp\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RenderApp\Geometry\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -557,9 +551,6 @@
     <ClCompile Include="math\RGBE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SamplingApp\SamplingApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RenderApp\Scene\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -623,8 +614,15 @@
     <ClCompile Include="SamplingApp\Warping\UniformSquareWarping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RenderApp\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
+    <None Include="dependencies\windows\lib32\debug\freeglut.dll" />
+    <None Include="dependencies\windows\lib32\debug\glew32d.dll" />
+    <None Include="dependencies\windows\lib32\release\freeglut.dll" />
+    <None Include="dependencies\windows\lib32\release\glew32.dll" />
   </ItemGroup>
 </Project>

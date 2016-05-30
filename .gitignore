@@ -5,3 +5,7 @@ build/
 imgs/
 *.hdr
 *.suo
+*.dll
+*.sdf
+*.opendb
+*.user

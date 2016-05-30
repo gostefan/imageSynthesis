@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="ogl\GfxGLUTWindow.cpp">
+      <Filter>dependencies\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="ogl\GLUTMaster.cpp">
+      <Filter>dependencies\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="ogl\GLUTWindow.cpp">
+      <Filter>dependencies\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="ogl\Primitive.cpp">
+      <Filter>dependencies\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="ogl\Text.cpp">
+      <Filter>dependencies\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshViewer\MeshViewer.cpp">
+      <Filter>Control Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshViewer\main.cpp">
+      <Filter>Control Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\Timestamp.cpp">
+      <Filter>Control Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\Stopwatch.cpp">
+      <Filter>Control Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\Progress.cpp">
+      <Filter>Control Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MeshBase.cpp">
+      <Filter>Mesh Handling</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Obj.cpp">
+      <Filter>Mesh Handling</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="math\FastMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\LimitsT.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Mat44.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\MathGL.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\MathT.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\stdint.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vec2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vec3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vec4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\windows\include\gl\freeglut.h">
+      <Filter>dependencies\glew/glut</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\windows\include\gl\freeglut_ext.h">
+      <Filter>dependencies\glew/glut</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\windows\include\gl\freeglut_std.h">
+      <Filter>dependencies\glew/glut</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\windows\include\gl\glew.h">
+      <Filter>dependencies\glew/glut</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\windows\include\gl\glut.h">
+      <Filter>dependencies\glew/glut</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\windows\include\gl\glxew.h">
+      <Filter>dependencies\glew/glut</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\windows\include\gl\wglew.h">
+      <Filter>dependencies\glew/glut</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\GfxGLUTWindow.h">
+      <Filter>dependencies\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\GLUTMaster.h">
+      <Filter>dependencies\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\GLUTWindow.h">
+      <Filter>dependencies\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\Primitive.h">
+      <Filter>dependencies\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\Text.h">
+      <Filter>dependencies\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Fwd.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshViewer\MeshViewer.h">
+      <Filter>Control Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\Timestamp.h">
+      <Filter>Control Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\Stopwatch.h">
+      <Filter>Control Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\Progress.h">
+      <Filter>Control Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\Fwd.h">
+      <Filter>Control Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\config.h">
+      <Filter>Control Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\Core.h">
+      <Filter>dependencies\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Obj.h">
+      <Filter>Mesh Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MeshBase.h">
+      <Filter>Mesh Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\Types.h">
+      <Filter>dependencies\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Color.h">
+      <Filter>Mesh Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Box.h">
+      <Filter>Mesh Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Core.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="dependencies">
+      <UniqueIdentifier>{8e99b8f1-f251-4985-8284-0e3de6a6b189}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{3af1d615-402c-47c6-b470-4306eff33512}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\glew/glut">
+      <UniqueIdentifier>{97ad7923-e5e0-4220-827a-22e39ae8863e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\framework">
+      <UniqueIdentifier>{37063e8c-d9f0-42dc-bd37-4a4bb6a2e235}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Control Flow">
+      <UniqueIdentifier>{71b0c762-a159-458c-9e08-38ef4878c46b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh Handling">
+      <UniqueIdentifier>{058259c2-dacd-4e46-a61e-8f691415b676}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
