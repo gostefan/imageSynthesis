@@ -6,12 +6,7 @@
 //  Copyright (c) 2011 Student. All rights reserved.
 //
 
-#ifndef config_h
-#define config_h
-
-
+#pragma once
 
 #define HAVE_SYS_IOCTL_H 1
 #define HAVE_TERMIOS_H 1
-
-#endif

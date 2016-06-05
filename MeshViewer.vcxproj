@@ -135,7 +135,6 @@ copy "$(SolutionDir)dependencies\windows\lib32\$(Configuration)\*.dll" "$(OutDir
     <ClInclude Include="ogl\GLUTWindow.h" />
     <ClInclude Include="ogl\Primitive.h" />
     <ClInclude Include="ogl\Text.h" />
-    <ClInclude Include="platform\config.h" />
     <ClInclude Include="platform\Fwd.h" />
     <ClInclude Include="platform\Progress.h" />
     <ClInclude Include="platform\Stopwatch.h" />

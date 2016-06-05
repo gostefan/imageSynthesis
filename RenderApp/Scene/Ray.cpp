@@ -2,9 +2,6 @@
     \brief Implementation of the Ray class.
     \author Wojciech Jarosz
 */
-#if HAVE_CONFIG_H
-#  include <config.h>
-#endif // HAVE_CONFIG_H
 
 #include "Ray.h"
 #include <Math/Core.h>

@@ -120,9 +120,6 @@
     <ClInclude Include="platform\Fwd.h">
       <Filter>Control Flow</Filter>
     </ClInclude>
-    <ClInclude Include="platform\config.h">
-      <Filter>Control Flow</Filter>
-    </ClInclude>
     <ClInclude Include="ogl\Core.h">
       <Filter>dependencies\framework</Filter>
     </ClInclude>

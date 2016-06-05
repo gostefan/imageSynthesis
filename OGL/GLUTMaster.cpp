@@ -12,9 +12,6 @@
     George Stetten and Korin Crawford
     copyright given to the public domain
 */
-#if HAVE_CONFIG_H
-#  include <config.h>
-#endif // HAVE_CONFIG_H
 
 #include <OGL/GLUTMaster.h>
 #include <OGL/GLUTWindow.h>

@@ -6,10 +6,6 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#if HAVE_CONFIG_H
-#  include <config.h>
-#endif // HAVE_CONFIG_H
-
 #include "SamplingApp.h"
 
 #include "Sampling/Sampler/JitterSampler.h"

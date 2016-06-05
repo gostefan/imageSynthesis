@@ -134,9 +134,6 @@ copy "$(SolutionDir)dependencies\windows\lib32\$(Configuration)\*.dll" "$(OutDir
     <ClInclude Include="ogl\GLUTWindow.h" />
     <ClInclude Include="ogl\Primitive.h" />
     <ClInclude Include="ogl\Text.h" />
-    <ClInclude Include="platform\config.h" />
-    <ClInclude Include="platform\Fwd.h" />
-    <ClInclude Include="platform\Types.h" />
     <ClInclude Include="SamplingApp\SamplingApp.h" />
     <ClInclude Include="Sampling\Sampler\JitterSampler.h" />
     <ClInclude Include="Sampling\Sampler\RandomSampler.h" />

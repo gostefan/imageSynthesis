@@ -1,9 +1,6 @@
 /*! \file Primitive.cpp
     \author Wojciech Jarosz
 */
-#if HAVE_CONFIG_H
-#  include <config.h>
-#endif // HAVE_CONFIG_H
 
 #include <OGL/Core.h>
 #include <OGL/Primitive.h>
