@@ -13,196 +13,207 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Sampling">
+      <UniqueIdentifier>{95643405-cce0-4db1-bf2a-f2feadee81c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sampling\Sampler">
+      <UniqueIdentifier>{b92bdb50-a481-451c-b7a8-45c1f6b2224a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sampling\Warping">
+      <UniqueIdentifier>{d550a073-493d-4ba9-8529-cb0d2432ea36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{68c0d12b-0644-45f3-af6c-ac7dae313a1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OpenGL">
+      <UniqueIdentifier>{f82dd927-62dc-4548-ac63-1c5899388c45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{26e56417-51c5-42e6-8d33-e33ed4e49e1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SamplingApp\Warping\BrushedMetalWarping.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="platform\config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ogl\Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\Warping\CosineHemisphereWarping.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ogl\FBO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\windows\include\gl\freeglut.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\windows\include\gl\freeglut_ext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\windows\include\gl\freeglut_std.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Fwd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ogl\GfxGLUTWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\windows\include\gl\glew.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\windows\include\gl\glut.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ogl\GLUTMaster.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ogl\GLUTWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\Sampler\JitterSampler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\LimitsT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\MathGL.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\MathT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\Warping\PhongHemisphereWarping.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ogl\Primitive.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Rand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\Sampler\RandomSampler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\Sampler\Sampler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\SamplingApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\stdint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ogl\Text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="platform\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SamplingApp\Warping\UniformCylinderWarping.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\Warping\UniformDiskWarping.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\Warping\UniformHemisphereWarping.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\Sampler\UniformSampler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\Warping\UniformSphereCapWarping.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\Warping\UniformSphereWarping.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\Warping\UniformSquareWarping.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Vec2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Vec3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Vec4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SamplingApp\Warping\Warping.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="platform\Fwd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sampling\Warping\BrushedMetalWarping.h">
+      <Filter>Sampling\Warping</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Warping\CosineHemisphereWarping.h">
+      <Filter>Sampling\Warping</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Warping\PhongHemisphereWarping.h">
+      <Filter>Sampling\Warping</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Sampler\JitterSampler.h">
+      <Filter>Sampling\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Sampler\RandomSampler.h">
+      <Filter>Sampling\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Sampler\Sampler.h">
+      <Filter>Sampling\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Warping\UniformCylinderWarping.h">
+      <Filter>Sampling\Warping</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Warping\UniformDiskWarping.h">
+      <Filter>Sampling\Warping</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Warping\UniformHemisphereWarping.h">
+      <Filter>Sampling\Warping</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Sampler\UniformSampler.h">
+      <Filter>Sampling\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Warping\UniformSphereCapWarping.h">
+      <Filter>Sampling\Warping</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Warping\UniformSphereWarping.h">
+      <Filter>Sampling\Warping</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Warping\UniformSquareWarping.h">
+      <Filter>Sampling\Warping</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Warping\Warping.h">
+      <Filter>Sampling\Warping</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vec4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vec2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vec3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\MathT.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\MathGL.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\LimitsT.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Rand.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Fwd.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Core.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\GLUTWindow.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\GLUTMaster.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\GfxGLUTWindow.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\windows\include\gl\glut.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\windows\include\gl\glew.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\windows\include\gl\freeglut_std.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\windows\include\gl\freeglut_ext.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\windows\include\gl\freeglut.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\FBO.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="SamplingApp\SamplingApp.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\stdint.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\Text.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\Primitive.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\Core.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SamplingApp\Warping\BrushedMetalWarping.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Sampling\Warping\BrushedMetalWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
     </ClCompile>
-    <ClCompile Include="SamplingApp\Warping\CosineHemisphereWarping.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Sampling\Warping\CosineHemisphereWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
     </ClCompile>
-    <ClCompile Include="ogl\FBO.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Sampling\Warping\PhongHemisphereWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
     </ClCompile>
-    <ClCompile Include="ogl\GfxGLUTWindow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Sampling\Sampler\JitterSampler.cpp">
+      <Filter>Sampling\Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Sampler\RandomSampler.cpp">
+      <Filter>Sampling\Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Warping\UniformCylinderWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Warping\UniformDiskWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Warping\UniformHemisphereWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Sampler\UniformSampler.cpp">
+      <Filter>Sampling\Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Warping\UniformSphereCapWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Warping\UniformSphereWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Warping\UniformSquareWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
     </ClCompile>
     <ClCompile Include="ogl\GLUTMaster.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="ogl\GLUTWindow.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="SamplingApp\Sampler\JitterSampler.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ogl\GfxGLUTWindow.cpp">
+      <Filter>OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="MeshViewer\MeshViewer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SamplingApp\Warping\PhongHemisphereWarping.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ogl\Primitive.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SamplingApp\Sampler\RandomSampler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SamplingApp\SamplingApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ogl\Text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SamplingApp\Warping\UniformCylinderWarping.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SamplingApp\Warping\UniformDiskWarping.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SamplingApp\Warping\UniformHemisphereWarping.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SamplingApp\Sampler\UniformSampler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SamplingApp\Warping\UniformSphereCapWarping.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SamplingApp\Warping\UniformSphereWarping.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SamplingApp\Warping\UniformSquareWarping.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ogl\FBO.cpp">
+      <Filter>OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="SamplingApp\main.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Application</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram.cd" />
+    <ClCompile Include="SamplingApp\SamplingApp.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="ogl\Text.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="ogl\Primitive.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

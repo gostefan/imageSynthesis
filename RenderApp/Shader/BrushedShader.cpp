@@ -2,8 +2,8 @@
 #include "BrushedShader.h"
 
 #include "LambertShader.h"
-#include "SamplingApp/Sampler/RandomSampler.h"
-#include "SamplingApp/Warping/BrushedMetalWarping.h"
+#include "Sampling/Sampler/RandomSampler.h"
+#include "Sampling/Warping/BrushedMetalWarping.h"
 #include "../Scene/EnvironmentMap.h"
 #include "../Scene/LightRay.h"
 

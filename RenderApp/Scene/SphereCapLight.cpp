@@ -1,6 +1,6 @@
 
-#include "SamplingApp/Sampler/RandomSampler.h"
-#include "SamplingApp/Warping/UniformSphereCapWarping.h"
+#include "Sampling/Sampler/RandomSampler.h"
+#include "Sampling/Warping/UniformSphereCapWarping.h"
 #include "../Scene/Scene.h"
 #include "SphereCapLight.h"
 

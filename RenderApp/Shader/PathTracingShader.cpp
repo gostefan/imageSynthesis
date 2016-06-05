@@ -2,8 +2,8 @@
 #include "PathTracingShader.h"
 #include "LightShader.h"
 #include "../Scene/LightRay.h"
-#include "SamplingApp/Sampler/RandomSampler.h"
-#include "SamplingApp/Warping/CosineHemisphereWarping.h"
+#include "Sampling/Sampler/RandomSampler.h"
+#include "Sampling/Warping/CosineHemisphereWarping.h"
 #include "../Scene/EnvironmentMap.h"
 
 namespace {

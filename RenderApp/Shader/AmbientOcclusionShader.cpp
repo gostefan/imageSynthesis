@@ -1,9 +1,9 @@
 
 #include "AmbientOcclusionShader.h"
 
-#include "SamplingApp/Sampler/RandomSampler.h"
-#include "SamplingApp/Warping/CosineHemisphereWarping.h"
-#include "SamplingApp/Warping/UniformHemisphereWarping.h"
+#include "Sampling/Sampler/RandomSampler.h"
+#include "Sampling/Warping/CosineHemisphereWarping.h"
+#include "Sampling/Warping/UniformHemisphereWarping.h"
 
 #include "../Scene/Scene.h"
 #include "../Scene/EnvironmentMap.h"

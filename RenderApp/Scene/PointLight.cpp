@@ -2,8 +2,8 @@
 #include "PointLight.h"
 #include "../Shader/Shader.h"
 #include "Scene.h"
-#include "SamplingApp/Sampler/RandomSampler.h"
-#include "SamplingApp/Warping/UniformSphereWarping.h"
+#include "Sampling/Sampler/RandomSampler.h"
+#include "Sampling/Warping/UniformSphereWarping.h"
 
 #include <Math/Box.h>
 #include <Math/Vec3.h>

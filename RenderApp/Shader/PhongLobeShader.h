@@ -4,8 +4,8 @@
 #include <vector>
 #include "../Scene/Scene.h"
 #include "RecursiveShader.h"
-#include "SamplingApp/Sampler/Sampler.h"
-#include "SamplingApp/Warping/Warping.h"
+#include "Sampling/Sampler/Sampler.h"
+#include "Sampling/Warping/Warping.h"
 
 class PhongLobeShader : public RecursiveShader {
 	protected:

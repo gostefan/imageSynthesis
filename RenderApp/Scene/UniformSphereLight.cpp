@@ -1,8 +1,8 @@
 
 #include "UniformSphereLight.h"
 
-#include "SamplingApp/Sampler/RandomSampler.h"
-#include "SamplingApp/Warping/UniformSphereWarping.h"
+#include "Sampling/Sampler/RandomSampler.h"
+#include "Sampling/Warping/UniformSphereWarping.h"
 #include "../Scene/Scene.h"
 
 #include <algorithm>

@@ -12,17 +12,17 @@
 
 #include "SamplingApp.h"
 
-#include "Sampler/JitterSampler.h"
-#include "Sampler/RandomSampler.h"
-#include "Sampler/UniformSampler.h"
-#include "Warping/CosineHemisphereWarping.h"
-#include "Warping/PhongHemisphereWarping.h"
-#include "Warping/UniformCylinderWarping.h"
-#include "Warping/UniformDiskWarping.h"
-#include "Warping/UniformHemisphereWarping.h"
-#include "Warping/UniformSphereCapWarping.h"
-#include "Warping/UniformSphereWarping.h"
-#include "Warping/UniformSquareWarping.h"
+#include "Sampling/Sampler/JitterSampler.h"
+#include "Sampling/Sampler/RandomSampler.h"
+#include "Sampling/Sampler/UniformSampler.h"
+#include "Sampling/Warping/CosineHemisphereWarping.h"
+#include "Sampling/Warping/PhongHemisphereWarping.h"
+#include "Sampling/Warping/UniformCylinderWarping.h"
+#include "Sampling/Warping/UniformDiskWarping.h"
+#include "Sampling/Warping/UniformHemisphereWarping.h"
+#include "Sampling/Warping/UniformSphereCapWarping.h"
+#include "Sampling/Warping/UniformSphereWarping.h"
+#include "Sampling/Warping/UniformSquareWarping.h"
 
 #include <Math/Rand.h>
 #include <Math/Warp.h>

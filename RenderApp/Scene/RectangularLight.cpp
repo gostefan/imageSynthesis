@@ -2,8 +2,8 @@
 #include <Math/MathGL.h>
 #include "RectangularLight.h"
 #include "../Shader/LightShader.h"
-#include "SamplingApp/Sampler/RandomSampler.h"
-#include "SamplingApp/Warping/CosineHemisphereWarping.h"
+#include "Sampling/Sampler/RandomSampler.h"
+#include "Sampling/Warping/CosineHemisphereWarping.h"
 
 #include <Math/Box.h>
 #include <Math/Fwd.h>

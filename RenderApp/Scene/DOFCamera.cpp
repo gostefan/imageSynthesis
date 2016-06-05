@@ -1,8 +1,8 @@
 
 #include "DOFCamera.h"
 
-#include <SamplingApp/Sampler/RandomSampler.h>
-#include <SamplingApp/Warping/UniformDiskWarping.h>
+#include <Sampling/Sampler/RandomSampler.h>
+#include <Sampling/Warping/UniformDiskWarping.h>
 
 DOFCamera::DOFCamera(unsigned resX, unsigned resY, float sharpDistance, float discRadius) :
 		Camera(resX, resY), sharpDistance(sharpDistance), discRadius(discRadius),

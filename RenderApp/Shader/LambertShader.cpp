@@ -2,8 +2,8 @@
 #include "LambertShader.h"
 #include "../Scene/LightRay.h"
 #include "../Scene/photonmap.h"
-#include "SamplingApp/Sampler/RandomSampler.h"
-#include "SamplingApp/Warping/CosineHemisphereWarping.h"
+#include "Sampling/Sampler/RandomSampler.h"
+#include "Sampling/Warping/CosineHemisphereWarping.h"
 
 #include <algorithm>
 

@@ -2,8 +2,8 @@
 #include "PhongLobeShader.h"
 #include "LambertShader.h"
 #include "../Scene/LightRay.h"
-#include "SamplingApp/Sampler/RandomSampler.h"
-#include "SamplingApp/Warping/PhongHemisphereWarping.h"
+#include "Sampling/Sampler/RandomSampler.h"
+#include "Sampling/Warping/PhongHemisphereWarping.h"
 #include "../Scene/EnvironmentMap.h"
 
 PhongLobeShader::PhongLobeShader(const Math::Color3f& kd, float mirrorPercentage_in, int maxRecursionDepth_in, SurfaceShader* recursiveShader_in, float exponent, unsigned int nSamples_in) :
