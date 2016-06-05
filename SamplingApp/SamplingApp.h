@@ -36,6 +36,13 @@ class SamplingApp : public OGL::GfxGLUTWindow {
 
 		unsigned int getNPoints();
 		void setNPoints(unsigned int nPoints);
+
+	private:
+		inline void handleSamplerChange (unsigned char key);
+		inline void handleWarpingChange (unsigned char key);
+		inline void handleDisplayChange (unsigned char key);
+		inline void handlePointsChange (unsigned char key);
+		inline void handleValueComputing(unsigned char key);
     
 	private:
 		std::unique_ptr<Sampler> mSampler;

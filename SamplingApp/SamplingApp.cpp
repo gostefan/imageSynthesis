@@ -2,9 +2,6 @@
 //  SamplingApp.cpp
 //  ImageSynthesisFramework
 //
-//  Created by Wojciech Jarosz on 3/6/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
 
 #include "SamplingApp.h"
 
@@ -20,21 +17,10 @@
 #include "Sampling/Warping/UniformSphereWarping.h"
 #include "Sampling/Warping/UniformSquareWarping.h"
 
-#include <Math/Rand.h>
-#include <Math/Warp.h>
 #include <Math/MathGL.h>
-#include <Math/FastMath.h>
-#include <OGL/Core.h>
 #include <OGL/GLUTMaster.h>
 #include <OGL/GfxGLUTWindow.h>
-#include <OGL/Text.h>
-#include <iostream>
-#include <vector>
-#if !defined(_WIN32)
-#include <unistd.h>
-#endif
 
-#include <iomanip>
 #include <functional>
 
 
@@ -60,8 +46,7 @@ namespace {
 	auto VALUE_X_Y = [](const Math::Vec3f& point) { return pow(point.x, 2) + pow(point.y, 2)				  ; };
 	auto VALUE_X   = [](const Math::Vec3f& point) { return					 pow(point.y, 2)				  ; };
 	auto VALUE_Z   = [](const Math::Vec3f& point) { return									   pow(point.z, 2); };
-	//double nominator = sin(warpedPoints[i].x)*sin(warpedPoints[i].y)*sin(warpedPoints[i].z);
-
+	
 	std::function<float(Math::Vec3f&)> VALUES[] = { VALUE_X_Y, VALUE_X, VALUE_Z };
 	const char* VALUE_NAMES[] = { "x^2 + y^2", "   x^2   ", "   z^2   " };
 } // namespace 
@@ -181,101 +166,147 @@ void SamplingApp::reshape(int width, int height) {
 void SamplingApp::keyboard(unsigned char key, int x, int y) {
 	switch (key) {
 		case '1':
-			mSampler.reset(new RandomSampler());
-			generateSamples();
-			break;
 		case '2':
-			mSampler.reset(new UniformSampler());
-			generateSamples();
-			break;
 		case '3':
-			mSampler.reset(new JitterSampler());
-			generateSamples();
+			handleSamplerChange(key);
 			break;
 
 		case 'q':
+		case 'w':
+		case 'e':
+		case 'r':
+		case 't':
+		case 'g':
+		case 'y':
+		case 'z':
+		case 'u':
+		case 'i':
+		case 'k':
+			handleWarpingChange(key);
+			break;
+
+		case 'G':
+		case ' ':
+			handleDisplayChange(key);
+			break;
+		case '*':
+		case '/':
+		case '+':
+		case '-':
+			handlePointsChange(key);
+			break;
+
+		case 'm':
+		case 's':
+			handleValueComputing(key);
+			break;
+			
+        default:
+			GfxGLUTWindow::keyboard(key, x, y);
+			break;
+    }
+	
+	glutPostRedisplay();
+}
+
+void SamplingApp::handleSamplerChange(unsigned char key) {
+	switch (key) {
+		case '1':
+			mSampler.reset(new RandomSampler());
+			break;
+		case '2':
+			mSampler.reset(new UniformSampler());
+			break;
+		case '3':
+			mSampler.reset(new JitterSampler());
+			break;
+	}
+	generateSamples();
+}
+
+void SamplingApp::handleWarpingChange(unsigned char key) {
+	switch (key) {
+		case 'q':
 			mWarping.reset(new UniformSquareWarping());
-			warpSamples();
 			break;
 		case 'w':
 			mWarping.reset(new UniformDiskWarping());
-			warpSamples();
 			break;
 		case 'e':
 			mWarping.reset(new UniformCylinderWarping());
-			warpSamples();
 			break;
 		case 'r':
 			mWarping.reset(new UniformSphereWarping());
-			warpSamples();
 			break;
 		case 't':
 			if (capValue < 200)
 				capValue++;
 			mWarping.reset(new UniformSphereCapWarping(capValue / 100.f));
-			warpSamples();
 			break;
 		case 'g':
 			if (capValue > 1)
 				capValue--;
 			mWarping.reset(new UniformSphereCapWarping(capValue / 100.f));
-			warpSamples();
 			break;
 		case 'y':
 		case 'z':
 			mWarping.reset(new UniformHemisphereWarping());
-			warpSamples();
 			break;
 		case 'u':
 			mWarping.reset(new CosineHemisphereWarping());
-			warpSamples();
 			break;
 		case 'i':
 			if (nValue < 100)
 				nValue++;
 			mWarping.reset(new PhongHemisphereWarping(nValue / 100.f));
-			warpSamples();
 			break;
 		case 'k':
 			if (nValue > 0)
 				nValue--;
 			mWarping.reset(new PhongHemisphereWarping(nValue / 100.f));
-			warpSamples();
 			break;
+	}
+	warpSamples();
+}
 
-		case 'G': m_drawGrid = !m_drawGrid;
-			update();
+void SamplingApp::handleDisplayChange(unsigned char key) {
+	switch (key) {
+		case 'G':
+			m_drawGrid = !m_drawGrid;
 			break;
 
 		case ' ':
 			resetView();
-			update();
 			break;
+	}
+	update();
+}
 
+void SamplingApp::handlePointsChange(unsigned char key) {
+	switch (key) {
 		case '*':
 			setNPoints(nPoints * 2);
-			generateSamples();
 			break;
 
 		case '/':
-			if (nPoints > 1) {
+			if (nPoints > 1)
 				setNPoints(nPoints / 2);
-				generateSamples();
-			}
 			break;
 
 		case '+':
 			setNPoints(nPoints + 1);
-			generateSamples();
 			break;
 
 		case '-':
-			if (nPoints > 1) {
+			if (nPoints > 1)
 				setNPoints(nPoints - 1);
-				generateSamples();
-			}
 			break;
+	}
+	generateSamples();
+}
 
+void SamplingApp::handleValueComputing(unsigned char key) {
+	switch (key) {
 		case 'm':
 			double sum;
 			for (size_t valuePos = 0; valuePos < 3; valuePos++) {
@@ -289,22 +320,17 @@ void SamplingApp::keyboard(unsigned char key, int x, int y) {
 				cout << "Estimated Value for function " << VALUE_NAMES[valuePos] << ": " << sum << "\n";
 			}
 			break;
+
 		case 's':
 			sum = 0;
-			for(size_t i = 0; i < nPointsSqrt*nPointsSqrt; i++) {
+			for (size_t i = 0; i < nPointsSqrt*nPointsSqrt; i++) {
 				double denominator = mWarping->pdf(inputPoints[i]);
-				sum += 1/denominator;
+				sum += 1 / denominator;
 			}
 			sum /= nPointsSqrt*nPointsSqrt;
 			cout << "Estimated Value: " << sum << "\n";
 			break;
-			
-        default:
-            GfxGLUTWindow::keyboard(key, x, y);
-			break;
-    }
-	
-	glutPostRedisplay();
+	}
 }
 
 void SamplingApp::generateSamples() {
