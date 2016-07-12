@@ -11,12 +11,6 @@
 
 #include <sstream>
 
-using namespace Platform;
-using std::min;
-using std::max;
-using std::vector;
-using std::string;
-
 namespace Math {
 
 	BBH::BuildStats::BuildStats() :
@@ -52,11 +46,11 @@ namespace Math {
 
 	void BBH::BuildStats::updateLeaf(int depth, int n) {
 		numLeaves++;
-		minDepth = min(depth, minDepth);
-		maxDepth = max(depth, maxDepth);
+		minDepth = std::min(depth, minDepth);
+		maxDepth = std::max(depth, maxDepth);
 		sumDepth += depth;
-		minObjects = min(n, minObjects);
-		maxObjects = max(n, maxObjects);
+		minObjects = std::min(n, minObjects);
+		maxObjects = std::max(n, maxObjects);
 		sumObjects += n;
 		switch (n) {
 			case 0:
