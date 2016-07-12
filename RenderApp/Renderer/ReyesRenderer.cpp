@@ -41,8 +41,10 @@ void ReyesRenderer::render(Scene& scene) {
 	glBindTexture(GL_TEXTURE_2D, m_fbo->colorTextureID(0));
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_fbo->width(), m_fbo->height(), GL_RGBA, GL_FLOAT, &m_rgbaBuffer(0,0));
 	glBindTexture(GL_TEXTURE_2D, 0);
-	
-	m_fbo->blitFramebuffer(FBO_COLOR0);
+
+	//Render to Screen
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	m_fbo->displayAsFullScreenTexture(FBO_COLOR0);
 }
 
 void ReyesRenderer::split(Scene& scene, SurfacePatchVector& result) {

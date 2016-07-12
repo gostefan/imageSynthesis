@@ -74,7 +74,8 @@ void RayTracingRenderer::render(Scene & scene) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	
 	//Render to Screen
-	m_fbo->blitFramebuffer(FBO_COLOR0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	m_fbo->displayAsFullScreenTexture(FBO_COLOR0);
 }
 
 
