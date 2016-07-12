@@ -136,7 +136,6 @@ copy "$(SolutionDir)dependencies\windows\lib32\$(Configuration)\*.dll" "$(OutDir
     <ClInclude Include="math\Vec2.h" />
     <ClInclude Include="math\Vec3.h" />
     <ClInclude Include="math\Vec4.h" />
-    <ClInclude Include="MeshViewer\MeshViewer.h" />
     <ClInclude Include="ogl\Core.h" />
     <ClInclude Include="ogl\FBO.h" />
     <ClInclude Include="ogl\GfxGLUTWindow.h" />
@@ -236,7 +235,6 @@ copy "$(SolutionDir)dependencies\windows\lib32\$(Configuration)\*.dll" "$(OutDir
     <ClCompile Include="Math\MeshBase.cpp" />
     <ClCompile Include="Math\Obj.cpp" />
     <ClCompile Include="math\RGBE.cpp" />
-    <ClCompile Include="MeshViewer\MeshViewer.cpp" />
     <ClCompile Include="ogl\FBO.cpp" />
     <ClCompile Include="ogl\GfxGLUTWindow.cpp" />
     <ClCompile Include="ogl\GLUTMaster.cpp" />
