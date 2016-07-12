@@ -8,6 +8,9 @@
 #include "Texture/Texture.h"
 
 #include <Math/Vec3.h>
+
+#include "util/memory.h"
+
 #include <list>
 
 class SurfaceShader;
@@ -19,6 +22,10 @@ enum SplitDirection {
 };
 
 class SurfacePatch;
+using SurfacePatchPtr = std::unique_ptr<SurfacePatch>;
+using SurfacePatchCPtr = std::unique_ptr<const SurfacePatch>;
+using SurfacePatchList = std::list<SurfacePatchPtr>;
+
 class Motion;
 
 class Shape {
@@ -66,8 +73,8 @@ class Shape {
 	
 	
 		virtual void renderGL() const = 0;
-		virtual void split(std::list<SurfacePatch *> &results,
-						   const SurfacePatch & parent,
+		virtual void split(SurfacePatchList& results,
+						   const SurfacePatch& parent,
 						   SplitDirection splitDirection) const;
 
 
@@ -77,7 +84,7 @@ class Shape {
 		void dice(MicroGrid* grid, const SurfacePatch& patch, short size_x, short size_y) const;
 
 	protected:
-		virtual void splitData(SurfacePatch *child1, SurfacePatch *child2, const SurfacePatch & parent, SplitDirection splitDirection) const;
+		virtual void splitData(SurfacePatchPtr& child1, SurfacePatchPtr& child2, const SurfacePatch& parent, SplitDirection splitDirection) const;
 		Displacement* displacement;
 		Motion* motion;
 		//Texture* surfaceTexture;
@@ -94,7 +101,7 @@ class SurfacePatch {
 		SurfacePatch(const Shape* shape = 0) :
 				shape(shape), uStart(0.0f), vStart(0.0f), uEnd(1.0f), vEnd(1.0f), uDiceRate(1), vDiceRate(1), generation(0) { }
 	
-		void split(std::list<SurfacePatch *> &results, SplitDirection splitDirection) const {
+		void split(SurfacePatchList& results, SplitDirection splitDirection) const {
 			shape->split(results, *this, splitDirection);
 		}
 	

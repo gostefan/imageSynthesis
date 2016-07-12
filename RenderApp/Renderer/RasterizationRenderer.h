@@ -12,6 +12,8 @@
 
 #include <Math/Color.h>
 
+#include "util/memory.h"
+
 class FrameBuffer;
 
 class RasterizationRenderer : public Renderer {
@@ -20,7 +22,7 @@ class RasterizationRenderer : public Renderer {
 	
 		Util::Array2D<Math::Color4f> m_rgbaBuffer;
 		Util::Array2D<float> m_zBuffer;
-		FrameBuffer* m_fbo;
+		std::unique_ptr<FrameBuffer> m_fbo;
 	
 	public:
 		RasterizationRenderer();

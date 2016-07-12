@@ -16,40 +16,38 @@ using namespace Math;
 
 
 RasterizationRenderer::RasterizationRenderer() {
-	m_fbo = new FrameBuffer(GL_TEXTURE_2D, 512, 512, -1, GL_RGBA32F_ARB, 1, 1, 0, "Rasterization FBO");
+	m_fbo.reset(new FrameBuffer(GL_TEXTURE_2D, 512, 512, -1, GL_RGBA32F_ARB, 1, 1, 0, "Rasterization FBO"));
 	m_fbo->checkFramebufferStatus(1);
 }
 
-RasterizationRenderer::~RasterizationRenderer() {
-	delete m_fbo;
-}
+RasterizationRenderer::~RasterizationRenderer() { } // Needs to be here because of dtor of std::unique_ptr
 
 void RasterizationRenderer::render(Scene& scene) {
 	setRes(scene.camera->xRes(), scene.camera->yRes());
 
-	std::list<SurfacePatch*> patches;
+	SurfacePatchList patches;
 	for (unsigned int i = 0; i < scene.shapes.size(); i++)
 		if (scene.shapes[i]->isRenderable())
 			scene.shapes[i]->split(patches, SurfacePatch(scene.shapes[i]), USplit);
 
-	std::list<SurfacePatch*> splitPatches;
-	for (std::list<SurfacePatch*>::iterator iter = patches.begin(); iter != patches.end(); iter++)
+	SurfacePatchList splitPatches;
+	for (auto iter = patches.begin(); iter != patches.end(); iter++)
 		(*iter)->split(splitPatches, VSplit);
 
 	for (int i = 1; i <= 3; i++) {
 		patches.clear();
-		for (std::list<SurfacePatch*>::iterator iter = splitPatches.begin(); iter != splitPatches.end(); iter++) {
+		for (auto iter = splitPatches.begin(); iter != splitPatches.end(); iter++) {
 			(*iter)->split(patches, USplit);
 		}
 
 		splitPatches.clear();
-		for (std::list<SurfacePatch*>::iterator iter = patches.begin(); iter != patches.end(); iter++) {
+		for (auto iter = patches.begin(); iter != patches.end(); iter++) {
 			(*iter)->split(splitPatches, VSplit);
 		}
 	}
 
 	std::list<MicroGrid*> gridList;
-	for (std::list<SurfacePatch*>::iterator iter = splitPatches.begin(); iter != splitPatches.end(); iter++) {
+	for (auto iter = splitPatches.begin(); iter != splitPatches.end(); iter++) {
 		MicroGrid* mg = new MicroGrid((*iter)->shape, (*iter)->shape->surfaceShader);
 		gridList.push_back(mg);
 		(*iter)->dice(mg, 2, 2);

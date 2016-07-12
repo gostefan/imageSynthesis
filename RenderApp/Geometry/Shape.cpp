@@ -46,7 +46,7 @@ void Shape::fillHitInfo(Ray * r) const {
 	
 }
 
-void Shape::splitData(SurfacePatch *child1, SurfacePatch *child2, const SurfacePatch & parent, SplitDirection direction) const {
+void Shape::splitData(SurfacePatchPtr& child1, SurfacePatchPtr& child2, const SurfacePatch & parent, SplitDirection direction) const {
 	if (direction == VSplit) {
 		child1->vStart = parent.vStart;
 		child1->vEnd = parent.vStart + (parent.vEnd-parent.vStart) / 2.f;
@@ -74,14 +74,14 @@ void Shape::splitData(SurfacePatch *child1, SurfacePatch *child2, const SurfaceP
 }
 
 
-void Shape::split(std::list<SurfacePatch *> &results, const SurfacePatch & parent, SplitDirection splitDirection) const {
-	SurfacePatch *child1 = new SurfacePatch(this);
-	SurfacePatch *child2 = new SurfacePatch(this);
+void Shape::split(SurfacePatchList& results, const SurfacePatch& parent, SplitDirection splitDirection) const {
+	auto child1 = util::make_unique<SurfacePatch>(this);
+	auto child2 = util::make_unique<SurfacePatch>(this);
 	
 	splitData(child1, child2, parent, splitDirection);
 	
-	results.push_front(child1);
-	results.push_front(child2);
+	results.push_front(std::move(child1));
+	results.push_front(std::move(child2));
 }
 
 void Shape::dice(MicroGrid *grid, const SurfacePatch & parent, short size_x, short size_y) const {

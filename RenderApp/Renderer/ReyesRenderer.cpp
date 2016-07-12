@@ -21,7 +21,7 @@ ReyesRenderer::~ReyesRenderer() { } // Needs to be here because of unique_ptr's 
 void ReyesRenderer::render(Scene& scene) {
 	setRes(scene.camera->xRes(), scene.camera->yRes());
 
-	vector<SurfacePatch*> splitShapes;
+	SurfacePatchVector splitShapes;
 	split(scene, splitShapes);
 
 	vector<MicroGrid*> microGrids;
@@ -45,7 +45,7 @@ void ReyesRenderer::render(Scene& scene) {
 	m_fbo->blitFramebuffer(FBO_COLOR0);
 }
 
-void ReyesRenderer::split(Scene& scene, vector<SurfacePatch*>& result) {
+void ReyesRenderer::split(Scene& scene, SurfacePatchVector& result) {
 	// Precompute some values
 	clock_t start = clock();
 	Mat44f worldToWindow = scene.camera->NDCToWindow() * scene.camera->worldToNDC();
@@ -58,11 +58,11 @@ void ReyesRenderer::split(Scene& scene, vector<SurfacePatch*>& result) {
 		}
 
 		// reduce each shape to the required size
-		std::list<SurfacePatch*> toSplit;
-		toSplit.push_back(new SurfacePatch(scene.shapes[i]));
+		SurfacePatchList toSplit;
+		toSplit.push_back(util::make_unique<SurfacePatch>(scene.shapes[i]));
 		while(!toSplit.empty()) {
 			// Get the next element
-			SurfacePatch* current = toSplit.front();
+			auto current = std::move(toSplit.front());
 			toSplit.pop_front();
 
 			// We get the bounding box and decide whether it's on the screen
@@ -72,18 +72,16 @@ void ReyesRenderer::split(Scene& scene, vector<SurfacePatch*>& result) {
 				// Is it still too big?
 				if (currentBB.size() > maxSize) {
 					// Split in both directions
-					std::list<SurfacePatch*> intermediate;
+					SurfacePatchList intermediate;
 					current->split(intermediate, USplit);
 
-					for (std::list<SurfacePatch*>::iterator iter = intermediate.begin(); iter != intermediate.end(); iter++)
+					for (auto iter = intermediate.begin(); iter != intermediate.end(); iter++)
 						(*iter)->split(toSplit, VSplit);
-					delete current;
 				} else {
 					// Store for the next phase
-					result.push_back(current);
+					result.push_back(std::move(current));
 				}
 			} else
-				delete current;
 
 			if (toSplit.size() > 100000) {
 				cout << "To big displacement or too small max split size\n";
@@ -94,14 +92,13 @@ void ReyesRenderer::split(Scene& scene, vector<SurfacePatch*>& result) {
 	cout << "Split in " << (static_cast<float>(clock() - start)/CLOCKS_PER_SEC) << " Seconds\n";
 }
 
-void ReyesRenderer::dice(vector<SurfacePatch*>& surfaces, vector<MicroGrid*>& result) {
+void ReyesRenderer::dice(SurfacePatchVector& surfaces, vector<MicroGrid*>& result) {
 	clock_t start = clock();
 	// We generate grids from the object pieces
 	for (unsigned int i = 0; i < surfaces.size(); i++) {
 		MicroGrid* mg = new MicroGrid(surfaces[i]->shape, surfaces[i]->shape->surfaceShader);
 		surfaces[i]->dice(mg, nDice, nDice);
 		result.push_back(mg);
-		delete surfaces[i];
 	}
 	cout << "Diced in " << (static_cast<float>(clock() - start)/CLOCKS_PER_SEC) << " Seconds\n";
 }

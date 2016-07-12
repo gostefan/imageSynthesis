@@ -23,6 +23,8 @@
 
 using namespace std;
 
+using SurfacePatchVector = std::vector<SurfacePatchPtr>;
+
 class ReyesRenderer : public Renderer {
 	protected:
 		const float maxSize;
@@ -34,8 +36,8 @@ class ReyesRenderer : public Renderer {
 		Util::Array2D<float> m_zBuffer;
 		std::unique_ptr<FrameBuffer> m_fbo;
 
-		virtual void split(Scene& scene, vector<SurfacePatch*>& result);
-		virtual void dice(vector<SurfacePatch*>& surfaces, vector<MicroGrid*>& result);
+		virtual void split(Scene& scene, SurfacePatchVector& result);
+		virtual void dice(SurfacePatchVector& surfaces, vector<MicroGrid*>& result);
 		virtual void shade(vector<MicroGrid*>& grids, Scene& scene);
 		virtual void bust(vector<MicroGrid*>& grids, vector<MicroPolygon*>& result, Camera& camera);
 		virtual void sample(vector<MicroPolygon*>& polygons);
