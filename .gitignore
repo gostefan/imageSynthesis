@@ -2,6 +2,7 @@
 Backup/
 bin/
 build/
+doc/
 imgs/
 *.hdr
 *.suo
