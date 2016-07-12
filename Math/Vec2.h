@@ -10,70 +10,60 @@
 #include <iostream>
 
 namespace Math {
-
-	//! A general 2D vector class.
-	/*!
-		This class handles storing and manipulating 2D vectors.
-	*/
+	/**
+	 * A general 2D vector class.
+	 * This class handles storing and manipulating 2D vectors.
+	 */
 	template <typename T>
 	class Vec2 {
 		public:
 			T x, y;
     
-			//-----------------------------------------------------------------------
-			//! \name Constructors and assignment
-			//@{
-			//-----------------------------------------------------------------------
-			//! Default constructor.
-			/*!
-				Call this constructor if you do not wish to initialize the vector to
-				anything. It is more efficient than the others since it does nothing.
-			*/
+			/**
+			 * Call this constructor if you do not wish to initialize the vector to anything. It is more efficient than the others since it does nothing.
+			 */
 			Vec2() { }
 
-			//! Parameter constructor.
-			/*!
-				Initialize the vector with the three parameters.
-				\param a Value to set the x component to.
-				\param b Value to set the y component to.
-			*/
+			/**
+			 * Initialize the vector with the two parameters.
+			 * @param a Value to set the x component to.
+			 * @param b Value to set the y component to.
+			 */
 			Vec2(T a, T b) : x(a), y(b) { }
 
-			//! Parameter constructor.
-			/*!
-				Initialize each component to \a a.
-				\param a The value to initialize to.
-			*/
+			/**
+			 * Initialize each component of the vector to a.
+			 * @param a Value to set all components to.
+			 */
 			explicit Vec2(T a) : x(a), y(a) { }
     
-			//! Parameter constructor.
-			/*!
-				Initialize the vector from an array of doubles
-				\param v The array of doubles to initialize from.
-			*/
+			/**
+			 * Initialize the vector from an array of doubles
+			 * @param v The array of doubles to initialize from.
+			 */
 			Vec2(const T* v) : x(v[0]), y(v[1]) { }
     
-			//! Copy constructor.
-			/*!
-				Initialize the vector to be a copy of \a v.
-				\param v The vector to create a copy of.
-			*/
+			/**
+			 * Initialize the vector to be a copy of v.
+			 * @param v The vector to create a copy of.
+			 */
 			template <typename S>
 			Vec2(const Vec2<S>& v) : x(T(v.x)), y(T(v.y)) { }
 
-			//! Assignment operator.
-			/*!
-				Assigns the values from \a a to this Vec2.
-			*/
+			/**
+			 * Assigns the values from a to this Vec2.
+			 * @param a The vector this vector should be set to.
+			 * @return The vector set to the values of a.
+			 */
 			const Vec2& operator=(const Vec2& a) { x = a.x; y = a.y; return *this; }
     
-			//! Assignment operator.
-			/*!
-				Sets all components of this Vec2 to \a a.
-			*/
+			/**
+			 * Sets all components of this Vec2 to a.
+			 * @param a Value to set all components to.
+			 * @return The vector with all components set to a.
+			 */
 			const Vec2& operator=(T a) { x = y = a; return *this; }
-			//@}
-
+			
 
 			//-----------------------------------------------------------------------
 			//! \name Casting operators.
