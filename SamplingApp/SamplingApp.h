@@ -61,13 +61,13 @@ class SamplingApp : public OGL::GfxGLUTWindow {
 		void drawSamples();
 		void warpSamples();
 	
-		enum MouseMode {
-			MM_NULL,
-			MM_ROTATE,
-			MM_ZOOM,
-			MM_MOVE,
-			MM_SELECT
-		} m_mouseMode;
+		enum class MouseMode {
+			None,
+			Rotate,
+			Zoom,
+			Move,
+			Select
+		} mMouseMode;
 	
 		struct Camera {
 			float incline, azimuth, distance;

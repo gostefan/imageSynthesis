@@ -56,7 +56,7 @@ SamplingApp::SamplingApp(GLUTMaster* glutMaster, int width, int height, const ch
 		mSampler(new RandomSampler()),
 		mWarping(new UniformSquareWarping),
 		GfxGLUTWindow(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH, width, height),
-		m_mouseMode(MM_NULL),
+		mMouseMode(MouseMode::None),
 		m_drawGrid(true), nPointsSqrt(10), nPoints(100), capValue(100), nValue(50)
 {
     glutMaster->createWindow(title, this);
@@ -355,17 +355,13 @@ void SamplingApp::warpSamples() {
 void SamplingApp::mouse(int btn, int state, int x, int y) {
     GfxGLUTWindow::mouse(btn, state, x, y);
 	
-    if (btn == GLUT_LEFT_BUTTON) {
-        if (state == GLUT_DOWN)
-            m_mouseMode = MM_ROTATE;
-        else
-            m_mouseMode = MM_NULL;
-    } else if (btn == GLUT_RIGHT_BUTTON) {
-        if (state == GLUT_DOWN)
-            m_mouseMode = MM_ZOOM;
-        else
-            m_mouseMode = MM_NULL;
-    }
+    if (state == GLUT_DOWN)
+		if (btn == GLUT_LEFT_BUTTON)
+			mMouseMode = MouseMode::Rotate;
+		else // GLUT_RIGHT_BUTTON
+			mMouseMode = MouseMode::Zoom;
+    else // GLUT_UP
+		mMouseMode = MouseMode::None;
 }
 
 
@@ -376,14 +372,14 @@ void SamplingApp::motion(int nx, int ny) {
     m_mouseX = nx;
     m_mouseY = ny;
 	
-    switch(m_mouseMode) {
-        case MM_ROTATE:
+    switch(mMouseMode) {
+		case MouseMode::Rotate:
 			m_camera.azimuth += dx;
 			m_camera.incline += dy;
             update();
 			break;
 			
-        case MM_ZOOM: {
+		case MouseMode::Zoom: {
 			float r = 1.0f - 0.01f*dx;
 			m_camera.distance *= r;
             update();
