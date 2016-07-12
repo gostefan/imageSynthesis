@@ -5,11 +5,6 @@
 
 namespace Math {
 
-	const float FEQ_EPS  = 1e-5f;
-	const float FEQ_EPS2 = 1e-12f;
-	const float FEQ_INF  = 1e12f;
-
-
 	/**
 	 * Templated absolute value function
 	 * @param a The value to get the absolute value from
@@ -41,8 +36,6 @@ namespace Math {
 		return (Math::abs(a) <= t) ? true : false;
 	}
 
-	template <typename T1, typename T2, typename T3>
-	inline bool equal(T1 a, T2 b, T3 t) {
 	/**
 	 * Checks for equality / closeness
 	 * @param a The first value to compare
@@ -50,6 +43,8 @@ namespace Math {
 	 * @param t The maximum deviation to consider the values equal
 	 * @return True if the values are equal, False otherwise
 	 */
+	template <typename T>
+	inline bool equal(T a, T b, T t) {
 		return Math::abs(a - b) <= t;
 	}
 
@@ -158,13 +153,9 @@ namespace Math {
 	* @return The power of 5 of x
 	*/
 	template <typename T> inline T pow5 (T x) { T x2 = x*x; return x2*x2*x; }
-	template <typename T> inline T sqr  (T x) { return pow2(x); }
-	template <typename T> inline T cube (T x) { return pow3(x); }
 
 } // namespace Math
 
-
-namespace std {
 /**
  * Momentarely unused but might come in handy at some point.
  * <b>Note:</b> Was earlier in namespace std. But as this is not allowed it was changed to namespace Math.
@@ -194,7 +185,7 @@ namespace Math {
 	*/
 	template <typename T>
 	inline const T& min(const T& a, const T& b, const T& c, const T& d) {
-		return std::min(std::min(a, b, c), d);
+		return std::min(std::min(a, b), std::min(c, d));
 	}
 
 	/**
@@ -236,7 +227,7 @@ namespace Math {
 	*/
 	template <typename T>
 	inline const T& max(const T& a, const T& b, const T& c, const T& d) {
-		return std::max(std::max(a, b, c), d);
+		return std::max(std::max(a, b), std::max(c, d));
 	}
 
 	/**
