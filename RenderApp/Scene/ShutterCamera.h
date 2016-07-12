@@ -1,7 +1,7 @@
 
 #include "Camera.h"
 
-#include <memory>
+#include "util/memory.h"
 
 class ShutterCamera : public Camera {
 	public:

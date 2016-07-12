@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <memory>
+#include "util/memory.h"
 
 namespace Util {
 	//! Generic, resizable, 1D array class.

@@ -12,7 +12,7 @@
 #include <Img/ImageIO.h>
 #include <OGL/FBO.h>
 
-#include <memory>
+#include "util/memory.h"
 
 class OpenGLRenderer : public Renderer {
 	protected:

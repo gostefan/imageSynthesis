@@ -19,7 +19,7 @@
 #include "Geometry/Displacement/MultipliedSineDisplacement.h"
 #include "Geometry/Displacement/ShiftedSineDisplacement.h"
 
-#include <memory>
+#include "util/memory.h"
 
 using namespace OGL;
 

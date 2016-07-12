@@ -16,7 +16,7 @@
 #include <OGL/FBO.h>
 #include <Math/Box.h>
 
-#include <memory>
+#include "memory.h"
 #include <queue>
 #include <time.h>
 #include <vector>

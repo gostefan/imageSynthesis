@@ -14,7 +14,7 @@
 #include "../Scene/EnvironmentMap.h"
 #include "../Shader/Shader.h"
 
-#include <memory>
+#include "util/memory.h"
 #include <stack>
 
 

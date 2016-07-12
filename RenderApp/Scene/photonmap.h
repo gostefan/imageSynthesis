@@ -6,7 +6,7 @@
 #include <math.h>
 #include <Math/Vec3.h>
 
-#include <memory>
+#include "util/memory.h"
 
 
 /* This is the photon

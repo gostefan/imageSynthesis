@@ -5,7 +5,7 @@
 #include "../Geometry/BBox.h"
 #include "LightRay.h"
 
-#include <memory>
+#include "util/memory.h"
 
 class Sampler;
 class Warping;

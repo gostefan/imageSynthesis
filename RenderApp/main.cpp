@@ -8,7 +8,7 @@
 
 #include "RendererApp.h"
 
-#include <memory>
+#include "util/memory.h"
 
 int main(int argc, char* argv[]) {
     auto glutMaster = std::unique_ptr<GLUTMaster>(new GLUTMaster(&argc, argv));

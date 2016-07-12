@@ -10,7 +10,7 @@
 #include <Math/Vec3.h>
 #include <Platform/Fwd.h>
 
-#include <memory>
+#include "util/memory.h"
 #include <vector>
 #include <assert.h>
 

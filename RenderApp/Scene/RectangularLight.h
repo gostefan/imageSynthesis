@@ -10,7 +10,7 @@
 
 #include "Light.h"
 
-#include <memory>
+#include "util/memory.h"
 
 class Ray;
 class Scene;

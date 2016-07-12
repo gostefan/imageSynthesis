@@ -6,7 +6,7 @@
 #pragma once
 
 #include <algorithm>
-#include <memory>
+#include "util/memory.h"
 
 namespace Util {
 

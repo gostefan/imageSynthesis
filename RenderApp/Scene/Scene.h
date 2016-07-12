@@ -14,7 +14,7 @@
 
 #include <Math/color.h>
 
-#include <memory>
+#include "util/memory.h"
 #include <vector>
 
 class EnvironmentMap;

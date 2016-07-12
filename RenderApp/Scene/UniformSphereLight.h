@@ -11,7 +11,7 @@
 #include "SphereLight.h"
 #include "../Scene/LightRay.h"
 
-#include <memory>
+#include "util/memory.h"
 #include <vector>
 
 class Ray;

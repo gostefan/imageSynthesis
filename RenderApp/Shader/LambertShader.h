@@ -6,7 +6,7 @@
 #include "Shader.h"
 #include "../Geometry/Texture/Texture.h"
 
-#include <memory>
+#include "util/memory.h"
 
 class Sampler;
 class Warping;

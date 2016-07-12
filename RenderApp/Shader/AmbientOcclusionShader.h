@@ -8,7 +8,7 @@
 #include <Math/Color.h>
 #include <Img/Fwd.h>
 
-#include <memory>
+#include "util/memory.h"
 
 class Light;
 

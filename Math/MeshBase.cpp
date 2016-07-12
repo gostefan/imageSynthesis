@@ -4,7 +4,7 @@
 
 #include <Math/MeshBase.h>
 #include <Math/Obj.h>
-#include <memory>
+#include "util/memory.h"
 #include <string.h>
 #include <stdlib.h>
 #include "stdint.h"
