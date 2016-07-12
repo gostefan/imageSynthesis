@@ -1,621 +1,666 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="GL">
+      <UniqueIdentifier>{05456162-3b83-40d3-8689-8f50e5373140}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{b408a0cc-1d37-42b9-8190-6515c84f31f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Math">
+      <UniqueIdentifier>{f265f0af-edf9-40b7-9544-6b61d508ffeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sampling">
+      <UniqueIdentifier>{f7bb46b0-1214-42c0-88f9-3f9bba7337bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sampling\Sampler">
+      <UniqueIdentifier>{6fe99efd-b425-45ce-9ff2-77f5a6978c22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sampling\Warping">
+      <UniqueIdentifier>{ccc6ad7b-5518-41d2-ab1d-a6d6089ab02b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{dd4025c6-2b00-4d50-817e-c7ae7ce77673}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{2a76895c-7699-4c68-be25-3f4bce983c30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Displacement">
+      <UniqueIdentifier>{d7e21382-4a32-4633-aba7-ee566710591b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{33f97dc4-06cb-4bb3-8280-7e3fece70969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{2014de2f-a68f-40e7-aed7-89111457da6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cameras">
+      <UniqueIdentifier>{526bbe18-e300-4838-a0b6-2406ed16c645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Motion">
+      <UniqueIdentifier>{26dd407c-282c-489c-8e2c-de2a2c6fa7b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Light">
+      <UniqueIdentifier>{7f9f04de-fe74-4fdd-85ea-3a503181419e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Light\Lights">
+      <UniqueIdentifier>{b70f6539-503e-4fcb-aedb-3596a89bbf1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Light\Photon">
+      <UniqueIdentifier>{4b9a957d-18f5-45cb-95b9-99dfedd51be6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="img">
+      <UniqueIdentifier>{24c3dc98-46aa-4da5-a364-f63078d459a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Program">
+      <UniqueIdentifier>{549ce20f-abbc-45b1-9bf0-7cff46de50da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\util">
+      <UniqueIdentifier>{a9a053de-43c2-41ad-bf1c-d0552deda56e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Containers">
+      <UniqueIdentifier>{4fb63eba-6719-4e21-acff-ff0b2f6ea3c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{03253112-e8df-4a23-8939-efc41d1ac572}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RenderApp\Shader\AmbientOcclusionShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="util\Array1D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="util\Array2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="util\Array3D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="util\Array4D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\BBH.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\BBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\BicubicPatch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Box.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Shader\BrushedShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Texture\CheckerboardTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Color.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="platform\config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Texture\ConstantTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ogl\Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Displacement\Displacement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\DOFCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\EnvironmentMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\FastMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ogl\FBO.h">
-      <Filter>Header Files</Filter>
+      <Filter>GL</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\windows\include\gl\freeglut.h">
-      <Filter>Header Files</Filter>
+      <Filter>GL</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\windows\include\gl\freeglut_ext.h">
-      <Filter>Header Files</Filter>
+      <Filter>GL</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\windows\include\gl\freeglut_std.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="platform\Fwd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="util\Fwd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="img\Fwd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Fwd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="img\GammaTable.h">
-      <Filter>Header Files</Filter>
+      <Filter>GL</Filter>
     </ClInclude>
     <ClInclude Include="ogl\GfxGLUTWindow.h">
-      <Filter>Header Files</Filter>
+      <Filter>GL</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\windows\include\gl\glew.h">
-      <Filter>Header Files</Filter>
+      <Filter>GL</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\windows\include\gl\glut.h">
-      <Filter>Header Files</Filter>
+      <Filter>GL</Filter>
     </ClInclude>
     <ClInclude Include="ogl\GLUTMaster.h">
-      <Filter>Header Files</Filter>
+      <Filter>GL</Filter>
     </ClInclude>
     <ClInclude Include="ogl\GLUTWindow.h">
-      <Filter>Header Files</Filter>
+      <Filter>GL</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\windows\include\gl\glxew.h">
-      <Filter>Header Files</Filter>
+      <Filter>GL</Filter>
     </ClInclude>
-    <ClInclude Include="RenderApp\Scene\HitInfo.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Math\BBH.h">
+      <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="img\ImageIO.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="RenderApp\Geometry\BBox.h">
+      <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Texture\ImageTexture.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="math\Box.h">
+      <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="RenderApp\Shader\LambertShader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="platform\Fwd.h">
+      <Filter>Platform</Filter>
     </ClInclude>
-    <ClInclude Include="RenderApp\Scene\Light.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\LightRay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Shader\LightShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\LimitsT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Line.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\LineAlgo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Mat44.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\MathGL.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\MathT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\MeshBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshViewer\MeshViewer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\MicroGrid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\MicroPolygon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Shader\MirrorShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Motion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Renderer\MultipleRayTracingRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Displacement\MultipliedSineDisplacement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Displacement\NoDisplacement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Obj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Renderer\OpenGLRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Shader\PathTracingShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Shader\PhongLobeShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Shader\PhongShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\photonmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Renderer\PhotonScatterer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\PointLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ogl\Primitive.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Proc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="platform\Progress.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Rain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Rand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Renderer\RasterizationRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\Ray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Renderer\RayTracingRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\RectangularLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Shader\RecursiveShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Shader\RefractionShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Renderer\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\RendererApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Renderer\ReyesRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Renderer\ReyesTracingRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\RGBE.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Shader\Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Shape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Displacement\ShiftedSineDisplacement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\ShutterCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Displacement\SineDisplacement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Sphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\SphereCapLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\SphereLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\stdint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="platform\Stopwatch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ogl\Text.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\Texture\Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="platform\Timestamp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\TranslatedMotion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="platform\Types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Scene\UniformSphereLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Vec2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Vec3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="math\Vec4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Warp.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="platform\config.h">
+      <Filter>Platform</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\windows\include\gl\wglew.h">
-      <Filter>Header Files</Filter>
+      <Filter>GL</Filter>
     </ClInclude>
-    <ClInclude Include="Sampling\Sampler\JitterSampler.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="math\Fwd.h">
+      <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Sampling\Sampler\RandomSampler.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="math\MathT.h">
+      <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Sampling\Sampler\Sampler.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="math\Mat44.h">
+      <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Sampling\Sampler\UniformSampler.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="math\MathGL.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Core.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\FastMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\Text.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\stdint.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\Types.h">
+      <Filter>Platform</Filter>
     </ClInclude>
     <ClInclude Include="Sampling\Warping\BrushedMetalWarping.h">
-      <Filter>Header Files</Filter>
+      <Filter>Sampling\Warping</Filter>
     </ClInclude>
     <ClInclude Include="Sampling\Warping\CosineHemisphereWarping.h">
-      <Filter>Header Files</Filter>
+      <Filter>Sampling\Warping</Filter>
     </ClInclude>
     <ClInclude Include="Sampling\Warping\PhongHemisphereWarping.h">
-      <Filter>Header Files</Filter>
+      <Filter>Sampling\Warping</Filter>
     </ClInclude>
     <ClInclude Include="Sampling\Warping\UniformCylinderWarping.h">
-      <Filter>Header Files</Filter>
+      <Filter>Sampling\Warping</Filter>
     </ClInclude>
     <ClInclude Include="Sampling\Warping\UniformDiskWarping.h">
-      <Filter>Header Files</Filter>
+      <Filter>Sampling\Warping</Filter>
     </ClInclude>
     <ClInclude Include="Sampling\Warping\UniformHemisphereWarping.h">
-      <Filter>Header Files</Filter>
+      <Filter>Sampling\Warping</Filter>
     </ClInclude>
     <ClInclude Include="Sampling\Warping\UniformSphereCapWarping.h">
-      <Filter>Header Files</Filter>
+      <Filter>Sampling\Warping</Filter>
     </ClInclude>
     <ClInclude Include="Sampling\Warping\UniformSphereWarping.h">
-      <Filter>Header Files</Filter>
+      <Filter>Sampling\Warping</Filter>
     </ClInclude>
     <ClInclude Include="Sampling\Warping\UniformSquareWarping.h">
-      <Filter>Header Files</Filter>
+      <Filter>Sampling\Warping</Filter>
     </ClInclude>
     <ClInclude Include="Sampling\Warping\Warping.h">
-      <Filter>Header Files</Filter>
+      <Filter>Sampling\Warping</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Sampler\JitterSampler.h">
+      <Filter>Sampling\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Sampler\RandomSampler.h">
+      <Filter>Sampling\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Shader\AmbientOcclusionShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Shader\LambertShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Shader\PathTracingShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Shader\PhongLobeShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Shader\PhongShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Shader\RecursiveShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Shader\RefractionShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\Stopwatch.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Renderer\ReyesTracingRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Renderer\ReyesRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Renderer\RayTracingRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Renderer\RasterizationRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Renderer\MultipleRayTracingRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\UniformSphereLight.h">
+      <Filter>Light\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\SphereCapLight.h">
+      <Filter>Light\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\SphereLight.h">
+      <Filter>Light\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\Timestamp.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\Progress.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Sampler\UniformSampler.h">
+      <Filter>Sampling\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Obj.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Renderer\OpenGLRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Line.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\LineAlgo.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\LimitsT.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\Core.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Renderer\Renderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Shader\BrushedShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\BicubicPatch.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Rain.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Shape.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Sphere.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Texture\ConstantTexture.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Texture\CheckerboardTexture.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Texture\ImageTexture.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Texture\Texture.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\MicroPolygon.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\MicroGrid.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Shader\MirrorShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Mesh.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MeshBase.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Displacement\ShiftedSineDisplacement.h">
+      <Filter>Displacement</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\ShutterCamera.h">
+      <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Displacement\SineDisplacement.h">
+      <Filter>Displacement</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Motion.h">
+      <Filter>Motion</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\Light.h">
+      <Filter>Light\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Shader\LightShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\photonmap.h">
+      <Filter>Light\Photon</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Renderer\PhotonScatterer.h">
+      <Filter>Light\Photon</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\TranslatedMotion.h">
+      <Filter>Motion</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Shader\Shader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampling\Sampler\Sampler.h">
+      <Filter>Sampling\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\RectangularLight.h">
+      <Filter>Light\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Proc.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Rand.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl\Primitive.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\DOFCamera.h">
+      <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Displacement\Displacement.h">
+      <Filter>Displacement</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\Camera.h">
+      <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="img\Fwd.h">
+      <Filter>img</Filter>
+    </ClInclude>
+    <ClInclude Include="img\ImageIO.h">
+      <Filter>img</Filter>
+    </ClInclude>
+    <ClInclude Include="img\GammaTable.h">
+      <Filter>img</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Displacement\MultipliedSineDisplacement.h">
+      <Filter>Displacement</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\Displacement\NoDisplacement.h">
+      <Filter>Displacement</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\PointLight.h">
+      <Filter>Light\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\RendererApp.h">
+      <Filter>Program</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\LightRay.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\Scene.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\Ray.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\HitInfo.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Scene\EnvironmentMap.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Color.h">
+      <Filter>Math\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vec4.h">
+      <Filter>Math\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vec3.h">
+      <Filter>Math\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vec2.h">
+      <Filter>Math\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="math\RGBE.h">
+      <Filter>Math\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Array1D.h">
+      <Filter>Math\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Array2D.h">
+      <Filter>Math\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Array3D.h">
+      <Filter>Math\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Array4D.h">
+      <Filter>Math\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Fwd.h">
+      <Filter>Math\util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\memory.h">
+      <Filter>util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RenderApp\Shader\AmbientOcclusionShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\BBH.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\BBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\BicubicPatch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Shader\BrushedShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Scene\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Texture\CheckerboardTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="math\Color.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Texture\ConstantTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Displacement\Displacement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Scene\DOFCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Scene\EnvironmentMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ogl\FBO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ogl\GfxGLUTWindow.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>GL</Filter>
     </ClCompile>
     <ClCompile Include="ogl\GLUTMaster.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>GL</Filter>
     </ClCompile>
     <ClCompile Include="ogl\GLUTWindow.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>GL</Filter>
     </ClCompile>
-    <ClCompile Include="img\HDRIO.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ogl\FBO.cpp">
+      <Filter>GL</Filter>
     </ClCompile>
-    <ClCompile Include="RenderApp\Scene\HitInfo.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="RenderApp\Shader\AmbientOcclusionShader.cpp">
+      <Filter>Shader</Filter>
     </ClCompile>
-    <ClCompile Include="img\ImageIO.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Math\BBH.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Texture\ImageTexture.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="RenderApp\Geometry\BBox.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="RenderApp\Shader\LambertShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Shader\LightShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\MeshBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshViewer\MeshViewer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\MicroGrid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\MicroPolygon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Shader\MirrorShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Motion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Renderer\MultipleRayTracingRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Displacement\MultipliedSineDisplacement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Displacement\NoDisplacement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Obj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Renderer\OpenGLRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Shader\PathTracingShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="img\PFMIO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Shader\PhongLobeShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Shader\PhongShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Scene\photonmap.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Renderer\PhotonScatterer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Scene\PointLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="img\PPMIO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ogl\Primitive.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="platform\Progress.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Rain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Renderer\RasterizationRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Scene\Ray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Renderer\RayTracingRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Scene\RectangularLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Shader\RefractionShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\RendererApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Renderer\ReyesRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Renderer\ReyesTracingRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="math\RGBE.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Scene\Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Shader\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Shape.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Displacement\ShiftedSineDisplacement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Scene\ShutterCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Displacement\SineDisplacement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\Sphere.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Scene\SphereCapLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Scene\SphereLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="platform\Stopwatch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ogl\Text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="platform\Timestamp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\TranslatedMotion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\Scene\UniformSphereLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderApp\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sampling\Sampler\JitterSampler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sampling\Sampler\RandomSampler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sampling\Sampler\UniformSampler.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="RenderApp\Geometry\BicubicPatch.cpp">
+      <Filter>Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Sampling\Warping\BrushedMetalWarping.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Shader\BrushedShader.cpp">
+      <Filter>Shader</Filter>
     </ClCompile>
     <ClCompile Include="Sampling\Warping\CosineHemisphereWarping.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Sampling\Warping</Filter>
     </ClCompile>
-    <ClCompile Include="Sampling\Warping\PhongHemisphereWarping.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="RenderApp\Geometry\Displacement\Displacement.cpp">
+      <Filter>Displacement</Filter>
     </ClCompile>
-    <ClCompile Include="Sampling\Warping\UniformCylinderWarping.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="RenderApp\Scene\DOFCamera.cpp">
+      <Filter>Cameras</Filter>
     </ClCompile>
-    <ClCompile Include="Sampling\Warping\UniformDiskWarping.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="img\HDRIO.cpp">
+      <Filter>img</Filter>
     </ClCompile>
-    <ClCompile Include="Sampling\Warping\UniformHemisphereWarping.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="img\ImageIO.cpp">
+      <Filter>img</Filter>
     </ClCompile>
-    <ClCompile Include="Sampling\Warping\UniformSphereCapWarping.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Sampling\Sampler\JitterSampler.cpp">
+      <Filter>Sampling\Sampler</Filter>
     </ClCompile>
-    <ClCompile Include="Sampling\Warping\UniformSphereWarping.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Sampling\Sampler\UniformSampler.cpp">
+      <Filter>Sampling\Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Sampler\RandomSampler.cpp">
+      <Filter>Sampling\Sampler</Filter>
     </ClCompile>
     <ClCompile Include="Sampling\Warping\UniformSquareWarping.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Warping\UniformSphereWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Warping\UniformSphereCapWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Warping\UniformHemisphereWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Warping\UniformCylinderWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Warping\PhongHemisphereWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampling\Warping\UniformDiskWarping.cpp">
+      <Filter>Sampling\Warping</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Shader\LambertShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Shader\LightShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Shader\PathTracingShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Shader\PhongLobeShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Shader\PhongShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Shader\RefractionShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Shader\Shader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Renderer\RasterizationRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Renderer\OpenGLRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Renderer\MultipleRayTracingRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Renderer\ReyesTracingRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Renderer\RayTracingRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Renderer\ReyesRenderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Shader\MirrorShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MeshBase.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\MicroGrid.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\Mesh.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\Sphere.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\Rain.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Scene\Camera.cpp">
+      <Filter>Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\MicroPolygon.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Obj.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\Displacement\MultipliedSineDisplacement.cpp">
+      <Filter>Displacement</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\Displacement\NoDisplacement.cpp">
+      <Filter>Displacement</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\Displacement\ShiftedSineDisplacement.cpp">
+      <Filter>Displacement</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\Displacement\SineDisplacement.cpp">
+      <Filter>Displacement</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Scene\UniformSphereLight.cpp">
+      <Filter>Light\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Scene\PointLight.cpp">
+      <Filter>Light\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Scene\RectangularLight.cpp">
+      <Filter>Light\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Scene\SphereCapLight.cpp">
+      <Filter>Light\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Scene\SphereLight.cpp">
+      <Filter>Light\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\Texture\CheckerboardTexture.cpp">
+      <Filter>Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\Texture\ConstantTexture.cpp">
+      <Filter>Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\Texture\ImageTexture.cpp">
+      <Filter>Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\Shape.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Scene\photonmap.cc">
+      <Filter>Light\Photon</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Renderer\PhotonScatterer.cpp">
+      <Filter>Light\Photon</Filter>
+    </ClCompile>
+    <ClCompile Include="img\PFMIO.cpp">
+      <Filter>img</Filter>
+    </ClCompile>
+    <ClCompile Include="img\PPMIO.cpp">
+      <Filter>img</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\main.cpp">
+      <Filter>Program</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\RendererApp.cpp">
+      <Filter>Program</Filter>
+    </ClCompile>
+    <ClCompile Include="ogl\Primitive.cpp">
+      <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="ogl\Text.cpp">
+      <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\Motion.cpp">
+      <Filter>Motion</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\TranslatedMotion.cpp">
+      <Filter>Motion</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\Timestamp.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\Stopwatch.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\Progress.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Scene\ShutterCamera.cpp">
+      <Filter>Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Scene\EnvironmentMap.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Scene\HitInfo.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Scene\Ray.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Scene\Scene.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="math\Color.cpp">
+      <Filter>Math\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="math\RGBE.cpp">
+      <Filter>Math\Containers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
