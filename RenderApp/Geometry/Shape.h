@@ -81,7 +81,7 @@ class Shape {
 		virtual Math::Vec3f evalP(float u, float v) const = 0;
 		virtual Math::Vec3f evalN(float u, float v) const = 0;
 
-		void dice(MicroGrid* grid, const SurfacePatch& patch, short size_x, short size_y) const;
+		void dice(MicroGrid& grid, const SurfacePatch& patch, short size_x, short size_y) const;
 
 	protected:
 		virtual void splitData(SurfacePatchPtr& child1, SurfacePatchPtr& child2, const SurfacePatch& parent, SplitDirection splitDirection) const;
@@ -105,7 +105,7 @@ class SurfacePatch {
 			shape->split(results, *this, splitDirection);
 		}
 	
-		void dice(MicroGrid *grid, short size_x, short size_y) const {
+		void dice(MicroGrid& grid, short size_x, short size_y) const {
 			shape->dice(grid, *this, size_x, size_y);
 		}
 

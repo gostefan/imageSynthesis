@@ -84,17 +84,17 @@ void Shape::split(SurfacePatchList& results, const SurfacePatch& parent, SplitDi
 	results.push_front(std::move(child2));
 }
 
-void Shape::dice(MicroGrid *grid, const SurfacePatch & parent, short size_x, short size_y) const {
-	if (!grid->allocate(size_x, size_y)) {
+void Shape::dice(MicroGrid& grid, const SurfacePatch & parent, short size_x, short size_y) const {
+	if (!grid.allocate(size_x, size_y)) {
 		printf("Failed grid allocation!\n");
 		return;
 	} 
 
-	grid->shape = this;
-	grid->uStart = parent.uStart;
-	grid->vStart = parent.vStart;
-	grid->uEnd = parent.uEnd;
-	grid->vEnd = parent.vEnd;
+	grid.shape = this;
+	grid.uStart = parent.uStart;
+	grid.vStart = parent.vStart;
+	grid.uEnd = parent.uEnd;
+	grid.vEnd = parent.vEnd;
 
     float du = 1 / float(size_x-1) * (parent.uEnd - parent.uStart);
     float dv = 1 / float(size_y-1) * (parent.vEnd - parent.vStart);
@@ -125,11 +125,11 @@ void Shape::dice(MicroGrid *grid, const SurfacePatch & parent, short size_x, sho
 				dirV = dirV.normalized() * displacement->getDerivativeV(u,v);
 				
 				// set the values
-     			grid->setVertex(uu, vv, evalP(u,v) + disp * normal);
-				grid->setNormal(uu, vv, (normal + dirU + dirV).normalized());
+     			grid.setVertex(uu, vv, evalP(u,v) + disp * normal);
+				grid.setNormal(uu, vv, (normal + dirU + dirV).normalized());
 			} else {
-				grid->setVertex(uu, vv, evalP(u,v));
-				grid->setNormal(uu, vv, evalN(u,v));
+				grid.setVertex(uu, vv, evalP(u,v));
+				grid.setNormal(uu, vv, evalN(u,v));
 			}
 		}
   	}

@@ -37,10 +37,10 @@ class ReyesRenderer : public Renderer {
 		std::unique_ptr<FrameBuffer> m_fbo;
 
 		virtual void split(Scene& scene, SurfacePatchVector& result);
-		virtual void dice(SurfacePatchVector& surfaces, vector<MicroGrid*>& result);
-		virtual void shade(vector<MicroGrid*>& grids, Scene& scene);
-		virtual void bust(vector<MicroGrid*>& grids, vector<MicroPolygon*>& result, Camera& camera);
-		virtual void sample(vector<MicroPolygon*>& polygons);
+		virtual void dice(SurfacePatchVector& surfaces, MicroGridVector& result);
+		virtual void shade(MicroGridVector& grids, Scene& scene);
+		virtual void bust(MicroGridVector& grids, MicroPolygonVector& result, Camera& camera);
+		virtual void sample(MicroPolygonVector& polygons);
 		virtual void filter();
 	
 	public:

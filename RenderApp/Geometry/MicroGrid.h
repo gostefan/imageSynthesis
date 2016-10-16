@@ -55,8 +55,11 @@ class MicroGrid {
 		void shade(const Camera& camera,  Scene* scene);
 		void rasterize(Util::Array2D<Color4f>& rgbaBuffer, Util::Array2D<float>& zBuffer);
 
-		void bust(std::vector<MicroPolygon*>& result);
+		void bust(MicroPolygonVector& result);
 
 		float u(int u) const;
 		float v(int v) const;
 };
+
+using MicroGridPtr = std::unique_ptr<MicroGrid>;
+using MicroGridVector = std::vector<MicroGridPtr>;

@@ -116,10 +116,11 @@ void MicroGrid::rasterize(Util::Array2D<Color4f>& rgbaBuffer, Util::Array2D<floa
 	}
 }
 
-void MicroGrid::bust(std::vector<MicroPolygon*>& result) {
+void MicroGrid::bust(MicroPolygonVector& result) {
 	for (short u = 0; u < width-1; u++) {
 		for (short v = 0; v < height-1; v++) {
-			result.push_back(new MicroPolygon(getVertex(u, v), getVertex(u+1, v), getVertex(u, v+1), getVertex(u+1, v+1), (getNormal(u, v) + getNormal(u+1, v) + getNormal(u, v+1) + getNormal(u+1, v+1))/4, getColor(u, v), getColor(u+1, v), getColor(u, v+1), getColor(u+1, v+1), m_shader));
+			auto mp = std::make_unique<MicroPolygon>(getVertex(u, v), getVertex(u + 1, v), getVertex(u, v + 1), getVertex(u + 1, v + 1), (getNormal(u, v) + getNormal(u + 1, v) + getNormal(u, v + 1) + getNormal(u + 1, v + 1)) / 4, getColor(u, v), getColor(u + 1, v), getColor(u, v + 1), getColor(u + 1, v + 1), m_shader);
+			result.push_back(std::move(mp));
 		}
 	}
 }

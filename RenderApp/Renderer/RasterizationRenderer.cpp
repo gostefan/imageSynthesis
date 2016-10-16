@@ -46,17 +46,17 @@ void RasterizationRenderer::render(Scene& scene) {
 		}
 	}
 
-	std::list<MicroGrid*> gridList;
+	std::list<MicroGridPtr> gridList;
 	for (auto iter = splitPatches.begin(); iter != splitPatches.end(); iter++) {
-		MicroGrid* mg = new MicroGrid((*iter)->shape, (*iter)->shape->surfaceShader);
-		gridList.push_back(mg);
-		(*iter)->dice(mg, 2, 2);
+		MicroGridPtr mg = util::make_unique<MicroGrid>((*iter)->shape, (*iter)->shape->surfaceShader);
+		(*iter)->dice(*mg, 2, 2);
+		gridList.push_back(std::move(mg));
 	}
 
 	Platform::Progress renderProgress("Raterizing", gridList.size());
 	
 	m_zBuffer.reset(Math::Limits<float>::max());
-	for (std::list<MicroGrid*>::iterator iter = gridList.begin(); iter != gridList.end(); iter++) {
+	for (auto iter = gridList.begin(); iter != gridList.end(); iter++) {
 		(*iter)->shade(*scene.camera, &scene);
 		(*iter)->project(scene.camera->NDCToWindow() * scene.camera->worldToNDC());
 		(*iter)->rasterize(m_rgbaBuffer, m_zBuffer);

@@ -24,12 +24,12 @@ void ReyesRenderer::render(Scene& scene) {
 	SurfacePatchVector splitShapes;
 	split(scene, splitShapes);
 
-	vector<MicroGrid*> microGrids;
+	MicroGridVector microGrids;
 	dice(splitShapes, microGrids);
 
 	shade(microGrids, scene);
 
-	vector<MicroPolygon*> microPolygons;
+	MicroPolygonVector microPolygons;
 	bust(microGrids, microPolygons, *scene.camera);
 
 	sample(microPolygons);
@@ -94,18 +94,18 @@ void ReyesRenderer::split(Scene& scene, SurfacePatchVector& result) {
 	cout << "Split in " << (static_cast<float>(clock() - start)/CLOCKS_PER_SEC) << " Seconds\n";
 }
 
-void ReyesRenderer::dice(SurfacePatchVector& surfaces, vector<MicroGrid*>& result) {
+void ReyesRenderer::dice(SurfacePatchVector& surfaces, MicroGridVector& result) {
 	clock_t start = clock();
 	// We generate grids from the object pieces
 	for (unsigned int i = 0; i < surfaces.size(); i++) {
-		MicroGrid* mg = new MicroGrid(surfaces[i]->shape, surfaces[i]->shape->surfaceShader);
-		surfaces[i]->dice(mg, nDice, nDice);
-		result.push_back(mg);
+		std::unique_ptr<MicroGrid> mg = util::make_unique<MicroGrid>(surfaces[i]->shape, surfaces[i]->shape->surfaceShader);
+		surfaces[i]->dice(*mg, nDice, nDice);
+		result.push_back(std::move(mg));
 	}
 	cout << "Diced in " << (static_cast<float>(clock() - start)/CLOCKS_PER_SEC) << " Seconds\n";
 }
 
-void ReyesRenderer::shade(vector<MicroGrid*>& grids, Scene& scene) {
+void ReyesRenderer::shade(MicroGridVector& grids, Scene& scene) {
 	clock_t start = clock();
 	// We shade each vertex of the grids
 	for (unsigned int i = 0; i < grids.size(); i++)
@@ -113,7 +113,7 @@ void ReyesRenderer::shade(vector<MicroGrid*>& grids, Scene& scene) {
 	cout << "Shaded in " << (static_cast<float>(clock() - start)/CLOCKS_PER_SEC) << " Seconds\n";
 }
 
-void ReyesRenderer::bust(vector<MicroGrid*>& grids, vector<MicroPolygon*>& result, Camera& camera) {
+void ReyesRenderer::bust(MicroGridVector& grids, MicroPolygonVector& result, Camera& camera) {
 	clock_t start = clock();
 	// Precompute some values
 	Mat44f worldToWindow = camera.NDCToWindow() * camera.worldToNDC();
@@ -122,13 +122,11 @@ void ReyesRenderer::bust(vector<MicroGrid*>& grids, vector<MicroPolygon*>& resul
 	for (unsigned int i = 0; i < grids.size(); i++) {
 		grids[i]->project(worldToWindow);
 		grids[i]->bust(result);
-		delete grids[i];
 	}
 	
 	// We remove the polygons not on the screen
 	for (unsigned int i = 0; i < result.size(); i++) {
 		if (!result[i]->isOnScreen(camera.yRes(), camera.xRes())) {
-			delete result[i];
 			result.erase(result.begin() + i);
 			i--;
 		}
@@ -136,13 +134,11 @@ void ReyesRenderer::bust(vector<MicroGrid*>& grids, vector<MicroPolygon*>& resul
 	cout << "Busted in " << (static_cast<float>(clock() - start)/CLOCKS_PER_SEC) << " Seconds\n";
 }
 
-void ReyesRenderer::sample(vector<MicroPolygon*>& polygons) {
+void ReyesRenderer::sample(MicroPolygonVector& polygons) {
 	clock_t start = clock();
 	// We render the polygons onto the frame
-	for (unsigned int i = 0; i < polygons.size(); i++) {
+	for (unsigned int i = 0; i < polygons.size(); i++)
 		polygons[i]->rasterize(m_rgbaBuffer, m_zBuffer);
-		delete polygons[i];
-	}
 	cout << "Sampled in " << (static_cast<float>(clock() - start)/CLOCKS_PER_SEC) << " Seconds\n";
 }
 

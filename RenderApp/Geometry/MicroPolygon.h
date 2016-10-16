@@ -42,3 +42,5 @@ class MicroPolygon {
 
 		bool isOnScreen(int height, int width);
 };
+using MicroPolygonPtr = std::unique_ptr<MicroPolygon>;
+using MicroPolygonVector = std::vector<MicroPolygonPtr>;
