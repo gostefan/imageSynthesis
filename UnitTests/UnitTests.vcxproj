@@ -150,11 +150,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestResult.cpp" />
+    <ClCompile Include="TreeTests.cpp" />
     <ClCompile Include="UnitTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Math\stdint.h" />
     <ClInclude Include="TestResult.h" />
+    <ClInclude Include="TreeTests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
