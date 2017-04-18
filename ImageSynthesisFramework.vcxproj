@@ -106,6 +106,7 @@ copy "$(SolutionDir)dependencies\windows\lib32\$(Configuration)\*.dll" "$(OutDir
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BoundingHierarchies\KDTree\KDTree.h" />
     <ClInclude Include="dependencies\windows\include\gl\freeglut.h" />
     <ClInclude Include="dependencies\windows\include\gl\freeglut_ext.h" />
     <ClInclude Include="dependencies\windows\include\gl\freeglut_std.h" />
@@ -113,6 +114,7 @@ copy "$(SolutionDir)dependencies\windows\lib32\$(Configuration)\*.dll" "$(OutDir
     <ClInclude Include="dependencies\windows\include\gl\glut.h" />
     <ClInclude Include="dependencies\windows\include\gl\glxew.h" />
     <ClInclude Include="dependencies\windows\include\gl\wglew.h" />
+    <ClInclude Include="IGeometry.h" />
     <ClInclude Include="img\Fwd.h" />
     <ClInclude Include="img\GammaTable.h" />
     <ClInclude Include="img\ImageIO.h" />
@@ -226,6 +228,7 @@ copy "$(SolutionDir)dependencies\windows\lib32\$(Configuration)\*.dll" "$(OutDir
     <ClInclude Include="Util\memory.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BoundingHierarchies\KDTree\KDCompiler.cpp" />
     <ClCompile Include="img\HDRIO.cpp" />
     <ClCompile Include="img\ImageIO.cpp" />
     <ClCompile Include="img\PFMIO.cpp" />

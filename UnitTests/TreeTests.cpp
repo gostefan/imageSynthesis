@@ -41,6 +41,6 @@ namespace test {
 		elements.push_back(createSizedObject(2, 2, 2, 3, 3, 3));
 		KDTree<SizedObject> tree(elements, 1, 2);
 
-		return TestResult(1,0,0);
+		return TestResult(0,0,1);
 	}
 }

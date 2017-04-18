@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Math\Box.h"
+#include "Math\Line.h"
 #include "Math\Vec3.h"
 #include "util/memory.h"
 
@@ -28,6 +29,13 @@ namespace {
 				float splitPoint;
 				const E* const * nodeElements;
 			};
+			
+			uint8_t getFlags() const {
+				return static_cast<uint8_t>(flags & 0x11);
+			};
+			uint32_t getNElements() const {
+				return flags >> 2;
+			};
 #ifdef KD_DEBUG
 			uint32_t leftChildren = 0;
 			uint32_t rightChilrden = 0;
@@ -52,6 +60,10 @@ class KDTree {
 			ptrStorage = std::move(elements);
 		}
 		virtual ~KDTree() {}
+
+		std::vector<E*> intersectRay(const Math::Line3f& ray) {
+			
+		}
 
 	protected:
 		/**
@@ -100,6 +112,21 @@ class KDTree {
 			}
 		}
 
+		std::vector<E*> intersectNode(const Math::Line3f& ray, KDNode<E>& node) const {
+			cont uint8_t flags = node.getFlags();
+			if (flags < 3) {
+				// Inner node
+				std::vector<E*> result;
+				for (size_t elementId = 0; elementId < node.getNElements(); elementId++) {
+					if (node.nodeElements[elementId].intersect(ray))
+						result.push_back(node.nodeElements[elementId]);
+				}
+			} else {
+				// Leaf node
+				Math::Vec3f shiftOri = ray.o;
+				shiftOri[flags]
+			}
+		}
 	protected:
 		uint32_t							maxTreeDepth;
 		uint32_t							maxElementsPerLeaf;

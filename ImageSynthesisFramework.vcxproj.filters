@@ -28,9 +28,6 @@
     <Filter Include="Displacement">
       <UniqueIdentifier>{d7e21382-4a32-4633-aba7-ee566710591b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Geometry">
-      <UniqueIdentifier>{33f97dc4-06cb-4bb3-8280-7e3fece70969}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Textures">
       <UniqueIdentifier>{2014de2f-a68f-40e7-aed7-89111457da6d}</UniqueIdentifier>
     </Filter>
@@ -63,6 +60,18 @@
     </Filter>
     <Filter Include="util">
       <UniqueIdentifier>{03253112-e8df-4a23-8939-efc41d1ac572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BoundingHierarchies">
+      <UniqueIdentifier>{850da39b-3569-41e6-b4c1-b5c319e92c6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BoundingHierarchies\KDTree">
+      <UniqueIdentifier>{20d1bdd0-4c3e-4b97-b8fc-d5a9571017b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeometryOld">
+      <UniqueIdentifier>{33f97dc4-06cb-4bb3-8280-7e3fece70969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{ce8224ea-9090-47cf-89f8-81ca359a2c66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,9 +106,6 @@
       <Filter>GL</Filter>
     </ClInclude>
     <ClInclude Include="Math\BBH.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderApp\Geometry\BBox.h">
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="math\Box.h">
@@ -259,16 +265,16 @@
       <Filter>Shader</Filter>
     </ClInclude>
     <ClInclude Include="RenderApp\Geometry\BicubicPatch.h">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClInclude>
     <ClInclude Include="RenderApp\Geometry\Rain.h">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClInclude>
     <ClInclude Include="RenderApp\Geometry\Shape.h">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClInclude>
     <ClInclude Include="RenderApp\Geometry\Sphere.h">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClInclude>
     <ClInclude Include="RenderApp\Geometry\Texture\ConstantTexture.h">
       <Filter>Textures</Filter>
@@ -283,16 +289,16 @@
       <Filter>Textures</Filter>
     </ClInclude>
     <ClInclude Include="RenderApp\Geometry\MicroPolygon.h">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClInclude>
     <ClInclude Include="RenderApp\Geometry\MicroGrid.h">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClInclude>
     <ClInclude Include="RenderApp\Shader\MirrorShader.h">
       <Filter>Shader</Filter>
     </ClInclude>
     <ClInclude Include="RenderApp\Geometry\Mesh.h">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClInclude>
     <ClInclude Include="Math\MeshBase.h">
       <Filter>Math</Filter>
@@ -334,7 +340,7 @@
       <Filter>Light\Lights</Filter>
     </ClInclude>
     <ClInclude Include="RenderApp\Geometry\Proc.h">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClInclude>
     <ClInclude Include="Math\Rand.h">
       <Filter>Math</Filter>
@@ -420,6 +426,15 @@
     <ClInclude Include="Util\memory.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="IGeometry.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderApp\Geometry\BBox.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingHierarchies\KDTree\KDTree.h">
+      <Filter>BoundingHierarchies\KDTree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ogl\GfxGLUTWindow.cpp">
@@ -440,11 +455,8 @@
     <ClCompile Include="Math\BBH.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="RenderApp\Geometry\BBox.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
     <ClCompile Include="RenderApp\Geometry\BicubicPatch.cpp">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClCompile>
     <ClCompile Include="Sampling\Warping\BrushedMetalWarping.cpp">
       <Filter>Sampling\Warping</Filter>
@@ -543,22 +555,22 @@
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="RenderApp\Geometry\MicroGrid.cpp">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClCompile>
     <ClCompile Include="RenderApp\Geometry\Mesh.cpp">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClCompile>
     <ClCompile Include="RenderApp\Geometry\Sphere.cpp">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClCompile>
     <ClCompile Include="RenderApp\Geometry\Rain.cpp">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClCompile>
     <ClCompile Include="RenderApp\Scene\Camera.cpp">
       <Filter>Cameras</Filter>
     </ClCompile>
     <ClCompile Include="RenderApp\Geometry\MicroPolygon.cpp">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClCompile>
     <ClCompile Include="Math\Obj.cpp">
       <Filter>Math</Filter>
@@ -600,7 +612,7 @@
       <Filter>Textures</Filter>
     </ClCompile>
     <ClCompile Include="RenderApp\Geometry\Shape.cpp">
-      <Filter>Geometry</Filter>
+      <Filter>GeometryOld</Filter>
     </ClCompile>
     <ClCompile Include="RenderApp\Scene\photonmap.cc">
       <Filter>Light\Photon</Filter>
@@ -661,6 +673,12 @@
     </ClCompile>
     <ClCompile Include="math\RGBE.cpp">
       <Filter>Math\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderApp\Geometry\BBox.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingHierarchies\KDTree\KDCompiler.cpp">
+      <Filter>BoundingHierarchies\KDTree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
