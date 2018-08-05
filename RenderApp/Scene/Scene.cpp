@@ -5,11 +5,10 @@
 
 Scene::Scene() : camera(new Camera()), nPhotons(0), usePMapDirect(false), nEstimatePhotons(100), maxPhotonDist(0.1f) {
 	pMap.reset(new PhotonMap(0));
-	background = new EnvironmentMap("./imgs/city1.hdr");
+	//background = new EnvironmentMap("./imgs/city1.hdr");
 }
 
 Scene::~Scene() {
-	delete background;
 }
 
 void Scene::addLight(Light* light) {

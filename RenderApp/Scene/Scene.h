@@ -29,7 +29,7 @@ class Scene {
 
 		std::vector<Shape*> shapes;
 		std::vector<Light*> lights;
-		EnvironmentMap* background;
+		std::unique_ptr<EnvironmentMap> background;
 
 		int nPhotons;
 		int nEstimatePhotons;
