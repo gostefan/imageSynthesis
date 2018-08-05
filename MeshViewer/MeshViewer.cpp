@@ -28,6 +28,7 @@ using namespace OGL;
 using namespace Math;
 
 namespace {
+	constexpr float ZOOM_FACTOR = 0.01f;
 	constexpr char* helpString =
 R"(How to use this demo:
 Left click for rotation.
@@ -182,8 +183,8 @@ void MeshViewer::motion(int nx, int ny) {
 			break;
 			
         case MM_ZOOM: {
-			float r = 1.0f - 0.01f*dx;
-			m_camera.distance *= r;
+			const float scale = 1.0f - ZOOM_FACTOR * (dx + dy);
+			m_camera.distance *= scale;
             update();
 			break;
 		}
