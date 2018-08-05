@@ -9,6 +9,7 @@
 #include <Math/Vec3.h>
 #include <Math/Box.h>
 #include <vector>
+#include <memory>
 #include "stdint.h"
 
 class Motion;
@@ -56,4 +57,5 @@ namespace Math {
     
 			Box4f bbox;
 	};
+	using MeshBasePtr = std::unique_ptr<MeshBase>;
 } // namespace Math

@@ -242,8 +242,8 @@ namespace {
 
 		scene.camera.reset(new ShutterCamera(shutterTime, std::unique_ptr<Camera>(new DOFCamera(scene.camera->xRes(), scene.camera->yRes(), 2000, 50000))));
 
-		delete scene.background;
-		scene.background = new EnvironmentMap("./imgs/meadow2.hdr");
+		//delete scene.background;
+		//scene.background = new EnvironmentMap("./imgs/meadow2.hdr");
 
 		Math::Mat44f w2c = scene.camera->worldToCamera();
 		w2c.lookAt(Vec3f(2000, 0, 0), Vec3f(0, 0, 1), Vec3f(0.0f, 1.0f, 0.0f));

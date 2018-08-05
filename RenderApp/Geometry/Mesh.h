@@ -16,7 +16,7 @@
 
 class Mesh : public Shape {
 	protected:
-		Math::MeshBase* m_mesh;
+		Math::MeshBasePtr m_mesh;
 		Math::BBH m_bbh;
 		int m_maxDepth;
 		int m_maxObjects;
@@ -28,7 +28,7 @@ class Mesh : public Shape {
 	public:
 	
 		Mesh(SurfaceShader* surfaceShader,
-			 Math::MeshBase* mesh, Motion* motion = nullptr, float shutterTime = 0, unsigned int nTime = 1,
+			 Math::MeshBasePtr&& mesh, Motion* motion = nullptr, float shutterTime = 0, unsigned int nTime = 1,
 			 int maxDepth = 64, int maxObjects = 1);
 	
 		void renderGL() const;

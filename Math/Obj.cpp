@@ -135,7 +135,7 @@ namespace Math {
 	} // namespace
 
 
-	MeshBase* readObjMesh(const string& filename) {
+	MeshBasePtr readObjMesh(const string& filename) {
 		#define DELIMS " \t\n\r\f"
 		printf("Reading OBJ mesh...\n");
 
@@ -190,7 +190,7 @@ namespace Math {
 			   "   materials: %d",
 			   nf, nv, nn, nt, nm);
     
-		MeshBase *mesh = new ObjMesh();
+		MeshBasePtr mesh = std::make_unique<ObjMesh>();
 
 		mesh->numVertices = nv;
 		mesh->vertices = new Vec3f[mesh->numVertices];

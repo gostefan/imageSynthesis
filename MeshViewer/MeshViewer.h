@@ -18,7 +18,7 @@
 class MeshViewer : public OGL::GfxGLUTWindow {
 	public:
 		MeshViewer(OGL::GLUTMaster* glutMaster, int setWidth, int setHeight,
-				   const char* title, Math::MeshBase * mesh);
+				   const char* title, const Math::MeshBase& mesh);
 		~MeshViewer();
     
 		void update();
@@ -48,7 +48,7 @@ class MeshViewer : public OGL::GfxGLUTWindow {
 			Math::Mat44f matrix;
 		} m_camera;
 
-		Math::MeshBase* m_mesh;
+		const Math::MeshBase& mesh;
     
 		bool m_drawGrid;
 };

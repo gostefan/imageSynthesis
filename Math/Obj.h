@@ -8,5 +8,5 @@
 #include <string>
 
 namespace Math {
-	MeshBase* readObjMesh(const std::string& filename);
+	MeshBasePtr readObjMesh(const std::string& filename);
 } // namespace Math

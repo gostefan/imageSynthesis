@@ -46,10 +46,10 @@ namespace {
 MeshViewer::MeshViewer(GLUTMaster * glutMaster,
 					   int width, int height,
 					   const char * title,
-					   MeshBase * mesh) :
+					   const MeshBase& mesh) :
 		GfxGLUTWindow(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH, width, height),
 		m_mouseMode(MM_NULL),
-		m_mesh(mesh)
+		mesh(mesh)
 {
     glutMaster->createWindow(title, this);
 	
@@ -114,10 +114,10 @@ void MeshViewer::display(void) {
 	
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glBegin(GL_TRIANGLES);
-	for (unsigned int i = 0; i < m_mesh->numTris; ++i) {
-		glVertex(m_mesh->vertices[m_mesh->vertexIndices[i].x]);
-		glVertex(m_mesh->vertices[m_mesh->vertexIndices[i].y]);
-		glVertex(m_mesh->vertices[m_mesh->vertexIndices[i].z]);
+	for (unsigned int i = 0; i < mesh.numTris; ++i) {
+		glVertex(mesh.vertices[mesh.vertexIndices[i].x]);
+		glVertex(mesh.vertices[mesh.vertexIndices[i].y]);
+		glVertex(mesh.vertices[mesh.vertexIndices[i].z]);
 	}
 	glEnd();
 	

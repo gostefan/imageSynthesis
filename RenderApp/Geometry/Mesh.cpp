@@ -58,13 +58,13 @@ namespace {
 
 
 Mesh::Mesh(SurfaceShader* ss, 
-		Math::MeshBase* mesh, Motion* motion, float shutterTime, unsigned int nTime, int maxDepth, int maxObjects) :
+		Math::MeshBasePtr&& mesh, Motion* motion, float shutterTime, unsigned int nTime, int maxDepth, int maxObjects) :
 		Shape(ss),
-		m_mesh(mesh),
+		m_mesh(std::move(mesh)),
 		m_maxDepth(maxDepth),
 		m_maxObjects(maxObjects)
 {
-	if (mesh != nullptr) {
+	if (mesh) {
 		mesh->motion = motion;
 		mesh->nTime = nTime;
 		mesh->shutterTime = shutterTime;
@@ -113,7 +113,7 @@ bool Mesh::intersect(Ray* r) const {
             unsigned nObjects = node->nObjects();
             if (nObjects == 1) {
                 const int index = node->oneIndex;
-                if (intersectTriangle(r, m_mesh, index)) {
+                if (intersectTriangle(r, m_mesh.get(), index)) {
 					r->hit.shape = this;
 					r->hit.surfaceShader = this->surfaceShader;
 					r->hit.I = r->d;
@@ -125,7 +125,7 @@ bool Mesh::intersect(Ray* r) const {
                 const unsigned * indices = node->indices;
                 for (unsigned i = 0; i < nObjects; ++i) {
                     const unsigned index = indices[i];
-                    if (intersectTriangle(r, m_mesh, index)) {
+                    if (intersectTriangle(r, m_mesh.get(), index)) {
 						r->hit.shape = this;
 						r->hit.surfaceShader = this->surfaceShader;
 						r->hit.I = r->d;

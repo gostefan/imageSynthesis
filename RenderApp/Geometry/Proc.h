@@ -3,7 +3,7 @@
 
 class Proc {
 	public:
-	Proc(const MeshBase* mesh, int maxDepth, int maxObjects, float shutterTime) :
+	Proc(const MeshBasePtr& mesh, int maxDepth, int maxObjects, float shutterTime) :
 			maxDepth(maxDepth),
 			maxObjects(maxObjects), motion(mesh->motion), nTime(mesh->nTime) {
 		if (!mesh)

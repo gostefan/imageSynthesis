@@ -33,10 +33,10 @@ main(int argc, char* argv[])
 	if (argc <= 1)
 		usage();
 
-	if (MeshBase * mesh = readObjMesh(argv[1]))
+	if (MeshBasePtr mesh = readObjMesh(argv[1]))
 	{	
 		OGL::GLUTMaster* glutMaster = new OGL::GLUTMaster(&argc, argv);
-		MeshViewer* window = new MeshViewer(glutMaster, 512, 512, "MeshViewer", mesh);
+		MeshViewer* window = new MeshViewer(glutMaster, 512, 512, "MeshViewer", *mesh);
 		glutMaster->disableIdleFunction();
 		glutMaster->mainLoop();
 		
