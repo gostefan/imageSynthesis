@@ -138,6 +138,9 @@ void MeshViewer::keyboard(unsigned char key, int x, int y) {
 			resetView();
             update();
 			break;
+		case 'g':
+			m_drawGrid = !m_drawGrid;
+			break;
 			
         default:
             GfxGLUTWindow::keyboard(key, x, y);
@@ -196,28 +199,27 @@ void MeshViewer::drawGrid(int gridRes) {
 		return;
 	
 	Vec2f v1;
-	Vec3f v2;
 	glBegin(GL_LINES);
 	
 	{
-		int fineGridRes = 16*gridRes;
+		int fineGridRes = 16 * gridRes;
 		glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
 		for (int j = 0; j < fineGridRes; j++) {
 			for (int i = 0; i <= gridRes; i++) {
 				v1 = Vec2f((j)/(float)fineGridRes, i/(float)gridRes);
-				glVertex(v2);
+				glVertex(v1);
 				
 				v1 = Vec2f((j+1)/(float)fineGridRes, i/(float)gridRes);
-				glVertex(v2);
+				glVertex(v1);
 			}
 		}
 		for (int j = 0; j <= gridRes; j++) {
 			for (int i = 0; i < fineGridRes; i++) {
 				v1 = Vec2f(j/(float)gridRes, i/(float)fineGridRes);
-				glVertex(v2);
+				glVertex(v1);
 				
 				v1 = Vec2f(j/(float)gridRes,(i+1)/(float)fineGridRes);
-				glVertex(v2);
+				glVertex(v1);
 			}
 		}
 	}
