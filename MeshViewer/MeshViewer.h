@@ -8,26 +8,28 @@
 
 #pragma once
 
-#include <vector>
 #include "Math/Vec2.h"
 #include "Math/Vec3.h"
 #include "Math/MeshBase.h"
 #include "Math/Mat44.h"
-#include <OGL/GfxGLUTWindow.h>
+
+#include "OGL/GfxGLUTWindow.h"
+
+#include <vector>
 
 class MeshViewer : public OGL::GfxGLUTWindow {
 	public:
-		MeshViewer(OGL::GLUTMaster* glutMaster, int setWidth, int setHeight,
+		MeshViewer(OGL::GLUTMaster& glutMaster, int setWidth, int setHeight,
 				   const char* title, const Math::MeshBase& mesh);
 		~MeshViewer();
     
 		void update();
-	
-		void display(void);
-		void reshape(int w, int h);
-		void keyboard(unsigned char key, int x, int y);
-		void motion(int x, int y);
-		void mouse(int button, int state, int x, int y);
+
+		void display(void) override;
+		void reshape(int w, int h) override;
+		void keyboard(unsigned char key, int x, int y) override;
+		void motion(int x, int y) override;
+		void mouse(int button, int state, int x, int y) override;
     
 	private:
 	
@@ -47,6 +49,7 @@ class MeshViewer : public OGL::GfxGLUTWindow {
 			Math::Vec3f center;
 			Math::Mat44f matrix;
 		} m_camera;
+		void resetCamera();
 
 		const Math::MeshBase& mesh;
     

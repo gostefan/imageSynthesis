@@ -9,39 +9,31 @@
 
 
 #include "MeshViewer.h"
-#include <Math/Obj.h>
+#include "Math/Obj.h"
+
+#include <memory>
 
 using namespace Math;
 
-void
-usage()
-{
+void usage() {
 	printf("Wrong number of parameters:\n");
 	printf("corrent usage:\n");
 	printf("MeshViewer file\n");
-	
-	exit(1);
 }
 
-int
-main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
 	if (argc <= 1)
 		usage();
-
-	if (MeshBasePtr mesh = readObjMesh(argv[1]))
-	{	
-		OGL::GLUTMaster* glutMaster = new OGL::GLUTMaster(&argc, argv);
-		MeshViewer* window = new MeshViewer(glutMaster, 512, 512, "MeshViewer", *mesh);
+	else if (MeshBasePtr mesh = readObjMesh(argv[1])) {	
+		auto glutMaster = std::make_unique<OGL::GLUTMaster>(&argc, argv);
+		auto window = std::make_unique<MeshViewer>(*glutMaster, 512, 512, "MeshViewer", *mesh);
 		glutMaster->disableIdleFunction();
 		glutMaster->mainLoop();
-		
-		delete window;
-		delete glutMaster;
-		
-		return 0;
+	} else {
+		std::cout << "Could not read obj mesh from file" << std::endl;
+		return 1;
 	}
-	
-    return 1;
+
+	return 0;
 }
 

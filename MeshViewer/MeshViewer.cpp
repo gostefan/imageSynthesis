@@ -8,42 +8,53 @@
 
 #include "MeshViewer.h"
 
-#include <Math/MeshBase.h>
-#include <Math/Vec3.h>
-#include <Math/Mat44.h>
-#include <Math/MathGL.h>
-#include <Math/FastMath.h>
-#include <OGL/Core.h>
-#include <OGL/GLUTMaster.h>
-#include <OGL/GfxGLUTWindow.h>
-#include <OGL/Text.h>
+#include "Math/MathGL.h"
+#include "Math/FastMath.h"
+#include "OGL/Core.h"
+#include "OGL/GLUTMaster.h"
+#include "OGL/GfxGLUTWindow.h"
+#include "OGL/Text.h"
+
+#include <iomanip>
 #include <iostream>
 #include <vector>
+
 #if !defined(_WIN32)
 #include <unistd.h>
 #endif
-#include <iomanip>
-
 
 using namespace std;
 using namespace OGL;
 using namespace Math;
 
-
 namespace {
-	const char* helpString = 
-    "How to use this demo:\n"
-    "\n"
-    "Keyboard usage is as follows:\n"
-    "    'h'     Toggle this help screen\n"
-    "    'H'     Toggle heads-up-display\n"
-    "    'g'     Toggle grid\n"
-    "    ' '     Reset camera\n";
-	
+	constexpr char* helpString =
+R"(How to use this demo:
+Left click for rotation.
+Right click for zoom.
+
+Keyboard usage is as follows:
+    'h'     Toggle this help screen
+    'H'     Toggle heads-up-display
+    'g'     Toggle grid
+    ' '     Reset camera)";
+
+	constexpr char* hForHelp = "Press \"h\" for help\n";
+
+	void glSetupOnce() {
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_LINE_SMOOTH);
+		glEnable(GL_POINT_SMOOTH);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPointSize(3.0f);
+		glPixelZoom(1.0f, -1.0f);
+	}
 } // namespace 
 
 
-MeshViewer::MeshViewer(GLUTMaster * glutMaster,
+MeshViewer::MeshViewer(GLUTMaster& glutMaster,
 					   int width, int height,
 					   const char * title,
 					   const MeshBase& mesh) :
@@ -51,23 +62,10 @@ MeshViewer::MeshViewer(GLUTMaster * glutMaster,
 		m_mouseMode(MM_NULL),
 		mesh(mesh)
 {
-    glutMaster->createWindow(title, this);
-	
-    // Background color
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-	
-    // Antialiasing settings
-    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_LINE_SMOOTH);
-    glEnable(GL_POINT_SMOOTH);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glPointSize(3.0f);
-	
-    glPixelZoom(1.0f,-1.0f);
-    
-	resetView();
+    glutMaster.createWindow(title, this);
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glSetupOnce();
+    resetView();
 }
 
 
@@ -87,51 +85,44 @@ void MeshViewer::update() {
     display();
 }
 
-
+namespace {
+	void drawMesh(const Math::MeshBase& mesh) {
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glBegin(GL_TRIANGLES);
+		for (unsigned int i = 0; i < mesh.numTris; ++i) {
+			glVertex(mesh.vertices[mesh.vertexIndices[i].x]);
+			glVertex(mesh.vertices[mesh.vertexIndices[i].y]);
+			glVertex(mesh.vertices[mesh.vertexIndices[i].z]);
+		}
+		glEnd();
+	}
+}
 void MeshViewer::display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	// update camera matrix
-    m_camera.matrix.makeIdentity();
-    m_camera.matrix.setD(0, 0, -m_camera.distance);
-    m_camera.matrix.rotateAxisAngle(Vec3f(1.0f, 0.0f, 0.0f), radians(m_camera.incline));
-    m_camera.matrix.rotateAxisAngle(Vec3f(0.0f, 1.0f, 0.0f), radians(m_camera.azimuth));
-	
-	
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-	
-    // Set perspective projection
-    gluPerspective(55, float(m_windowWidth)/float(m_windowHeight), 0.1f, 100.0f);
-	
-    // Place camera
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-	
-    // Place camera
-    glMultMatrix(m_camera.matrix);
-	
-	
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glBegin(GL_TRIANGLES);
-	for (unsigned int i = 0; i < mesh.numTris; ++i) {
-		glVertex(mesh.vertices[mesh.vertexIndices[i].x]);
-		glVertex(mesh.vertices[mesh.vertexIndices[i].y]);
-		glVertex(mesh.vertices[mesh.vertexIndices[i].z]);
-	}
-	glEnd();
-	
+	resetCamera();
+	drawMesh(mesh);	
 	drawGrid(32);
     
-    char buffer[1024];
-    _snprintf(buffer, 1024,
-             "Press \"h\" for help\n");
-    drawHUD(buffer);
+    drawHUD(hForHelp);
     drawHelp(helpString);
     
-    // Finish drawing scene
     glFinish();
     glutSwapBuffers();
+}
+
+void MeshViewer::resetCamera() {
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(55, float(m_windowWidth) / float(m_windowHeight), 0.1f, 100.0f);
+
+	m_camera.matrix.makeIdentity();
+	m_camera.matrix.setD(0, 0, -m_camera.distance);
+	m_camera.matrix.rotateAxisAngle(Vec3f(1.0f, 0.0f, 0.0f), radians(m_camera.incline));
+	m_camera.matrix.rotateAxisAngle(Vec3f(0.0f, 1.0f, 0.0f), radians(m_camera.azimuth));
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glMultMatrix(m_camera.matrix);
 }
 
 
