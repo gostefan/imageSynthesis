@@ -2,11 +2,9 @@
 Backup/
 bin/
 build/
-Debug/
 doc/
 imgs/
 obj/
-Release/
 *.hdr
 *.suo
 *.dll
