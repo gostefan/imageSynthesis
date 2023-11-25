@@ -154,8 +154,8 @@ namespace Math {
 		// See Knuth TAOCP Vol 2, 3rd Ed, p.106 for multiplier.
 		// In previous versions, most significant bits (MSBs) of the seed affect
 		// only MSBs of the state array.  Modified 9 Jan 2002 by Makoto Matsumoto.
-		register unsigned long *s = mt;
-		register unsigned long *r = mt;
+		unsigned long *s = mt;
+		unsigned long *r = mt;
 		*s++ = seed & 0xffffffffUL;
 		for(mti = 1; mti < N; ++mti) {
 			*s++ = (1812433253UL * (*r ^ (*r >> 30)) + mti) & 0xffffffffUL;
