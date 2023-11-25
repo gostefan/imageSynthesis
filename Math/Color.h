@@ -41,8 +41,8 @@ namespace Math {
 			template <typename S>
 			Color3(const Vec3<S> &v): Vec3 <T> (v) { }
 
-			operator const T*() const { return toArray(); }
-			operator T*() { return toArray(); }
+			operator const T*() const { return Vec3<T>::toArray(); }
+			operator T*() { return Vec3<T>::toArray(); }
 
 			Color3<T> operator+ (const Color3& c) const {
 				return Color3(*static_cast<const Vec3<T>*>(this) + static_cast<const Vec3<T>&>(c));
@@ -107,12 +107,12 @@ namespace Math {
 			}
     
 			T average() const {
-				return (x + y + z) / static_cast<T>(3);
+				return (Vec3<T>::x + Vec3<T>::y + Vec3<T>::z) / static_cast<T>(3);
 			}
 			T luminance() const {
-				return static_cast<T>(0.212671) * x +
-					   static_cast<T>(0.715160) * y +
-					   static_cast<T>(0.072169) * z;
+				return static_cast<T>(0.212671) * Vec3<T>::x +
+					   static_cast<T>(0.715160) * Vec3<T>::y +
+					   static_cast<T>(0.072169) * Vec3<T>::z;
 			}
 			Color3 pow(const Color3& exp) const {
 				Color3 res;
@@ -123,64 +123,64 @@ namespace Math {
 
 			Color3 RGBToXYZ() const {
 				Color3 ret;
-				Math::RGBToXYZ(&ret[0], &ret[1], &ret[2], x, y, z);
+				Math::RGBToXYZ(&ret[0], &ret[1], &ret[2], Vec3<T>::x, Vec3<T>::y, Vec3<T>::z);
 				return ret;
 			}
 			Color3 XYZToRGB() const {
 				Color3 ret;
-				Math::XYZToRGB(&ret[0], &ret[1], &ret[2], x, y, z);
+				Math::XYZToRGB(&ret[0], &ret[1], &ret[2], Vec3<T>::x, Vec3<T>::y, Vec3<T>::z);
 				return ret;
 			}
 			Color3 XYZToLab() const {
 				Color3 ret;
-				Math::XYZToLab(&ret[0], &ret[1], &ret[2], x, y, z);
+				Math::XYZToLab(&ret[0], &ret[1], &ret[2], Vec3<T>::x, Vec3<T>::y, Vec3<T>::z);
 				return ret;
 			}
 			Color3 LabToXYZ() const {
 				Color3 ret;
-				Math::LabToXYZ(&ret[0], &ret[1], &ret[2], x, y, z);
+				Math::LabToXYZ(&ret[0], &ret[1], &ret[2], Vec3<T>::x, Vec3<T>::y, Vec3<T>::z);
 				return ret;
 			}
 			Color3 XYZToLuv() const {
 				Color3 ret;
-				Math::XYZToLuv(&ret[0], &ret[1], &ret[2], x, y, z);
+				Math::XYZToLuv(&ret[0], &ret[1], &ret[2], Vec3<T>::x, Vec3<T>::y, Vec3<T>::z);
 				return ret;
 			}
 			Color3 LuvToXYZ() const {
 				Color3 ret;
-				Math::LuvToXYZ(&ret[0], &ret[1], &ret[2], x, y, z);
+				Math::LuvToXYZ(&ret[0], &ret[1], &ret[2], Vec3<T>::x, Vec3<T>::y, Vec3<T>::z);
 				return ret;
 			}
 			Color3 xyYToXYZ() const {
 				Color3 ret;
-				Math::xyYToXYZ(&ret[0], &ret[1], &ret[2], x, y, z);
+				Math::xyYToXYZ(&ret[0], &ret[1], &ret[2], Vec3<T>::x, Vec3<T>::y, Vec3<T>::z);
 				return ret;
 			}
 			Color3 XYZToxyY() const {
 				Color3 ret;
-				Math::XYZToxyY(&ret[0], &ret[1], &ret[2], x, y, z);
+				Math::XYZToxyY(&ret[0], &ret[1], &ret[2], Vec3<T>::x, Vec3<T>::y, Vec3<T>::z);
 				return ret;
 			}
     
 			Color3 RGBToHSV() const {
 				Color3 ret;
-				Math::RGBToHSV(&ret[0], &ret[1], &ret[2], x, y, z);
+				Math::RGBToHSV(&ret[0], &ret[1], &ret[2], Vec3<T>::x, Vec3<T>::y, Vec3<T>::z);
 				return ret;
 			}
 			Color3 HSVToRGB() const {
 				Color3 ret;
-				Math::HSVToRGB(&ret[0], &ret[1], &ret[2], x, y, z);
+				Math::HSVToRGB(&ret[0], &ret[1], &ret[2], Vec3<T>::x, Vec3<T>::y, Vec3<T>::z);
 				return ret;
 			}
     
 			Color3 RGBToHLS() const {
 				Color3 ret;
-				Math::RGBToHLS(&ret[0], &ret[1], &ret[2], x, y, z);
+				Math::RGBToHLS(&ret[0], &ret[1], &ret[2], Vec3<T>::x, Vec3<T>::y, Vec3<T>::z);
 				return ret;
 			}
 			Color3 HLSToRGB() const {
 				Color3 ret;
-				Math::HLSToRGB(&ret[0], &ret[1], &ret[2], x, y, z);
+				Math::HLSToRGB(&ret[0], &ret[1], &ret[2], Vec3<T>::x, Vec3<T>::y, Vec3<T>::z);
 				return ret;
 			}
 	};
@@ -241,8 +241,8 @@ namespace Math {
 			template <typename S>
 			Color4(const Vec4<S>& v): Vec4<T>(v) { }
 
-			operator const T*() const { return static_cast<const T*>(&x); }
-			operator T*() { return static_cast<T*>(&x); }
+			operator const T*() const { return static_cast<const T*>(&Vec4<T>::x); }
+			operator T*() { return static_cast<T*>(&Vec4<T>::x); }
 
 			Color4<T> operator+ (const Color4& c) const {
 				return Color4(*static_cast<const Vec4<T>*>(this) + (const Vec4<T> &)c);
@@ -304,7 +304,7 @@ namespace Math {
 			}
 
 			T average() const {
-				return T(x + y + z + w) / T(4);
+				return T(Vec4<T>::x + Vec4<T>::y + Vec4<T>::z + Vec4<T>::w) / T(4);
 			}
 	};
 
