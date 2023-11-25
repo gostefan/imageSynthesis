@@ -40,6 +40,13 @@ function(myproject_setup_dependencies)
 #    cpmaddpackage("gh:lefticus/tools#update_build_system")
 #  endif()
 
+  if (NOT TARGET freeglut_static)
+    cpmaddpackage("gh:FreeGLUTProject/freeglut@3.4.0")
+    if (freeglut_ADDED)
+	  get_target_property(freeglut_static_INCLUDE freeglut_static INCLUDE_DIRECTORIES)
+    endif()
+  endif()
+
   find_package(glew REQUIRED PATHS "${CMAKE_SOURCE_DIR}/dependencies/glew/1.13.0/" NO_DEFAULT_PATH)
 
 endfunction()
