@@ -15,10 +15,7 @@ namespace {
 LambertShader::LambertShader(Texture* surfaceTexture_in) :
 	SurfaceShader(surfaceTexture_in) { }
 
-LambertShader::LambertShader(const Color3f & kd) : m_kd(kd) {
-	randomSampler = std::unique_ptr<Sampler>(new RandomSampler());
-	cosineWarping = std::unique_ptr<Warping>(new CosineHemisphereWarping());
-}
+LambertShader::LambertShader(const Color3f & kd) : m_kd(kd), cosineScatter(kd) { }
 
 LambertShader::~LambertShader() { } // Needs to be here because of the unique_ptr dtor
 
@@ -48,22 +45,5 @@ Color3f LambertShader::shade(const HitInfo & hit, const Scene* scene, stack<floa
 }
 
 bool LambertShader::scatterPhoton(HitInfo hit, TracePhoton& photon, Scene& scene, float continueProb) const {
-	// store photon
-	scene.pMap->store(photon.power, hit.P.toArray(), hit.I.toArray());
-
-	// Calculate rotation
-	Mat44f rot = Mat44f::I();
-	rot.rotateTo(Vec3f(0,0,1), hit.N);
-
-	// Calculate new direction
-	std::vector<Vec2f> sample(1);
-	randomSampler->generateSamples(1, sample);
-	photon.direction = rot * cosineWarping->warp(sample.front());
-	
-	// Set hit position and color
-	photon.origin = hit.P;
-	photon.power = photon.power * m_kd;
-
-	// We decide whether the photon is scattered further depending on the reflectance value
-	return (rand() / static_cast<float>(RAND_MAX)) < continueProb;
+	return cosineScatter.scatterPhoton(hit, photon, scene, continueProb);
 }

@@ -4,6 +4,7 @@
 #include <vector>
 #include "../Scene/Scene.h"
 #include "Shader.h"
+#include "CosineScatter.h"
 #include "../Geometry/Texture/Texture.h"
 
 #include "util/memory.h"
@@ -14,8 +15,7 @@ class Warping;
 class LambertShader : public SurfaceShader {
 	protected:
 		Math::Color3f m_kd;
-		std::unique_ptr<Sampler> randomSampler;
-		std::unique_ptr<Warping> cosineWarping;
+		CosineScatter cosineScatter;
 
 	public:
 		LambertShader(Texture* surfaceTexture);

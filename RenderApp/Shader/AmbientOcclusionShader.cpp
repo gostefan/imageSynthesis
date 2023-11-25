@@ -66,5 +66,5 @@ Color3f AmbientOcclusionShader::shade(const HitInfo & hit, const Scene* scene, s
 }
 
 bool AmbientOcclusionShader::scatterPhoton(HitInfo hit, TracePhoton& photon, Scene& scene, float continueProb) const {
-	return LambertShader::scatterPhoton(hit, photon, scene, continueProb);
+	return cosineScatter.scatterPhoton(hit, photon, scene, continueProb);
 }
