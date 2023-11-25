@@ -44,7 +44,10 @@ HDRReadHeader (FILE* fp, int* width, int* height)
     if (fgets (buf, size, fp) == 0)
         return false;
 
+#pragma warning( push )
+#pragma warning( disable : 4996 )
 	if (sscanf (buf, "-Y %d +X %d", height, width) < 2)
+#pragma warning( pop )
         return false;
     return true;
 }
@@ -352,7 +355,10 @@ HDRWritePixelsRLE (FILE *fp, float *data, int xRes, int yRes)
 bool
 isHDRImage (const string &name)
 {
+#pragma warning( push )
+#pragma warning( disable : 4996 )
     FILE * file = fopen (name.c_str (), "rb");
+#pragma warning( pop )
     if (!file)
         return false;
         
@@ -371,7 +377,10 @@ readHDRImage (const string &name, int * width, int * height)
      
     try
     {
+#pragma warning( push )
+#pragma warning( disable : 4996 )
         file = fopen (name.c_str (), "rb");
+#pragma warning( pop )
         if (!file)
             throw std::runtime_error ("cannot open file.");
     
@@ -418,7 +427,10 @@ writeHDRImage (const ImageData &data)
      
     try
     {
+#pragma warning( push )
+#pragma warning( disable : 4996 )
         outfile = fopen (data.filename.c_str(), "wb");
+#pragma warning( pop )
         if (!outfile)
             throw std::runtime_error ("cannot open file.");
             

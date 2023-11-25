@@ -28,7 +28,10 @@ struct RGB
 bool
 isPPMImage (const string &name)
 {
+#pragma warning( push )
+#pragma warning( disable : 4996 )
     FILE * file = fopen (name.c_str (), "rb");
+#pragma warning( pop )
     if (!file)
         return false;
 
@@ -56,7 +59,10 @@ readPPMImage (const string &name, int * width, int * height)
 
     try
     {
+#pragma warning( push )
+#pragma warning( disable : 4996 )
         infile = fopen(name.c_str(), "rb");
+#pragma warning( pop )
     
         if (!infile)
             throw std::runtime_error ("cannot open file.");
@@ -68,13 +74,19 @@ readPPMImage (const string &name, int * width, int * height)
         do {fgets(buffer, sizeof (buffer), infile);} while (buffer[0] == '#');
     
         // read image size
+#pragma warning( push )
+#pragma warning( disable : 4996 )
         sscanf(buffer, "%d %d", width, height);
+#pragma warning( pop )
         
         // skip comments
         do {fgets (buffer, sizeof (buffer), infile);} while (buffer[0] == '#');
     
         // read maximum pixel value (usually 255)
+#pragma warning( push )
+#pragma warning( disable : 4996 )
         sscanf (buffer, "%d", &colors);
+#pragma warning( pop )
         invColors = 1.0f/colors;
     
         if (colors != 255)
@@ -135,7 +147,10 @@ writePPMImage (const ImageData &data)
 
     try
     {
+#pragma warning( push )
+#pragma warning( disable : 4996 )
         outfile = fopen (data.filename.c_str(), "wb");
+#pragma warning( pop )
         if (!outfile)
             throw std::runtime_error ("cannot open file.");
     

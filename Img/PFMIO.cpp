@@ -15,7 +15,10 @@ using namespace Math;
 bool
 isPFMImage(const string &name)
 {
+#pragma warning( push )
+#pragma warning( disable : 4996 )
     FILE * file = fopen(name.c_str (), "rb");
+#pragma warning( pop )
     if (!file)
         return false;
 
@@ -43,7 +46,10 @@ readPFMImage(const string &name, int * width, int * height)
     
     try
     {
+#pragma warning( push )
+#pragma warning( disable : 4996 )
         infile = fopen(name.c_str(), "rb");
+#pragma warning( pop )
         if (!infile)
             throw std::runtime_error("cannot open file.");
     
@@ -56,12 +62,18 @@ readPFMImage(const string &name, int * width, int * height)
     
         b = (b == 'F');		// 'F' = RGB,  'f' = monochrome
     
+#pragma warning( push )
+#pragma warning( disable : 4996 )
         ret = fscanf(infile, "%d %d%c", width, height, &junk);
+#pragma warning( pop )
         if ((ret != 3) || (*width <= 0) || (*height <= 0))
             throw std::runtime_error("invalid width or height.");
     
         float scaleFactor;
+#pragma warning( push )
+#pragma warning( disable : 4996 )
         ret = fscanf(infile, "%f%c", &scaleFactor, &junk);
+#pragma warning( pop )
 		
 		if (scaleFactor > 0.0)
 			throw std::runtime_error("big-endian files are not supported.");
@@ -130,7 +142,10 @@ writePFMImage (const ImageData &data)
 
     FILE *outfile = 0;
     size_t ret;
+#pragma warning( push )
+#pragma warning( disable : 4996 )
     outfile = fopen(data.filename.c_str(), "wb");
+#pragma warning( pop )
     if (!outfile)
         return false;
 

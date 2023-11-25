@@ -55,7 +55,10 @@ namespace {
 
 	Math::Color3f* readImage(const string &name, int *width, int *height) {
 		// first see if the file exists
+#pragma warning( push )
+#pragma warning( disable : 4996 )
 		FILE* file = fopen(name.c_str(), "rb");
+#pragma warning( pop )
 		if (!file) {
 			printf("Error: Unable to read image file \"%s\": "
 					   "file does not exist.", name.c_str());
