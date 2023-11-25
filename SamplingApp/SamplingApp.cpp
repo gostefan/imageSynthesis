@@ -47,7 +47,7 @@ namespace {
 	auto VALUE_X   = [](const Math::Vec3f& point) { return					 pow(point.y, 2)				  ; };
 	auto VALUE_Z   = [](const Math::Vec3f& point) { return									   pow(point.z, 2); };
 	
-	std::function<float(Math::Vec3f&)> VALUES[] = { VALUE_X_Y, VALUE_X, VALUE_Z };
+	std::function<double(Math::Vec3f&)> VALUES[] = { VALUE_X_Y, VALUE_X, VALUE_Z };
 	const char* VALUE_NAMES[] = { "x^2 + y^2", "   x^2   ", "   z^2   " };
 } // namespace 
 
