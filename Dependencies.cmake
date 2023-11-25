@@ -47,6 +47,7 @@ function(myproject_setup_dependencies)
     endif()
   endif()
 
-  find_package(glew REQUIRED PATHS "${CMAKE_SOURCE_DIR}/dependencies/glew/1.13.0/" NO_DEFAULT_PATH)
+  find_package(glew REQUIRED PATHS "${CMAKE_SOURCE_DIR}/dependencies/glew/2.2.0/" NO_DEFAULT_PATH)
+  add_compile_options(-DGLEW_STATIC)
 
 endfunction()
