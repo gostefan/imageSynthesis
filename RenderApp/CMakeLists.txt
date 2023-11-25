@@ -1,5 +1,10 @@
 add_executable(RenderApp main.cpp RendererApp.cpp)
 
+add_subdirectory(Geometry)
+add_subdirectory(Renderer)
+add_subdirectory(Scene)
+add_subdirectory(Shader)
+
 #target_link_libraries(
 #  intro
 #  PRIVATE myproject::myproject_options

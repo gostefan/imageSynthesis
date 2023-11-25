@@ -58,8 +58,15 @@ add_library(myproject::myproject_warnings ALIAS myproject_warnings)
 add_subdirectory(configured_files)
 
 # Adding the src:
+add_subdirectory(MeshViewer)
 add_subdirectory(RenderApp)
 add_subdirectory(SamplingApp)
+
+add_subdirectory(Img)
+add_subdirectory(Math)
+add_subdirectory(OGL)
+add_subdirectory(Platform)
+add_subdirectory(Sampling)
 
 # Don't even look at tests if we're not top level
 if(NOT PROJECT_IS_TOP_LEVEL)
