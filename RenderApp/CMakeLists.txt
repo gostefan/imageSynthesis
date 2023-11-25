@@ -16,4 +16,6 @@ add_executable(RenderApp main.cpp RendererApp.cpp)
 #          ftxui::dom
 #          ftxui::component)
 
-target_include_directories(RenderApp PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
+target_link_libraries(RenderApp PRIVATE debug "${glew_dbg_lib}" optimized "${glew_opt_lib}")
+
+target_include_directories(RenderApp PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include" "${glew_opt_include}")
