@@ -18,7 +18,7 @@ class PointLight : public Light {
 		std::unique_ptr<Warping> sphereWarping;
 
 	public:
-		PointLight(const Math::Vec3f& position = Math::Vec3f(), Math::Color3f& power = Math::Color3f(1,1,1));
+		PointLight(const Math::Vec3f& position = Math::Vec3f(), const Math::Color3f& power = Math::Color3f(1,1,1));
 		virtual ~PointLight();
 
 		virtual bool isRenderable() const;

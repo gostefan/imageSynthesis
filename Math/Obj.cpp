@@ -105,10 +105,10 @@ namespace Math {
 				   int *vindex, int *tindex, int *nindex,
 				   int numV, int numT, int numN)
 		{
-			char *null = " ";
+			const char *null = " ";
 			char *ptr;
-			char *tp;
-			char *np;
+			const char *tp;
+			const char *np;
 
 			// by default, the texture and normal pointers are set to the null string
 			tp = null;

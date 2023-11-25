@@ -29,7 +29,7 @@ using namespace Math;
 
 namespace {
 	constexpr float ZOOM_FACTOR = 0.01f;
-	constexpr char* helpString =
+	constexpr const char* helpString =
 R"(How to use this demo:
 Left click for rotation.
 Right click for zoom.
@@ -40,7 +40,7 @@ Keyboard usage is as follows:
     'g'     Toggle grid
     ' '     Reset camera)";
 
-	constexpr char* hForHelp = "Press \"h\" for help\n";
+	constexpr const char* hForHelp = "Press \"h\" for help\n";
 
 	void glSetupOnce() {
 		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);

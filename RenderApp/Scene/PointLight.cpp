@@ -13,7 +13,7 @@ namespace {
 	const float FOUR_PI = 4 * PI;
 }
 
-PointLight::PointLight(const Math::Vec3f & position, Math::Color3f & power ) : m_position(position), m_power(power) {
+PointLight::PointLight(const Math::Vec3f & position, const Math::Color3f & power ) : m_position(position), m_power(power) {
 	randomSampler = std::unique_ptr<Sampler>(new RandomSampler());
 	sphereWarping = std::unique_ptr<Warping>(new UniformSphereWarping());
 }
