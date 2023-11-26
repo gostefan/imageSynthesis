@@ -139,12 +139,8 @@ namespace Math {
 		#define DELIMS " \t\n\r\f"
 		printf("Reading OBJ mesh...\n");
 
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-		FILE* fp = fopen(filename.c_str(), "rb");
-#pragma warning( pop )
-    
-		if (!fp) {
+		FILE* fp;
+		if (fopen_s(&fp, filename.c_str(), "rb") != 0 && !fp) {
 			std::cerr << "Cannot open \"" << filename.c_str() << "\" for reading" << std::endl;
 			return 0;
 		}
@@ -166,22 +162,17 @@ namespace Math {
 				else
 					nv++;
 			} else if (line[0]  == 'f') {
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-				int num = sscanf(&line[1], "%32s %32s %32s %32s",
-								  tk[ 0], tk[ 1], tk[ 2], tk[ 3]);
-#pragma warning( pop )
+				int num = sscanf_s(&line[1], "%32s %32s %32s %32s",
+								  tk[ 0], 32, tk[ 1], 32, tk[ 2], 32, tk[ 3], 32);
 				if (num != 3) {
 					fprintf(stderr,"Obj: %s: file contains polygons with > 3 vertices (line: %d, %s)\n", filename.c_str(), lineNum, line);
 					return 0;
 				}
 				nf += num - 2;
 			} else if (strncmp("usemtl", line, 6) == 0) {
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-				char* tok = strtok(line, DELIMS);
-				tok = strtok(0, DELIMS);
-#pragma warning( pop )
+				char* context;
+				char* tok = strtok_s(line, DELIMS, &context);
+				tok = strtok_s(0, DELIMS, &context);
 				if (materialMap.find(tok) == materialMap.end()) {
 					// insert a new material
 					materialMap.insert(pair<string, uint32_t>(string(tok), nm));
@@ -253,10 +244,7 @@ namespace Math {
 				if (line[1] == 'n') {
 					if (mesh->normals) {
 						float x, y, z;
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-						if (sscanf(&line[2], "%f %f %f\n", &x, &y, &z) != 3)
-#pragma warning( pop )
+						if (sscanf_s(&line[2], "%f %f %f\n", &x, &y, &z) != 3)
 							fprintf(stderr, "Obj: %s:%d: error reading normal. "
 											"Expecting 3 floats.",
 											filename.c_str(), lineNum);
@@ -267,10 +255,7 @@ namespace Math {
 				} else if (line[1] == 't') {
 					if (mesh->texCoords) {
 						float x, y;
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-						if (sscanf(&line[2], "%f %f\n", &x, &y) != 2)
-#pragma warning( pop )
+						if (sscanf_s(&line[2], "%f %f\n", &x, &y) != 2)
 							fprintf(stderr, "Obj: %s:%d: error reading texture "
 											"coordinates. Expecting 2 floats.",
 											filename.c_str(), lineNum);
@@ -279,10 +264,7 @@ namespace Math {
 					}
 				} else {
 					float x, y, z;
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-					if (sscanf(&line[1], "%f %f %f\n", &x, &y, &z) != 3)
-#pragma warning( pop )
+					if (sscanf_s(&line[1], "%f %f %f\n", &x, &y, &z) != 3)
 							fprintf(stderr, "Obj: %s:%d: error reading vertex. "
 											"Expecting 3 floats.",
 											filename.c_str(), lineNum);
@@ -294,11 +276,8 @@ namespace Math {
 				int v1, t1, n1;
 				int v2, t2, n2;
 				int v3, t3, n3;
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-				int num = sscanf(&line[1], "%32s %32s %32s %32s",
-								 tk[ 0], tk[ 1], tk[ 2], tk[ 3]);
-#pragma warning( pop )
+				int num = sscanf_s(&line[1], "%32s %32s %32s %32s",
+								 tk[ 0], 32, tk[ 1], 32, tk[ 2], 32, tk[ 3], 32);
 				if (num != 3) {
 					fprintf(stderr, "Obj: %s:%d: Error reading face. "
 									"Expecting at least 3 indices. Skipping face.",
@@ -359,11 +338,9 @@ namespace Math {
 				mesh->numTris++;
 			} else if (strncmp("usemtl", line, 6) == 0) {
 				// set current material
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-				char* tok = strtok(line, DELIMS);
-				tok = strtok(0, DELIMS);
-#pragma warning( pop )
+				char* context;
+				char* tok = strtok_s(line, DELIMS, &context);
+				tok = strtok_s(0, DELIMS, &context);
             
 				// find the material in the map
 				currentShader = materialMap[tok]+1;

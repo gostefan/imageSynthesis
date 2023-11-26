@@ -15,11 +15,8 @@ using namespace Math;
 bool
 isPFMImage(const string &name)
 {
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-    FILE * file = fopen(name.c_str (), "rb");
-#pragma warning( pop )
-    if (!file)
+    FILE * file;
+    if (fopen_s(&file, name.c_str (), "rb") != 0 || !file)
         return false;
 
     char header[3];
@@ -46,11 +43,7 @@ readPFMImage(const string &name, int * width, int * height)
     
     try
     {
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-        infile = fopen(name.c_str(), "rb");
-#pragma warning( pop )
-        if (!infile)
+        if (fopen_s(&infile, name.c_str(), "rb") != 0 || !infile)
             throw std::runtime_error("cannot open file.");
     
         int a = fgetc (infile);
@@ -62,18 +55,12 @@ readPFMImage(const string &name, int * width, int * height)
     
         b = (b == 'F');		// 'F' = RGB,  'f' = monochrome
     
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-        ret = fscanf(infile, "%d %d%c", width, height, &junk);
-#pragma warning( pop )
+        ret = fscanf_s(infile, "%d %d%c", width, height, &junk, 1);
         if ((ret != 3) || (*width <= 0) || (*height <= 0))
             throw std::runtime_error("invalid width or height.");
     
         float scaleFactor;
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-        ret = fscanf(infile, "%f%c", &scaleFactor, &junk);
-#pragma warning( pop )
+        ret = fscanf_s(infile, "%f%c", &scaleFactor, &junk, 1);
 		
 		if (scaleFactor > 0.0)
 			throw std::runtime_error("big-endian files are not supported.");
@@ -142,11 +129,8 @@ writePFMImage (const ImageData &data)
 
     FILE *outfile = 0;
     size_t ret;
-#pragma warning( push )
-#pragma warning( disable : 4996 )
-    outfile = fopen(data.filename.c_str(), "wb");
-#pragma warning( pop )
-    if (!outfile)
+    
+    if (fopen_s(&outfile, data.filename.c_str(), "wb") != 0 || !outfile)
         return false;
 
     fputc ('P', outfile);

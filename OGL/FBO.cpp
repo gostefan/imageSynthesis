@@ -22,8 +22,6 @@
 #include <iostream>
 #include <OGL/FBO.h>
 
-#pragma warning(disable: 4996)
-
 FrameBuffer::FrameBuffer(const char *name) : m_depth(-1), m_automaticMipmapsEnabled(0)
 {
 	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &m_maxColorBuffers);
@@ -44,9 +42,9 @@ FrameBuffer::FrameBuffer(const char *name) : m_depth(-1), m_automaticMipmapsEnab
 	glGenFramebuffersEXT(1, &m_ID);
 	
 	if (!name)
-		sprintf(m_FBOName, "Framebuffer %d", m_ID);
+		sprintf_s(m_FBOName, 80, "Framebuffer %d", m_ID);
 	else
-		strncpy(m_FBOName, name, 79);
+		strncpy_s(m_FBOName, 80, name, 79);
 }
 
 FrameBuffer::FrameBuffer(int w, int h, const char *name) :
@@ -68,9 +66,9 @@ FrameBuffer::FrameBuffer(int w, int h, const char *name) :
 	glGenFramebuffersEXT(1, &m_ID);
 	
 	if (!name)
-		sprintf(m_FBOName, "Framebuffer %d", m_ID);
+		sprintf_s(m_FBOName, 80, "Framebuffer %d", m_ID);
 	else
-		strncpy(m_FBOName, name, 79);
+		strncpy_s(m_FBOName, 80, name, 79);
 }
 
 FrameBuffer::FrameBuffer(GLenum type, int w, int h, int d, 
@@ -93,8 +91,8 @@ FrameBuffer::FrameBuffer(GLenum type, int w, int h, int d,
 	}
 	m_depthType = m_stencilType = type;
 	
-	if (!name) sprintf(m_FBOName, "Framebuffer %d", m_ID);
-	else strncpy(m_FBOName, name, 79);
+	if (!name) sprintf_s(m_FBOName, 80, "Framebuffer %d", m_ID);
+	else strncpy_s(m_FBOName, 80, name, 79);
 	
 	glGenFramebuffersEXT(1, &m_ID);
 	
@@ -178,7 +176,7 @@ FrameBuffer::FrameBuffer(int test) :
 		m_colorType[i] = GL_TEXTURE_2D_ARRAY_EXT;
 	}
 	m_depthType = m_stencilType = GL_TEXTURE_2D_ARRAY_EXT;
-	sprintf(m_FBOName, "Test CubeMap Framebuffer");
+	sprintf_s(m_FBOName, 80, "Test CubeMap Framebuffer");
 	
 	m_numColorAttachments = 1;
 	m_includedBuffers = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
