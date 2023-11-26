@@ -41,9 +41,13 @@ void RayTracingRenderer::render(Scene & scene) {
 	unsigned int xRes = scene.camera->xRes();
 	unsigned int yRes = scene.camera->yRes();
 	auto r = std::unique_ptr<Ray>(new Ray());
+	std::stack<float> refraction = std::stack<float>();
+	refraction.push(1);
 	for (unsigned int i = 0; i < xRes; i++) {
 		for (unsigned int j = 0; j < yRes; j++) {
 			r->reset();
+			while(refraction.size() > 1)
+				refraction.pop();
 			scene.camera->generateRay(r.get(), static_cast<float>(i), static_cast<float>(j));
 	
 			//loop over all scene objects and find the closest intersection
@@ -52,8 +56,6 @@ void RayTracingRenderer::render(Scene & scene) {
 
 			//if ray hit something then shade it
 			if (r->hit.shape != 0 && r->hit.surfaceShader != 0) {
-				std::stack<float> refraction = std::stack<float>();
-				refraction.push(1);
 				Math::Color3f shaded = r->hit.surfaceShader->shade(r->hit, &scene, refraction);
 				
 				m_rgbaBuffer(i,j).x = shaded.x;
