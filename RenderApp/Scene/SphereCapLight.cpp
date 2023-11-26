@@ -25,7 +25,7 @@ Math::Color3f SphereCapLight::getPower() {
 	return power;
 }
 
-void SphereCapLight::getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) {
+void SphereCapLight::getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) const {
 	// Calculate cap heigth
 	float connectionSq = (point - location).length2();
 	float connection = sqrt(connectionSq);

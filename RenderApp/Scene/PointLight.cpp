@@ -58,7 +58,7 @@ BBox PointLight::getBBox(float uStart, float uEnd, float vStart, float vEnd) con
 	return BBox(m_position, m_position);
 };
 
-void PointLight::getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) {
+void PointLight::getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) const {
 	LightRay lr;
 	Ray r;
 	lr.direction = (point - m_position).normalized();

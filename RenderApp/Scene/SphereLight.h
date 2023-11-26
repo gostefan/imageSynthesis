@@ -2,7 +2,7 @@
 //  Light.h
 //  Image Synthesis Basecode
 //
-//  Created by Stefan Götschi on 02/27/12
+//  Created by Stefan Gï¿½tschi on 02/27/12
 //  Copyright 2012 Student. All rights reserved.
 //
 
@@ -21,7 +21,7 @@ class SphereLight : virtual public Light, virtual public Sphere {
 
 		virtual Math::Color3f getPower();
 		virtual Math::Vec3f getPosition();
-		virtual void getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) = 0;
+		virtual void getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) const = 0;
 		virtual bool intersect(Ray * r) const {
 			return Sphere::intersect(r);
 		}

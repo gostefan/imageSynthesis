@@ -19,7 +19,7 @@ Math::Color3f UniformSphereLight::getPower() {
 	return power;
 }
 
-void UniformSphereLight::getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) {
+void UniformSphereLight::getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) const {
 	// Draw new samples
 	std::vector<Vec2f> drawnPoints(nSamples);
 	randomSampler->generateSamples(nSamplesSqrt, drawnPoints);

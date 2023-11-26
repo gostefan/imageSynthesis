@@ -20,12 +20,11 @@ LambertShader::LambertShader(const Color3f & kd) : m_kd(kd), cosineScatter(kd) {
 LambertShader::~LambertShader() { } // Needs to be here because of the unique_ptr dtor
 
 Color3f LambertShader::shade(const HitInfo & hit, const Scene* scene, stack<float>& refractionIndices) const {
-	std::vector<Light*> lights = scene->lights;
 	Color3f color(0,0,0);
 	if (!scene->usePMapDirect) {
-		for (unsigned int i = 0; i < lights.size(); i++) {
+		for (const Light* light : scene->lights) {
 			vector<LightRay> samples;
-			lights[i]->getIrradianceSamples(hit.P, scene, samples, hit.time);
+			light->getIrradianceSamples(hit.P, scene, samples, hit.time);
 			Color3f estimate(0);
 			for (unsigned int j = 0; j < samples.size(); j++) {
 				float dotProd = std::max(dot(-samples[j].direction, hit.N), 0.f);

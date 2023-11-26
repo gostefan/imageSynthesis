@@ -36,6 +36,6 @@ class PointLight : public Light {
 		virtual void renderGL() const;
 		virtual BBox getBBox() const;
 		virtual BBox getBBox(float uStart, float uEnd, float vStart, float vEnd) const;
-		virtual void getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time);
+		virtual void getIrradianceSamples(Vec3f point, const Scene* scene, vector<LightRay>& result, float time) const;
 		virtual TracePhoton samplePhoton();
 };
