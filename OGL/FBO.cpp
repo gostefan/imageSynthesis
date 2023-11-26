@@ -22,6 +22,16 @@
 #include <iostream>
 #include <OGL/FBO.h>
 
+namespace {
+void createName(char* target, const char* name, GLuint id) {
+	if (!name)
+		sprintf_s(target, 80, "Framebuffer %d", id);
+	else
+		strncpy_s(target, 80, name, 79);
+
+}
+} // anonymous namespace
+
 FrameBuffer::FrameBuffer(const char *name) : m_depth(-1), m_automaticMipmapsEnabled(0)
 {
 	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &m_maxColorBuffers);
@@ -41,10 +51,7 @@ FrameBuffer::FrameBuffer(const char *name) : m_depth(-1), m_automaticMipmapsEnab
 	m_depthType = m_stencilType = GL_TEXTURE_2D;
 	glGenFramebuffersEXT(1, &m_ID);
 	
-	if (!name)
-		sprintf_s(m_FBOName, 80, "Framebuffer %d", m_ID);
-	else
-		strncpy_s(m_FBOName, 80, name, 79);
+	createName(m_FBOName, name, m_ID);
 }
 
 FrameBuffer::FrameBuffer(int w, int h, const char *name) :
@@ -65,10 +72,7 @@ FrameBuffer::FrameBuffer(int w, int h, const char *name) :
 	m_depthType = m_stencilType = GL_TEXTURE_2D;
 	glGenFramebuffersEXT(1, &m_ID);
 	
-	if (!name)
-		sprintf_s(m_FBOName, 80, "Framebuffer %d", m_ID);
-	else
-		strncpy_s(m_FBOName, 80, name, 79);
+	createName(m_FBOName, name, m_ID);
 }
 
 FrameBuffer::FrameBuffer(GLenum type, int w, int h, int d, 
@@ -91,8 +95,7 @@ FrameBuffer::FrameBuffer(GLenum type, int w, int h, int d,
 	}
 	m_depthType = m_stencilType = type;
 	
-	if (!name) sprintf_s(m_FBOName, 80, "Framebuffer %d", m_ID);
-	else strncpy_s(m_FBOName, 80, name, 79);
+	createName(m_FBOName, name, m_ID);
 	
 	glGenFramebuffersEXT(1, &m_ID);
 	
