@@ -38,3 +38,13 @@ Ray::Ray(const Math::Vec3f & origin, const Math::Vec3f & direction, const float 
 	refractionIndex.push(1);
 }
 
+void Ray::reset() {
+	tMin = 0.001f;
+	tMax = Math::Limits<float>::max();
+	time = 0;
+	while (refractionIndex.size() > 1) {
+		refractionIndex.pop();
+	}
+	hit = HitInfo();
+}
+

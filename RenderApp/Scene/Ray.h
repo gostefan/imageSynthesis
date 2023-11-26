@@ -25,6 +25,7 @@ class Ray : public Math::Line3f {
 	public:
 		explicit Ray();
 		Ray(const Math::Vec3f& o, const Math::Vec3f& d, const float time = 0);
+		void reset();
     
 		float tMin, tMax;                  //!< Region of interest
 		float time;

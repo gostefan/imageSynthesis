@@ -40,9 +40,10 @@ void RayTracingRenderer::render(Scene & scene) {
 	//for each pixel generate a camera ray 
 	unsigned int xRes = scene.camera->xRes();
 	unsigned int yRes = scene.camera->yRes();
+	auto r = std::unique_ptr<Ray>(new Ray());
 	for (unsigned int i = 0; i < xRes; i++) {
 		for (unsigned int j = 0; j < yRes; j++) {
-			auto r = std::unique_ptr<Ray>(new Ray());
+			r->reset();
 			scene.camera->generateRay(r.get(), static_cast<float>(i), static_cast<float>(j));
 	
 			//loop over all scene objects and find the closest intersection
