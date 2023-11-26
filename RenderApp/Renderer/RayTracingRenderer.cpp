@@ -59,7 +59,7 @@ void RayTracingRenderer::render(Scene & scene) {
 				m_rgbaBuffer(i,j).y = shaded.y;
 				m_rgbaBuffer(i,j).z = shaded.z;
 				m_rgbaBuffer(i,j).w = 1;
-			} else
+			} else if(scene.background)
 				m_rgbaBuffer(i,j) = scene.background->getBackground(r->d);
 		}
 
