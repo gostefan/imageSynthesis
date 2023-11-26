@@ -64,10 +64,10 @@ Mesh::Mesh(SurfaceShader* ss,
 		m_maxDepth(maxDepth),
 		m_maxObjects(maxObjects)
 {
-	if (mesh) {
-		mesh->motion = motion;
-		mesh->nTime = nTime;
-		mesh->shutterTime = shutterTime;
+	if (m_mesh) {
+		m_mesh->motion = motion;
+		m_mesh->nTime = nTime;
+		m_mesh->shutterTime = shutterTime;
 		Proc proc(m_mesh, m_maxDepth, m_maxObjects, shutterTime);
 		
 		BBH::BuildStats stats;
