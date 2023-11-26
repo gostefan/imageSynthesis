@@ -16,9 +16,7 @@
 /*!
     Creates a ray.
 */
-Ray::Ray() : Math::Line3f(), tMin(0.001f), tMax(Math::Limits<float>::max()), time(0) {
-	refractionIndex.push(1);
-}
+Ray::Ray() : Math::Line3f(), tMin(0.001f), tMax(Math::Limits<float>::max()), time(0) { }
 
 
 /*!
@@ -33,18 +31,12 @@ Ray::Ray() : Math::Line3f(), tMin(0.001f), tMax(Math::Limits<float>::max()), tim
     parent ray.
 */
 Ray::Ray(const Math::Vec3f & origin, const Math::Vec3f & direction, const float time) :
-		Math::Line3f(origin, direction), tMin(0.001f), tMax(Math::Limits<float>::max()), time(time)
-{
-	refractionIndex.push(1);
-}
+		Math::Line3f(origin, direction), tMin(0.001f), tMax(Math::Limits<float>::max()), time(time) { }
 
 void Ray::reset() {
 	tMin = 0.001f;
 	tMax = Math::Limits<float>::max();
 	time = 0;
-	while (refractionIndex.size() > 1) {
-		refractionIndex.pop();
-	}
 	hit = HitInfo();
 }
 

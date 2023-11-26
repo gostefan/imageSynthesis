@@ -29,7 +29,6 @@ class Ray : public Math::Line3f {
     
 		float tMin, tMax;                  //!< Region of interest
 		float time;
-		std::stack<float> refractionIndex;
 
 		HitInfo hit;                       //!< Information about the hitpoint
 };
