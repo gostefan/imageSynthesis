@@ -30,14 +30,14 @@ bool Sphere::intersect(Ray * r) const {
 	Vec3f closest = dist - r->d * distOnRay;
 	if (closest.length2() <= radius * radius && (distOnRay >= 0 || dist.length2() < radius * radius)) {
 		// distOnRay >= 0 needed for leaving rays.
-		double cosAngle = closest.length() / radius;
-		double sinAngle = sqrt(1 - pow(cosAngle, 2)); // should be the same... sin(acos(cosAngle));
-		double t = distOnRay - sinAngle * radius;
+		double distInside = sqrt(radius * radius - closest.length2());
+		double t = distOnRay - distInside;
+
 		if (t < r->tMin)
 			// The other intersection
-			t = distOnRay + sinAngle * radius;
-		if (t > r->tMin && t < r->tMax /*&& t > 0*/) {
-			// Should be ensured by t > ray.min_t
+			t = distOnRay + distInside;
+
+		if (t > r->tMin && t < r->tMax) {
 			r->tMax = static_cast<float>(t);
 			this->fillHitInfo(r);
 			return true;
