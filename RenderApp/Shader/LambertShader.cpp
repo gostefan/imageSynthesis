@@ -23,7 +23,7 @@ Color3f LambertShader::shade(const HitInfo & hit, const Scene* scene, stack<floa
 	Color3f color(0,0,0);
 	if (!scene->usePMapDirect) {
 		for (const Light* light : scene->lights) {
-			vector<LightRay> samples;
+			samples.clear();
 			light->getIrradianceSamples(hit.P, scene, samples, hit.time);
 			Color3f estimate(0);
 			for (unsigned int j = 0; j < samples.size(); j++) {

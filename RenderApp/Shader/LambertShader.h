@@ -9,10 +9,13 @@
 
 #include "util/memory.h"
 
+class LightRay;
 class Sampler;
 class Warping;
 
 class LambertShader : public SurfaceShader {
+	private:
+		mutable vector<LightRay> samples;
 	protected:
 		Math::Color3f m_kd;
 		CosineScatter cosineScatter;
