@@ -83,17 +83,21 @@
 # define M_SQRT1_2      0.70710678118654752440  /* 1/sqrt(2) */
 #endif
 
-#ifdef _WIN32
+#ifdef _WIN32 
 inline double exp2(double x) { return exp(x) / exp(2.0); }
 inline double expm1(double x){ return exp(x - 1); }
 inline double log1p(double x){ return log(x + 1); }
+#if _MSC_FULL_VER < 192829910 && defined NDEBUG
 inline double log2(double x) { return log(x) / log(2.0); }
+#endif
 inline double cbrt(double x) { return pow(x, 1.0 / 3.0); }
 
 inline float exp2f(float x) { return float(exp2(x)); }
 inline float expm1f(float x){ return float(expm1f(x)); }
 inline float log1pf(float x){ return float(log1pf(x)); }
+#if _MSC_FULL_VER < 192829910 && defined NDEBUG
 inline float log2f(float x) { return float(log2(x)); }
+#endif
 inline float cbrtf(float x) { return float(cbrt(x)); }
 //inline float hypotf(float x, float y) {return _hypotf(x, y);}
 #endif
