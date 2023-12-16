@@ -645,10 +645,11 @@ namespace Math {
 		S b = s.x*cols[0][1] + s.y*cols[1][1] + s.z*cols[2][1] + cols[3][1];
 		S c = s.x*cols[0][2] + s.y*cols[1][2] + s.z*cols[2][2] + cols[3][2];
 		S w = s.x*cols[0][3] + s.y*cols[1][3] + s.z*cols[2][3] + cols[3][3];
+		S divW = 1 / w;
 
-		d->x = a / w;
-		d->y = b / w;
-		d->z = c / w;
+		d->x = a * divW;
+		d->y = b * divW;
+		d->z = c * divW;
 	#endif
 	}
 
