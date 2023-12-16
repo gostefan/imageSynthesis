@@ -96,8 +96,9 @@ namespace {
 		scene.addLight(new PointLight(Vec3f(0, 2, 0), Color3f(50, 50, 50)));
 
 		SurfaceShader* blue = new LambertShader(Color3f(0, 0, 1));
+		SurfaceShader* red = new LambertShader(Color3f(1, 0, 0));
 		scene.shapes.push_back(new Sphere(blue, Vec3f(0.5f, -0.6f, 0.5f), 0.4f));
-		scene.shapes.push_back(new Mesh(blue, readObjMesh("./obj/planeX2.obj")));
+		scene.shapes.push_back(new Mesh(red, readObjMesh("./obj/planeX2.obj")));
 	}
 
 	void createMovingScene(Scene& scene) {
