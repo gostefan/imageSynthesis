@@ -248,9 +248,7 @@ namespace Platform {
 			i += j;
 			printTime(elp + eta, i);
 
-			int len = std::min(screenWidth, int(progressBuffer.size()));
-			for (int j = 0; j < len; ++j)
-				printf("%c", progressBuffer[j]);
+			printf("%.*s", screenWidth, progressBuffer.data());
 			fflush(stdout);
 			progressUpdateTimer.reset();
 		}
