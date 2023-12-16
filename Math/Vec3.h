@@ -279,7 +279,7 @@ namespace Math {
 			/*!
 				Returns the geometric length of the vector.
 			*/
-			T length() const { return MathT<T>::sqrt(length2()); }
+			T length() const { return sqrt(length2()); }
     
 			//! Normalizes the vector and return its length.
 			/*!
