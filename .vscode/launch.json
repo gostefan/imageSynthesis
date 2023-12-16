@@ -16,10 +16,21 @@
 			"console": "integratedTerminal"
 		},
 		{
-			"name": "RenderApp",
+			"name": "RenderApp Dbg",
 			"type": "cppvsdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/build/RenderApp/Debug/RenderApp.exe",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"console": "integratedTerminal"
+		},
+		{
+			"name": "RenderApp RelSym",
+			"type": "cppvsdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/build/RenderApp/RelWithDebInfo/RenderApp.exe",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
